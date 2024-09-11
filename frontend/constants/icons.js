@@ -15,19 +15,23 @@ import play from "../assets/icons/common/play.png";
 //Worker Icons
 import jobs from "../assets/icons/worker/job.png";
 import earnings from "../assets/icons/worker/money.png";
+import worker from "../assets/icons/worker/worker.png";
 
 //Client Icons
 import favorites from "../assets/icons/client/favorites.png";
 import bookings from "../assets/icons/client/bookings.png";
+import client from "../assets/icons/client/client.png";
 
 export default {
   //Worker Icons
   jobs,
   earnings,
+  worker,
 
   //Client Icons
   favorites,
   bookings,
+  client,
 
   //Common Icons
   play,

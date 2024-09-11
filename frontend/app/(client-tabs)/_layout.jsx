@@ -3,7 +3,7 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { icons } from "../../constants"; // Assuming icons are stored in a centralized file
 
-import TabIcon from "../../components/TabIcon";
+import TabIcon from "../../components/common/TabIcon";
 
 const ClientTabsLayout = () => {
   return (

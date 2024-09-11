@@ -6,7 +6,7 @@ import HomeHeader from "../../components/client/HomeHeader";
 
 const Home = () => {
   return (
-    <SafeAreaView className="h-full bg-white px-5 py-4">
+    <SafeAreaView className="h-full bg-white pt-4">
       <ScrollView>
         <HomeHeader />
       </ScrollView>

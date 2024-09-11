@@ -1,11 +1,11 @@
 import { View, Text, ScrollView, Image } from "react-native";
 import { React, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CustomButton from "../../components/CustomButton";
+import CustomButton from "../../components/common/CustomButton";
 import { Link, router } from "expo-router";
 
 import { images } from "../../constants";
-import FormField from "../../components/FormField";
+import FormField from "../../components/common/FormField";
 
 import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage - This is Temporary for Dev purposes
 

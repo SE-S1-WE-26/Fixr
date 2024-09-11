@@ -1,13 +1,13 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
 
-import { images } from "../../constants";
+import { images } from "../../../constants";
 
-import RoleChangeButton from "../../components/RoleChangeButton";
+import RoleChangeButton from "../../common/RoleChangeButton";
 
 const HomeHeader = () => {
   return (
-    <View className="w-full h-full">
+    <View className="w-full mb-5 px-5">
       <View className="flex-row justify-between items-center">
         <Image
           source={images.logoSmall}
