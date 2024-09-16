@@ -1,8 +1,6 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
-
 import { images } from "../../../constants";
-
 import RoleChangeButton from "../../common/RoleChangeButton";
 
 const HomeHeader = () => {
@@ -16,8 +14,13 @@ const HomeHeader = () => {
         />
         <RoleChangeButton />
       </View>
-      <Text className="text-4xl font-medium mt-4">Welcome to Fixr !</Text>
-      <Text className="text-lg font-medium">Find your job today</Text>
+      {/* Responsive text size */}
+      <Text className="text-3xl md:text-3xl lg:text-4xl font-medium mt-4">
+        Welcome to Fixr!
+      </Text>
+      <Text className="text-base md:text-lg lg:text-xl font-medium">
+        Find your job today
+      </Text>
     </View>
   );
 };
