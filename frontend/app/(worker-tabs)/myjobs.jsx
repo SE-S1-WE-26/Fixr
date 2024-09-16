@@ -5,11 +5,9 @@ import Header from "../../components/common/Header";
 
 const MyJobs = () => {
   return (
-    <SafeAreaView className="h-full bg-white px-5 py-4">
+    <SafeAreaView className="h-full bg-white">
+      <Header title={"My Jobs"} />
       <ScrollView>
-        <View className="w-full h-full">
-          <Header title={"My Jobs"} />
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
