@@ -28,10 +28,17 @@ const RootLayout = () => {
   return (
     <>
       <Stack>
+        // Common
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(worker-tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(client-tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+
+        // Worker
+        <Stack.Screen name="(worker-tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="jobdetails" options={{ headerShown: true }} />
+        <Stack.Screen name="eom" options={{ headerShown: true }} />
+
+        // Client
+        <Stack.Screen name="(client-tabs)" options={{ headerShown: false }} />
       </Stack>
     </>
   );

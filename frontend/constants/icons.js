@@ -11,11 +11,14 @@ import logout from "../assets/icons/common/logout.png";
 import eyeHide from "../assets/icons/common/eye-hide.png";
 import eye from "../assets/icons/common/eye.png";
 import play from "../assets/icons/common/play.png";
+import back from '../assets/icons/common/back.png';
+import next from '../assets/icons/common/next.png';
 
 //Worker Icons
 import jobs from "../assets/icons/worker/job.png";
 import earnings from "../assets/icons/worker/money.png";
 import worker from "../assets/icons/worker/worker.png";
+import winner from "../assets/icons/worker/winner.png";
 
 //Client Icons
 import favorites from "../assets/icons/client/favorites.png";
@@ -27,6 +30,7 @@ export default {
   jobs,
   earnings,
   worker,
+  winner,
 
   //Client Icons
   favorites,
@@ -47,4 +51,6 @@ export default {
   logout,
   eyeHide,
   eye,
+  back,
+  next,
 };

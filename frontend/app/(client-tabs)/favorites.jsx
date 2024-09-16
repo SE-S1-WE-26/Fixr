@@ -5,7 +5,7 @@ import Header from "../../components/common/Header";
 
 const Favorites = () => {
   return (
-    <SafeAreaView className="h-full bg-white px-5 py-4">
+    <SafeAreaView className="h-full bg-white">
       <ScrollView>
         <View className="w-full h-full">
           <Header title={"Favorites"} />
