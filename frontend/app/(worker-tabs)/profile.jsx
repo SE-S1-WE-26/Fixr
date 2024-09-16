@@ -1,15 +1,20 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, ScrollView } from "react-native";
+import { Text, ScrollView, View } from "react-native";
 import Header from "../../components/common/Header";
+
+import ProfileCard from "../../components/worker/profile/ProfileCard";
+import Summary from "../../components/worker/profile/Summary";
+import Heading from '../../components/common/Heading';
 
 const Profile = () => {
   return (
-    <SafeAreaView className="h-full bg-white px-5 py-4">
+    <SafeAreaView className="h-full bg-white">
+      <Header title={"Profile"} />
       <ScrollView>
-        <View className="w-full h-full">
-          <Header title={"Profile"} />
-        </View>
+        <ProfileCard />
+        <Heading name='Summary' link='/' />
+        <Summary />
       </ScrollView>
     </SafeAreaView>
   );
