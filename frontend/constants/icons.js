@@ -24,6 +24,12 @@ import winner from "../assets/icons/worker/winner.png";
 import favorites from "../assets/icons/client/favorites.png";
 import bookings from "../assets/icons/client/bookings.png";
 import client from "../assets/icons/client/client.png";
+import calendar from "../assets/icons/client/calendar.png"
+import clock from "../assets/icons/client/clock.png"
+import notFavourite from "../assets/icons/client/notFavourite.png";
+import fullStar from "../assets/icons/client/fullStar.png";
+import halfStar from "../assets/icons/client/halfStar.png";
+import noStar from "../assets/icons/client/noStar.png";
 
 export default {
   //Worker Icons
@@ -36,6 +42,12 @@ export default {
   favorites,
   bookings,
   client,
+  calendar,
+  clock,
+  notFavourite,
+  fullStar,
+  halfStar,
+  noStar,
 
   //Common Icons
   play,
