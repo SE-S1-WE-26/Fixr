@@ -9,14 +9,21 @@ import empty from "../assets/images/empty.png";
 //Worker Images
 import trophy from '../assets/images/worker/trophy.png';
 
-//Cline Images
-
+//Client Images
+import roofing from '../assets/images/client/categories/roofing.png';
+import plumbing from '../assets/images/client/categories/plumbing.png';
+import electrical from '../assets/images/client/categories/electricworks.png';
+import painting from '../assets/images/client/categories/painting.png';
 
 export default { 
     //Worker Images
     trophy,
 
     //Client Images
+    roofing,
+    plumbing,
+    electrical,
+    painting,
 
     //Common Images
     profile, 
