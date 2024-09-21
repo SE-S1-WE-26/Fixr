@@ -1,9 +1,9 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
 
-import { images } from "../../constants";
+import { images } from "../../../constants";
 
-import RoleChangeButton from "../common/RoleChangeButton";
+import RoleChangeButton from "../../common/RoleChangeButton";
 
 const HomeHeader = () => {
   return (
