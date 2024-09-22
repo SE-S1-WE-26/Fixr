@@ -26,6 +26,7 @@ import winner from "../assets/icons/worker/winner.png";
 import favorites from "../assets/icons/client/favorites.png";
 import bookings from "../assets/icons/client/bookings.png";
 import client from "../assets/icons/client/client.png";
+import scanner from "../assets/icons/client/scanner.png";
 
 export default {
   //Worker Icons
@@ -38,6 +39,7 @@ export default {
   favorites,
   bookings,
   client,
+  scanner,
 
   //Common Icons
   play,
