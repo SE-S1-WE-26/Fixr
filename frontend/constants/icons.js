@@ -32,6 +32,8 @@ import notFavourite from "../assets/icons/client/notFavourite.png";
 import fullStar from "../assets/icons/client/fullStar.png";
 import halfStar from "../assets/icons/client/halfStar.png";
 import noStar from "../assets/icons/client/noStar.png";
+import close from '../assets/icons/client/close.png';
+import weatherWarning from '../assets/icons/client/weatherWarning.png';
 
 export default {
   //Worker Icons
@@ -50,6 +52,8 @@ export default {
   fullStar,
   halfStar,
   noStar,
+  close,
+  weatherWarning,
 
   //Common Icons
   play,

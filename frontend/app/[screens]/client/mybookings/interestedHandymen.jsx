@@ -26,7 +26,7 @@ const InterestedHandymen = () => {
                     rate={"500.00"}
                     rating={3}
                     viewProfileHandlePress={() => router.push("")}
-                    scheduleAppointmentHandlePress={() => router.push("")}
+                    scheduleAppointmentHandlePress={() => router.push("./scheduleAppointment")}
                     />
                     <InterestedHandyman
                     handyman={"Amila Fernando"}
@@ -35,7 +35,7 @@ const InterestedHandymen = () => {
                     rate={"500.00"}
                     rating={4.5}
                     viewProfileHandlePress={() => router.push("")}
-                    scheduleAppointmentHandlePress={() => router.push("")}
+                    scheduleAppointmentHandlePress={() => router.push("./scheduleAppointment")}
                     />
                     <InterestedHandyman
                     handyman={"Amila Fernando"}
@@ -44,7 +44,7 @@ const InterestedHandymen = () => {
                     rate={"500.00"}
                     rating={4}
                     viewProfileHandlePress={() => router.push("")}
-                    scheduleAppointmentHandlePress={() => router.push("")}
+                    scheduleAppointmentHandlePress={() => router.push("./scheduleAppointment")}
                     />
                 </View>
             </ScrollView>

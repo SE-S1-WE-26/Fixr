@@ -15,6 +15,7 @@ import painting from '../assets/images/client/painting.png'
 import plumbing from '../assets/images/client/plumbing.png'
 import repair from '../assets/images/client/repair.png'
 import myJobPosts from '../assets/images/client/myJobPosts.png'
+import addJob from '../assets/images/client/addJobPost.png'
 
 export default { 
     //Worker Images
@@ -26,6 +27,7 @@ export default {
     plumbing,
     repair,
     myJobPosts,
+    addJob,
 
     //Common Images
     profile, 

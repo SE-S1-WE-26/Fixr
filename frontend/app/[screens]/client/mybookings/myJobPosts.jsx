@@ -31,6 +31,7 @@ const MyJobPosts = () => {
                 <Text className="font-semibold">  Add Job Posts</Text>
               </View>
             }
+            handlePress={() => router.push("./addJob")}
             containerStyles={"absolute right-4 top-4 w-40 h-12 rounded-full"}
           />
         </View>

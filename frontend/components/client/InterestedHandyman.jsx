@@ -93,24 +93,24 @@ const InterestedHandyman = ({ handyman, isFavourite, jobTitle, rate, rating, vie
                     <Text className="text-base font-semibold">{rate}/hr</Text>
                 </View>
             </View>
-            <View className="flex-row justify-between px-2 mt-2">
-                <View className={` bg-black-800 rounded-full px-2.5 h-[35px] flex-row w-40 items-center justify-center`}>
-                    <TouchableOpacity onPress={viewProfileHandlePress}>
+            <View className="flex-row justify-between px-3 mt-2">
+                <TouchableOpacity onPress={viewProfileHandlePress}>
+                    <View className={` bg-black-800 rounded-xl px-2.5 h-[30px] flex-row w-36 items-center justify-center`}>
                         <Text className="text-white font-medium">View Profile</Text>
-                    </TouchableOpacity>
-                </View>
-                <View className={` bg-red-800 rounded-full px-2.5 h-[35px] w-40 flex-row items-center justify-center`}>
-                    <TouchableOpacity >
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity >
+                    <View className={` bg-red-700 rounded-xl px-2.5 h-[30px] w-36 flex-row items-center justify-center`}>
                         <Text className="text-white font-medium">Decline</Text>
-                    </TouchableOpacity>
-                </View>
+                    </View>
+                </TouchableOpacity>
             </View>
-            <View className="justify-center px-2 mt-2" >
-                <View className={` bg-yellow rounded-full px-2.5 h-[35px] flex-row items-center justify-center`}>
-                    <TouchableOpacity onPress={scheduleAppointmentHandlePress}>
+            <View className="justify-center px-3 mt-2" >
+                <TouchableOpacity onPress={scheduleAppointmentHandlePress}>
+                    <View className={` bg-yellow rounded-xl px-2.5 h-[32px] flex-row items-center justify-center`}>
                         <Text className="font-medium">Schedule Appointment</Text>
-                    </TouchableOpacity>
-                </View>
+                    </View>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     )
