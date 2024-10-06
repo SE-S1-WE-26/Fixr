@@ -74,21 +74,7 @@ const WorkerTabsLayout = () => {
           }}
         />
 
-<Tabs.Screen
-          name="mapView"
-          options={{
-            title: "mapView",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.profile}
-                color={color}
-                name="mapView"
-                focused={focused}
-              />
-            ),
-          }}
-        />
+
       </Tabs>
     </>
   );

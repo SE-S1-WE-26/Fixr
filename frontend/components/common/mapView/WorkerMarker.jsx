@@ -1,5 +1,5 @@
 import { CircleLayer, Images, ShapeSource, SymbolLayer } from "@rnmapbox/maps";
-import pin from '../../../assets/images/locationIcon.png';
+import pin from '../../../assets/images/locationPin.png';
 import { useWorker } from "./WorkerProvider";
 import { featureCollection, point } from '@turf/helpers';
 
@@ -38,21 +38,21 @@ export default function WorkerMarker() {
           filter={['has', 'point_count']}
           style={{
             circlePitchAlignment: 'map',
-            circleColor: "yellow",
+            circleColor: "#FFB627",
             circleRadius: 20,
             circleOpacity: .3,
             circleStrokeWidth: 2,
-            circleStrokeColor: 'yellow'
+            circleStrokeColor: '#FFB627'
           }}
         />
 
-        <Images images={{ foo: pin }} />
+        <Images  images={{ foo: pin }} />
         <SymbolLayer
           id="worker-icon"
           filter={['!', ['has', 'point_count']]}
           style={{
             iconImage: 'foo',
-            iconSize: 0.7,
+            iconSize: 0.15,
             iconAllowOverlap: true,
             iconAnchor: 'bottom'
           }}

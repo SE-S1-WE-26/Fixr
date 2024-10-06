@@ -19,7 +19,7 @@ export default function LineRoute({ coordinates }: { coordinates: Position[] }) 
       <LineLayer
         id='exampleLine'
         style={{
-          lineColor: 'yellow',
+          lineColor: 'orange',
           lineCap: 'round',
           lineJoin: 'round',
           lineWidth: 7,
