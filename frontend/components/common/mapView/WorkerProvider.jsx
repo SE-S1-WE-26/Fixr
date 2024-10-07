@@ -12,16 +12,7 @@ export default function WorkerProvider({children}: PropsWithChildren){
 
     useEffect(() => {
         const fetchDirections = async () => {
-            
-
             console.log('fetchDirections From worker Provider');
-    // const myLocation = await Location.getCurrentPositionAsync();
-
-    // const newDirection = await getDirection(
-    // [myLocation.coords.longitude , myLocation.coords.latitude],
-    // [selectedWorker.longitude , selectedWorker.latitude]
-    // );
-    // setDirection(newDirection);
         }
 
         if(selectedWorker){
