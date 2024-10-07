@@ -13,6 +13,8 @@ import eye from "../assets/icons/common/eye.png";
 import play from "../assets/icons/common/play.png";
 import back from '../assets/icons/common/back.png';
 import next from '../assets/icons/common/next.png';
+import like from '../assets/icons/common/like.png';
+import redlike from '../assets/icons/common/redlike.png';
 
 //Worker Icons
 import jobs from "../assets/icons/worker/job.png";
@@ -53,4 +55,6 @@ export default {
   eye,
   back,
   next,
+  like,
+  redlike,
 };

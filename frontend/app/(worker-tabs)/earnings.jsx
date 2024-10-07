@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import Header from "../../components/common/Header";
 import Summary from "../../components/worker/earnings/Summary";
 import EarningsCard from "../../components/worker/earnings/EarningsCard";

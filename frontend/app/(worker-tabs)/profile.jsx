@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text, ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import Header from "../../components/common/Header";
 
 import ProfileCard from "../../components/worker/profile/ProfileCard";
