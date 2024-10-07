@@ -111,3 +111,51 @@ export const TopWorkers = [
     fav: true,
   },
 ]
+
+
+export const MyJobsClient = [
+  {
+    id: 1,
+    name: "Leaky Kitchen Sink",
+    type: "Plumbing",
+    barcode: "122345232",
+    location: "Malabe, Sri Lanka",
+    date: "2021-09-01",
+    time: "09:00 AM",
+    handyman: "Janaka Tennakoon",
+    status: "Scheduled",
+  },
+  {
+    id: 2,
+    name: "Roof Leak Repair",
+    type: "Roofing",
+    barcode: "122345233",
+    location: "Kaduwela, Sri Lanka",
+    date: "2021-09-02",
+    time: "10:00 AM",
+    handyman: "Kamal Perera",
+    status: "Scheduled",
+  },
+  {
+    id: 3,
+    name: "Painting",
+    type: "Painting",
+    barcode: "122345234",
+    location: "Kottawa, Sri Lanka",
+    date: "2021-09-03",
+    time: "11:00 AM",
+    handyman: "Sunil Silva",
+    status: "Scheduled",
+  },
+  {
+    id: 4,
+    name: "Electrical Wiring",
+    type: "Electrical",
+    barcode: "122345235",
+    location: "Homagama, Sri Lanka",
+    date: "2021-09-04",
+    time: "12:00 PM",
+    handyman: "Saman Kumara",
+    status: "Scheduled",
+  },
+];

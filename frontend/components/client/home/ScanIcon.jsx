@@ -13,15 +13,15 @@ const ScanIcon = ({ icon }) => {
 const styles = StyleSheet.create({
   square: {
     backgroundColor: "orange", 
-    width: 70,
-    height: 70,
-    borderRadius: 20, 
+    width: 50,
+    height: 50,
+    borderRadius: 10, 
     justifyContent: "center",
     alignItems: "center",
   },
   icon: {
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     tintColor: "black", 
   },
 });

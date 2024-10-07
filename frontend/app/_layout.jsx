@@ -39,6 +39,10 @@ const RootLayout = () => {
 
         // Client
         <Stack.Screen name="(client-tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="ReportWorker" options={{ headerShown: true }} />
+        <Stack.Screen name="CompletedJob" options={{ headerShown: true }} />
+        <Stack.Screen name="Scanner" options={{ headerShown: true }} />
+        <Stack.Screen name="StartJob" options={{ headerShown: true }} />
       </Stack>
     </>
   );
