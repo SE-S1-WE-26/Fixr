@@ -15,6 +15,7 @@ import back from '../assets/icons/common/back.png';
 import next from '../assets/icons/common/next.png';
 import like from '../assets/icons/common/like.png';
 import redlike from '../assets/icons/common/redlike.png';
+import edit from '../assets/icons/common/edit.png';
 
 //Worker Icons
 import jobs from "../assets/icons/worker/job.png";
@@ -26,6 +27,14 @@ import winner from "../assets/icons/worker/winner.png";
 import favorites from "../assets/icons/client/favorites.png";
 import bookings from "../assets/icons/client/bookings.png";
 import client from "../assets/icons/client/client.png";
+import calendar from "../assets/icons/client/calendar.png"
+import clock from "../assets/icons/client/clock.png"
+import notFavourite from "../assets/icons/client/notFavourite.png";
+import fullStar from "../assets/icons/client/fullStar.png";
+import halfStar from "../assets/icons/client/halfStar.png";
+import noStar from "../assets/icons/client/noStar.png";
+import close from '../assets/icons/client/close.png';
+import weatherWarning from '../assets/icons/client/weatherWarning.png';
 
 export default {
   //Worker Icons
@@ -38,6 +47,14 @@ export default {
   favorites,
   bookings,
   client,
+  calendar,
+  clock,
+  notFavourite,
+  fullStar,
+  halfStar,
+  noStar,
+  close,
+  weatherWarning,
 
   //Common Icons
   play,
@@ -57,4 +74,5 @@ export default {
   next,
   like,
   redlike,
+  edit,
 };

@@ -10,6 +10,11 @@ import empty from "../assets/images/empty.png";
 import trophy from '../assets/images/worker/trophy.png';
 
 //Client Images
+import myBookings from '../assets/images/client/myBookings.png'
+import repair from '../assets/images/client/repair.png'
+import myJobPosts from '../assets/images/client/myJobPosts.png'
+import addJob from '../assets/images/client/addJobPost.png'
+
 import roofing from '../assets/images/client/categories/roofing.png';
 import plumbing from '../assets/images/client/categories/plumbing.png';
 import electrical from '../assets/images/client/categories/electricworks.png';
@@ -21,9 +26,13 @@ export default {
 
     //Client Images
     roofing,
-    plumbing,
     electrical,
+    myBookings,
     painting,
+    plumbing,
+    repair,
+    myJobPosts,
+    addJob,
 
     //Common Images
     profile, 
