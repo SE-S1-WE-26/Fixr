@@ -13,11 +13,47 @@ const getAllJobs = async (req, res) => {
 // Get a single job by ID
 const getJobById = async (req, res) => {
   try {
-    const job = await Job.findById(req.params.id).populate('clientId');
-    if (!job) return res.status(404).json({ message: 'Job not found' });
-    res.status(200).json(job);
+    const job = await Job.findById(req.params.id)
+      .populate('clientId')
+      .populate({ path: 'scheduledWorkerId', match: { scheduled: true } });
+
+    if (!job) {
+      console.log("Job not found for ID:", req.params.id);  // Log when no job is found
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    console.log("Job fetched successfully:", job);  // Log the job data
+    res.status(200).json(job);  // 200 is more appropriate for success
   } catch (error) {
+    console.error("Error fetching job:", error.message);  // Log the error details
     res.status(500).json({ message: 'Error fetching job', error });
+  }
+};
+
+
+
+// Get jobs by client ID
+const getJobsByClientId = async (req, res) => {
+  try {
+    const jobs = await Job.find({ clientId: req.params.clientId }).populate('clientId').populate({ path: 'scheduledWorkerId', match: { scheduled: true } });
+    if (!jobs.length) return res.status(404).json({ message: 'No jobs found by this client' });
+    res.status(200).json(jobs);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching jobs by client ID', error });
+  }
+};
+
+// Get jobs by scheduled worker ID (only if scheduled is true)
+const getJobsByScheduledWorkerId = async (req, res) => {
+  try {
+    const jobs = await Job.find({ scheduledWorkerId: req.params.scheduledWorkerId, scheduled: true })
+      .populate('clientId')
+      .populate('scheduledWorkerId');
+    
+    if (!jobs.length) return res.status(404).json({ message: 'No jobs found for this worker' });
+    res.status(200).json(jobs);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching jobs by scheduled worker ID', error });
   }
 };
 
@@ -27,6 +63,7 @@ const createJob = async (req, res) => {
   try {
     const savedJob = await newJob.save();
     res.status(201).json(savedJob);
+    console.log("Job saved");
   } catch (error) {
     res.status(400).json({ message: 'Error creating job', error });
   }
@@ -57,6 +94,8 @@ const deleteJob = async (req, res) => {
 module.exports = {
   getAllJobs,
   getJobById,
+  getJobsByClientId,
+  getJobsByScheduledWorkerId,
   createJob,
   updateJob,
   deleteJob
