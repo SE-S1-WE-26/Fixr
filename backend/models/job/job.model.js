@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { images } = require('../../../frontend/constants');
 
 const jobSchema = new mongoose.Schema({
   title: {
@@ -11,8 +10,7 @@ const jobSchema = new mongoose.Schema({
     required: true,
   },
   images: {
-    type: [String],
-    default: [images.defaultJobImage],
+    type: [String]
   },
   estDuration: {
     type: String,
