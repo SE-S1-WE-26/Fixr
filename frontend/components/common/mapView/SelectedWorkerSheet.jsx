@@ -1,8 +1,9 @@
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useEffect, useRef, useState } from "react";
-import { Button, Image, Text, View } from "react-native";
+import { Button, Image, Linking, Text, View } from "react-native";
 import { useWorker } from "./WorkerProvider";
 
+import { icons } from "../../../constants";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Feather from "@expo/vector-icons/Feather";
 import Octicons from "@expo/vector-icons/Octicons";
@@ -86,7 +87,7 @@ export default function SelectedWorkerSheet() {
           {service}
         </Text>
         <View className="flex-row items-center gap-3">
-          <Image src={image} className="w-[50px] h-[70px] rounded-xl " />
+          <Image source={icons.client} className="w-[50px] h-[70px] rounded-xl " />
 
           <View className="flex flex-row flex-1 gap-2 items-center ms-2">
             <View className="items-start gap-1">
@@ -149,7 +150,7 @@ export default function SelectedWorkerSheet() {
             )}
           </View>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{Linking.openURL(`tel:${phone}`)}}>
 
         <View className="items-center p-3">
           <View className="items-center bg-green-800 py-2 px-4 rounded-xl text-white flex-row justify-center w-fit">
