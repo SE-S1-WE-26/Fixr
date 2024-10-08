@@ -1,10 +1,12 @@
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image,TouchableOpacity} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "../../components/common/CustomButton";
 import { Link } from "expo-router";
 import { images } from "../../constants";
 import FormField from "../../components/common/FormField";
+import WorkerSignUp from "../../components/common/auth/WorkerSignUp";
+import ClientSignUp from "../../components/common/auth/ClientSignUp";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -14,6 +16,7 @@ const SignUp = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isWorker,setIsWorker] = useState(false);
 
   const submit = () => {
     // Add your form submission logic here
@@ -22,49 +25,12 @@ const SignUp = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 16 }}>
-        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-          <Image
-            source={images.logoSmall}
-            resizeMode="contain"
-            style={{ width: 80, height: 80, marginVertical: 24 }}
-          />
-          <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>
-            Sign Up to Fixr
-          </Text>
-          <FormField
-            title="Username"
-            value={form.username}
-            handleChangeText={(text) => setForm({ ...form, username: text })}
-            style={{ marginBottom: 20 }}
-          />
-          <FormField
-            title="Email"
-            value={form.email}
-            handleChangeText={(text) => setForm({ ...form, email: text })}
-            style={{ marginBottom: 20 }}
-            keyboardType="email-address"
-          />
-          <FormField
-            title="Password"
-            value={form.password}
-            handleChangeText={(text) => setForm({ ...form, password: text })}
-            style={{ marginBottom: 20 }}
-          />
-          <CustomButton
-            title="Sign Up"
-            handlePress={submit}
-            containerStyle={{ marginTop: 20 }}
-            isLoading={isSubmitting}
-          />
-          <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center' }}>
-            <Text style={{ fontSize: 16, color: '#737373' }}>
-              Already have an account?
+      <TouchableOpacity onPress={() => setIsWorker(!isWorker)} className={`${isWorker ? 'bg-black-900':'bg-orange'} rounded-lg py-4 px-6 mt-4`}>
+            <Text className='text-white font-bold'>
+              {isWorker ? "Sign Up as a Client" : "Sign Up as a Worker"}
             </Text>
-            <Link href="/sign-in" style={{ fontSize: 16, fontWeight: 'bold', color: '#000' }}>
-              Sign In
-            </Link>
-          </View>
-        </View>
+          </TouchableOpacity>
+        {isWorker ? (<ClientSignUp />) : (<WorkerSignUp />)}
       </ScrollView>
     </SafeAreaView>
   );

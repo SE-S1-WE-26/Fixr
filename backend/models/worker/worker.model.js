@@ -29,10 +29,6 @@ const workerSchema = new mongoose.Schema({
         type: Number, // Number of years
         required: true,
     },
-    place: {
-        type: String,
-        required: true,
-    },
 });
 
 const Worker = mongoose.model('Worker', workerSchema);
