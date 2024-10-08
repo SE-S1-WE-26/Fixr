@@ -11,7 +11,7 @@ const JobPostsBox = ({ type, topic, description, handlePressJob, handlePressHand
                 <View className={`w-11 h-11 items-center top-0 rounded-full border border-gray-100`}>
                     <Image
                         source={images[type]}
-                        className={` w-6 h-6 top-[7.17px]`}
+                        className={` w-7 h-7 top-[7.17px]`}
                         resizeMethod='contain' />
                 </View>
                 <Text className={`text-center p-1 font-semibold text-lg`}>{topic}</Text>

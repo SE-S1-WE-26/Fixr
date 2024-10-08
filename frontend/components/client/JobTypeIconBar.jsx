@@ -2,15 +2,18 @@ import { View, Text, Image } from 'react-native'
 import React from 'react'
 import images from '../../constants/images'
 
-const JobTypeIconBar = ({type, containerStyle}) => {
+const JobTypeIconBar = ({type, containerStyle, imageStyle}) => {
   return (
-    <View className={`bg-white rounded-full border border-gray-300 ${containerStyle} w-20 h-20 items-center mx-auto`}>
-      <Image
+    <View
+    className={`bg-white rounded-full border border-gray-300 ${containerStyle} w-20 h-20 items-center justify-center mx-auto`}
+    style={{ overflow: 'hidden' }}
+  >
+    <Image
       source={images[type]}
-      className="w-12 h-12 my-auto"
-      resizeMode='contain'
-      />
-    </View>
+      style={{ resizeMode: 'contain' }}
+      className={`w-9/12 max-h-fit ${imageStyle}`}
+    />
+  </View>
   )
 }
 

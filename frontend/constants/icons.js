@@ -15,6 +15,7 @@ import back from '../assets/icons/common/back.png';
 import next from '../assets/icons/common/next.png';
 import like from '../assets/icons/common/like.png';
 import redlike from '../assets/icons/common/redlike.png';
+import edit from '../assets/icons/common/edit.png';
 
 //Worker Icons
 import jobs from "../assets/icons/worker/job.png";
@@ -73,4 +74,5 @@ export default {
   next,
   like,
   redlike,
+  edit,
 };
