@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { images } = require('../../../frontend/constants');
 
 const jobSchema = new mongoose.Schema({
   title: {
@@ -8,6 +9,13 @@ const jobSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
+  },
+  images: {
+    type: [String],
+    default: [images.defaultJobImage],
+  },
+  estDuration: {
+    type: String,
   },
   category: {
     type: String,
@@ -37,8 +45,20 @@ const jobSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['open', 'closed'],
-    default: 'open',
+    enum: ['pending', 'ongoing', 'completed', 'canceled'],
+    default: 'pending',
+  },
+  qrCode: {
+    type: String,
+  },
+  startTime: {
+    type: Date,
+  },
+  endTime: {
+    type: Date,
+  },
+  jobCost: {
+    type: Number,
   },
   interestedHandymen: [{
     type: mongoose.Schema.Types.ObjectId,

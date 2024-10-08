@@ -1,29 +1,37 @@
 import { StatusBar } from "expo-status-bar";
-import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
-import { Redirect, router } from "expo-router";
+import { ScrollView, StyleSheet, View, Image, ActivityIndicator } from "react-native";
+import { useEffect, useState } from "react";
+import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { images } from "../constants";
-import CustomButton from "../components/common/CustomButton";
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Set a timeout for 3 seconds before navigating to the sign-in screen
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      router.push("/sign-in");
+    }, 3000);
+
+    // Clean up the timer when the component unmounts
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View className="w-full justify-center items-center min-h-[85vh] px-4">
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.content}>
           <Image
             source={images.logo}
             resizeMode="contain"
-            className="w-60 h-60"
+            style={styles.logo}
           />
-          <CustomButton
-            title="Get Started"
-            handlePress={() => {
-              router.push("/sign-in");
-            }}
-            containerStyles="w-3/4 mt-7"
-            isLoading={false}
-          />
+          {isLoading && (
+            <ActivityIndicator size="large" color="#F59E2B" style={styles.loader} className='mt-10'/>
+          )}
         </View>
       </ScrollView>
       <StatusBar />
@@ -33,9 +41,22 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
+    flexGrow: 1,
     justifyContent: "center",
+    alignItems: "center",
+    padding: 16,
+  },
+  content: {
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "85vh",
+    width: "100%",
+  },
+  logo: {
+    width: 240,
+    height: 240,
+  },
+  loader: {
+    marginTop: 20,
   },
 });
