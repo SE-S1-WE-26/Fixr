@@ -1,5 +1,39 @@
 const Worker = require('../../models/worker/worker.model');
 
+// In your worker.controller.js
+
+const jwt = require('jsonwebtoken');
+
+// Middleware to authenticate JWT
+const authenticateJWT = (req, res, next) => {
+    const token = req.headers['authorization']?.split(' ')[1]; // Bearer <token>
+    if (token) {
+        jwt.verify(token, '2fe3ce2f', (err, user) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+            req.user = user;
+            next();
+        });
+    } else {
+        res.sendStatus(401);
+    }
+};
+
+// Get worker data by userId
+const getWorkerData = async (req, res) => {
+    try {
+        // Find worker by userId from the JWT
+        const worker = await Worker.findOne({ userId: req.user.userId }).populate('userId');
+        if (!worker) return res.status(404).json({ message: 'Worker not found' });
+
+        res.status(200).json(worker);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching worker data', error });
+    }
+};
+
+
 // Get all workers
 const getAllWorkers = async (req, res) => {
   try {
@@ -63,5 +97,7 @@ module.exports = {
   getWorkerById,
   createWorker,
   updateWorker,
-  deleteWorker
+  deleteWorker,
+  getWorkerData,
+  authenticateJWT,
 };
