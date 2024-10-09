@@ -11,6 +11,7 @@ const WorkerSignUp = () => {
     userType: "worker",
     name: "",
     email: "",
+    phone: "",
     username: "",
     password: "",
     location: "",
@@ -77,6 +78,13 @@ const WorkerSignUp = () => {
             handleChangeText={(text) => setForm({ ...form, email: text })}
             style={{ marginBottom: 20 }}
             keyboardType="email-address"
+          />
+          <FormField
+            title="Phone"
+            value={form.phone}
+            handleChangeText={(text) => setForm({ ...form, email: text })}
+            style={{ marginBottom: 20 }}
+            keyboardType="phone-pad"
           />
           <FormField
             title="Username"
