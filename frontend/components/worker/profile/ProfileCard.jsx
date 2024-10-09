@@ -11,15 +11,13 @@ const ProfileCard = () => {
     setIsLoading(true); // Set loading state to true before fetching
     try {
       const token = await AsyncStorage.getItem('token'); // Retrieve token from AsyncStorage
-      const response = await fetch('http://192.168.1.3:8080/worker/mydata', {
+      const response = await fetch('http://192.168.1.3:8010/worker/mydata', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
-
-      console.log('Worker data response:', response);
 
       if (!response.ok) {
         throw new Error('Failed to fetch worker data');
@@ -45,7 +43,7 @@ const ProfileCard = () => {
       ) : (
         <View>
             <View className="flex-col items-center justify-center">
-              <Image source={icons.worker} style={{ width: 80, height: 80 }} className="rounded-full" />
+              <Image source={{ uri: workerData.userId.profilePic }} style={{ width: 80, height: 80 }} className="rounded-full" />
               <Text className="text-3xl md:text-4xl font-bold mt-2">{workerData.userId.name}</Text>
               <Text className="font-semibold text-base md:text-lg">{workerData.category}</Text>
             </View>

@@ -14,13 +14,18 @@ const getAllClients = async (req, res) => {
 // Get a single client by ID
 const getClientById = async (req, res) => {
   try {
-    const client = await Client.findById(req.params.id).populate('publishedJobs');
+    // Populate the userId field with the user's name and other attributes you want
+    const client = await Client.findById(req.params.id).populate({
+      path: 'userId', 
+      select: 'name email profilePic rating', // Only select the fields you need from the user
+    });
     if (!client) return res.status(404).json({ message: 'Client not found' });
     res.status(200).json(client);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching client', error });
   }
 };
+
 
 // Create a new client
 const createClient = async (req, res) => {
