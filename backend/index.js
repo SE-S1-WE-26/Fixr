@@ -19,6 +19,7 @@ mongoose.connect(process.env.MONGO_URI)
 //User
 //Auth Routes
 const authRouter = require('./routes/user/authRoutes');
+const userRouter = require('./routes/user/user.route');
 
 //Worker Side
 const workerRouter = require('./routes/worker/worker.route');
@@ -32,7 +33,8 @@ const jobRouter = require('./routes/job/job.router');
 
 //Use Routes
 //User
-app.use('/user', authRouter);
+app.use('/auth', authRouter);
+app.use('/user', userRouter);
 
 //Worker Side
 app.use('/worker', workerRouter);

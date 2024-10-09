@@ -7,6 +7,7 @@ import axios from "axios";
 import { images } from "../../constants";
 import FormField from "../../components/common/FormField";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
+import TestLogin from "./TestLogin";
 
 const SignIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -19,7 +20,7 @@ const SignIn = () => {
     setErrorMessage(""); // Reset error message
   
     try {
-        const response = await axios.post('http://192.168.1.3:8080/user/signin', {
+        const response = await axios.post('http://192.168.1.3:8010/auth/signin', {
             username: form.email, // Use form.email for username
             password: form.password
         });
@@ -38,6 +39,7 @@ const SignIn = () => {
         setIsSubmitting(false);
     }
 };
+
   
 
   // Function to save user role to AsyncStorage and redirect
@@ -109,6 +111,7 @@ const SignIn = () => {
               Sign Up
             </Link>
           </View>
+          <TestLogin />
         </View>
       </ScrollView>
     </SafeAreaView>

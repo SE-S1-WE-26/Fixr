@@ -27,7 +27,7 @@ const WorkerSignUp = () => {
     setIsSubmitting(true);
     try {
       // Add your form submission logic here
-      const response = await fetch('http://192.168.1.3:8080/user/signup', {
+      const response = await fetch('http://192.168.1.3:8010/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -73,9 +73,9 @@ exports.signupUser = async (req, res) => {
 
         res.status(201).json({ message: 'User registered successfully', token });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
-    }
+        console.error("Signup error:", err.message); // Log the error message
+        res.status(500).json({ message: 'Server error', error: err.message }); // Include error message in the response
+    }    
 };
 
 // User Sign-in Controller
