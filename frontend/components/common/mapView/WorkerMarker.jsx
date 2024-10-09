@@ -16,7 +16,7 @@ export default function WorkerMarker() {
   const getAllWorkers = async () => {
     try {
       // Fetch all workers with their working and personal data
-      const response = await fetch("http://192.168.174.210:8010/worker/", {
+      const response = await fetch("https://fixerbackend.vercel.app/worker/", {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

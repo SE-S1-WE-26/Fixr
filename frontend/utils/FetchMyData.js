@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const fetchWorkerData = async () => {
   try {
     const token = await AsyncStorage.getItem('token'); // Retrieve token from AsyncStorage
-    const response = await fetch('http://192.168.174.210:8010/worker/mydata', {
+    const response = await fetch('https://fixerbackend.vercel.app/worker/mydata', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -28,7 +28,7 @@ export const fetchWorkerData = async () => {
 export const fetchClientData = async () => {
     try {
       const token = await AsyncStorage.getItem('token'); // Retrieve token from AsyncStorage
-      const response = await fetch('http://192.168.174.210:8010/client/mydata', {
+      const response = await fetch('https://fixerbackend.vercel.app/client/mydata', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
