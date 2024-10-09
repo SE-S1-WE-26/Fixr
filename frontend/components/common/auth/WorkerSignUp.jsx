@@ -90,7 +90,7 @@ const WorkerSignUp = () => {
     setIsSubmitting(true);
     console.log(form);
     try {
-      const response = await fetch('http://192.168.174.210:8010/user/signup', {
+      const response = await fetch('https://fixerbackend.vercel.app/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

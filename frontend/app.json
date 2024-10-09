@@ -49,6 +49,11 @@
           "locationWhenInUsePermission": "Show current location on map."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "6ed3b522-d3ba-4119-98d6-5bd080b58e43"
+      }
+    }
   }
 }
