@@ -55,21 +55,28 @@ const getAllJobs = async (req, res) => {
 const getJobById = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id)
-      .populate('clientId')
+      .populate({
+        path: 'clientId', 
+        populate: { 
+          path: 'userId', 
+          select: 'profilePic' // Only select the profilePic field
+        }
+      })
       .populate({ path: 'scheduledWorkerId', match: { scheduled: true } });
 
     if (!job) {
-      console.log("Job not found for ID:", req.params.id);  // Log when no job is found
+      console.log("Job not found for ID:", req.params.id);
       return res.status(404).json({ message: 'Job not found' });
     }
 
-    console.log("Job fetched successfully:", job);  // Log the job data
-    res.status(200).json(job);  // 200 is more appropriate for success
+    console.log("Job fetched successfully:", job);
+    res.status(200).json(job);
   } catch (error) {
-    console.error("Error fetching job:", error.message);  // Log the error details
+    console.error("Error fetching job:", error.message);
     res.status(500).json({ message: 'Error fetching job', error });
   }
 };
+
 
 
 // Get jobs by client ID
