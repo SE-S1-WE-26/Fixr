@@ -1,6 +1,6 @@
 import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
 import React, { useState } from "react";
-import FormatCurrency from "../../../utils/FormatCurrency";
+
 
 const ImageItem = ({ uri }) => {
   const [loading, setLoading] = useState(true);
@@ -32,9 +32,11 @@ const ImageItem = ({ uri }) => {
   );
 };
 
-const JobInfo = ({ job, loading }) => {
+const JobInfo = ({ job, loading, jobCost }) => {
   if (loading) {
-    return <ActivityIndicator size="large" color="#F59E2B" />;
+    return <View className="flex w-full mb-32 justify-center items-center">
+    <ActivityIndicator size="large" color="orange" />
+  </View>
   }
 
   if (!job) {
@@ -59,7 +61,7 @@ const JobInfo = ({ job, loading }) => {
           <View className="items-end">
             <Text className="text-base font-medium">Est. Job Time</Text>
             <Text className="text-4xl font-bold text-orange">
-              {job.estDuration}
+              {job.estDuration} Hours
             </Text>
           </View>
         </View>
@@ -75,7 +77,7 @@ const JobInfo = ({ job, loading }) => {
         <View className="mt-8">
           <Text className="text-base font-medium">Est. Job Cost</Text>
           <Text className="text-4xl font-bold text-orange">
-            LKR {FormatCurrency(parseFloat(job.jobCost))}
+            LKR {jobCost}
           </Text>
         </View>
       </View>

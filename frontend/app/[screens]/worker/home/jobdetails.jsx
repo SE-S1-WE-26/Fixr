@@ -12,7 +12,7 @@ import { icons } from "../../../../constants";
 
 const JobDetails = () => {
   const router = useRouter();
-  const { jobId } = useGlobalSearchParams();
+  const { jobId,jobCost } = useGlobalSearchParams();
 
   const [job, setJob] = useState(null);
   const [client, setClient] = useState(null);
@@ -73,13 +73,13 @@ const JobDetails = () => {
           ),
         }}
       />
-      <JobInfo job={job} loading={loading} />
+      <JobInfo job={job} jobCost={jobCost} loading={loading} />
       {client && client.userId ? ( // Check if client and userId are defined
         <ClientCard client={client} loading={loading} />
       ) : (
-        <View className='mt-6'>
-        <ActivityIndicator size="large" color="#F59E2B"  />
-        </View>
+        <View className="flex w-full justify-center items-center">
+        <ActivityIndicator size="large" color="orange" />
+      </View>
       )}
     </SafeAreaView>
   );
