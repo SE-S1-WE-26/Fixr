@@ -15,6 +15,11 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
 // Routes
+
+//User
+//Auth Routes
+const authRouter = require('./routes/user/authRoutes');
+
 //Worker Side
 const workerRouter = require('./routes/worker/worker.route');
 
@@ -26,6 +31,9 @@ const jobRouter = require('./routes/job/job.router');
 
 
 //Use Routes
+//User
+app.use('/user', authRouter);
+
 //Worker Side
 app.use('/worker', workerRouter);
 
@@ -37,5 +45,5 @@ app.use('/job', jobRouter);
 
 
 // Server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 8010;
+app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));

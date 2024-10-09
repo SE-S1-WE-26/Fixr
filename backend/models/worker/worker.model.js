@@ -1,35 +1,34 @@
-// model.js
 const mongoose = require('mongoose');
 
 const workerSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-  },
-  location: {
-    type: String,
-    required: true,
-  },
-  rating: {
-    type: Number,
-    required: true,
-  },
-  earnings: {
-    type: String,
-    required: true,
-  },
-  fav: {
-    type: Boolean,
-    default: false,
-  }
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    age: {
+        type: Number,
+        required: true,
+    },
+    socialLinks: {
+        type: [String],
+    },
+    earnings: {
+        type: Number,
+        default: 0,
+    },
+    category: {
+        type: String,
+        required: true,
+    },
+    hourlyRate: {
+        type: Number,
+        required: true,
+    },
+    experience: {
+        type: Number, // Number of years
+        required: true,
+    },
 });
 
 const Worker = mongoose.model('Worker', workerSchema);

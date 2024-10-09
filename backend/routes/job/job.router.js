@@ -2,6 +2,8 @@ const express = require('express');
 const {
   getAllJobs,
   getJobById,
+  getJobsByClientId,
+  getJobsByScheduledWorkerId,
   createJob,
   updateJob,
   deleteJob
@@ -14,6 +16,12 @@ router.get('/', getAllJobs);
 
 // Route to get a single job by ID
 router.get('/:id', getJobById);
+
+// Route to get jobs by client ID
+router.get('/client/:id', getJobsByClientId);
+
+// Route to get jobs by sheduled worker ID
+router.get('/worker/:id', getJobsByScheduledWorkerId);
 
 // Route to create a new job
 router.post('/create', createJob);
