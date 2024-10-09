@@ -1,8 +1,7 @@
 import { View, Text, TouchableOpacity, Image, ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Stack, useRouter } from "expo-router";
-import React, { useRef }  from "react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useRef } from "react";
 import axios from "axios";
 
 import EOMWinner from "../../../../components/worker/home/EOMWinner";
