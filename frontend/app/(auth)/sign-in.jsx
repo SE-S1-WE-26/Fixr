@@ -111,7 +111,7 @@ const SignIn = () => {
               Sign Up
             </Link>
           </View>
-          <TestLogin />
+          <TestLogin/>
         </View>
       </ScrollView>
     </SafeAreaView>
