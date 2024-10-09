@@ -42,7 +42,7 @@ export default function SelectedWorkerSheet() {
       setService(selectedWorker.service);
       setCategory(selectedWorker.category);
       setHourlyRate(selectedWorker.hourlyRate);
-      setImage(selectedWorker.photo);
+      setImage(selectedWorker.userId.profilePic);
       setAddress(selectedWorker.address);
       setDistance("");
       setDuration("");
@@ -91,7 +91,7 @@ export default function SelectedWorkerSheet() {
           {service}
         </Text> */}
         <View className="flex-row items-center gap-3">
-          <Image source={icons.client} className="w-[50px] h-[70px] rounded-xl " />
+          <Image src={image} className="w-[50px] h-[70px] rounded-xl " />
 
           <View className="flex flex-row flex-1 gap-2 items-center ms-2">
             <View className="items-start gap-1">
