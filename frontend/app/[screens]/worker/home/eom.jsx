@@ -1,7 +1,7 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, Button } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Stack, useRouter } from "expo-router";
-import React from "react";
+import React, { useRef }  from "react";
 
 import EOMWinner from "../../../../components/worker/home/EOMWinner";
 import LeaderboardCard from "../../../../components/worker/home/LeaderboardCard";
@@ -9,8 +9,11 @@ import Heading from '../../../../components/common/Heading';
 
 import { icons } from "../../../../constants";
 
+import ReviewCard from "../../../../components/common/ReviewCard";
+
 const EOM = () => {
   const router = useRouter();
+  const bottonSheetRef = useRef();
 
   return (
     <SafeAreaProvider className="h-full bg-white">
@@ -30,10 +33,13 @@ const EOM = () => {
           ),
         }}
       />
+      <TouchableOpacity onPress={()=>bottonSheetRef.current?.expand()}>
       <EOMWinner/>
+      </TouchableOpacity>
       <Heading name="Leaderboards"/>
       <LeaderboardCard name="Saman Kumarasiri" earnings="LKR 100,000.00" rating="4.8"/>
       <LeaderboardCard name="Roshan Bandara" earnings="LKR 90,000.00" rating="4.8"/>
+      <ReviewCard rating={bottonSheetRef} />
     </SafeAreaProvider>
   );
 };

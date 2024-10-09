@@ -19,7 +19,7 @@ const SignIn = () => {
     setErrorMessage(""); // Reset error message
 
     try {
-      const response = await axios.post("http://192.168.1.3:8010/auth/signin", {
+      const response = await axios.post("https://fixerbackend.vercel.app/auth/signin", {
         username: form.email, // Use form.email for username
         password: form.password,
       });
