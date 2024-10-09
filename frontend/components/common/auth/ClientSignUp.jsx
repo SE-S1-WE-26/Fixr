@@ -89,7 +89,7 @@ const ClientSignUp = () => {
     setIsSubmitting(true);
     console.log(form);
     try {
-      const response = await fetch('https://fixerbackend.vercel.app/user/signup', {
+      const response = await fetch('https://fixerbackend.vercel.app/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
