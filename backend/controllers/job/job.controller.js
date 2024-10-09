@@ -1,9 +1,50 @@
 const Job = require('../../models/job/job.model');
+const Client = require('../../models/client/client.model.js')
+const jwt = require('jsonwebtoken');
+
+// Middleware to authenticate JWT
+const authenticateJWT = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  console.log("Token received: ", token);
+  if (token) {
+    jwt.verify(token, '2fe3ce2f', (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      console.log("Token authenticated");
+      req.user = user;
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
+};
 
 // Get all jobs
+// const getAllJobs = async (req, res) => {
+//   try {
+//     const jobs = await Job.find().populate('clientId');
+//     res.status(200).json(jobs);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error fetching jobs', error });
+//   }
+// };
+
 const getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find().populate('clientId');
+    const userId = req.user.userId;
+
+    const client = await Client.findOne({ userId: userId });
+    console.log();
+    if (!client) {
+      return res.status(404).json({ message: 'Client not found for this user' });
+    }
+
+    const clientId = client._id;
+
+    const jobs = await Job.find({ clientId: clientId }).populate('clientId').populate({ path: 'scheduledWorkerId', match: { scheduled: true } });
+    if (!jobs.length) return res.status(404).json({ message: 'No jobs found by this client' });
+    console.log("Jobs: ", jobs);
     res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching jobs', error });
@@ -38,8 +79,6 @@ const getJobById = async (req, res) => {
 
 
 
-
-
 // Get jobs by client ID
 const getJobsByClientId = async (req, res) => {
   try {
@@ -57,7 +96,7 @@ const getJobsByScheduledWorkerId = async (req, res) => {
     const jobs = await Job.find({ scheduledWorkerId: req.params.scheduledWorkerId, scheduled: true })
       .populate('clientId')
       .populate('scheduledWorkerId');
-    
+
     if (!jobs.length) return res.status(404).json({ message: 'No jobs found for this worker' });
     res.status(200).json(jobs);
   } catch (error) {
@@ -65,17 +104,44 @@ const getJobsByScheduledWorkerId = async (req, res) => {
   }
 };
 
-// Create a new job
+//createJob
 const createJob = async (req, res) => {
-  const newJob = new Job(req.body);
+  const { title, description, category, environment, address, city, status, scheduled, budget } = req.body;
+
   try {
+    const userId = req.user.userId;
+
+    const client = await Client.findOne({ userId: userId });
+    console.log();
+    if (!client) {
+      return res.status(404).json({ message: 'Client not found for this user' });
+    }
+
+    const clientId = client._id;
+
+    const newJob = new Job({
+      title,
+      description,
+      category,
+      environment,
+      clientId,  // Set clientId from the found client
+      address,
+      city,
+      status,
+      scheduled,
+      budget,
+    });
+
+    // Save the new job
     const savedJob = await newJob.save();
     res.status(201).json(savedJob);
     console.log("Job saved");
   } catch (error) {
+    console.log("Error in the backend: ", error);
     res.status(400).json({ message: 'Error creating job', error });
   }
 };
+
 
 // Update a job by ID
 const updateJob = async (req, res) => {
@@ -100,6 +166,7 @@ const deleteJob = async (req, res) => {
 };
 
 module.exports = {
+  authenticateJWT,
   getAllJobs,
   getJobById,
   getJobsByClientId,
