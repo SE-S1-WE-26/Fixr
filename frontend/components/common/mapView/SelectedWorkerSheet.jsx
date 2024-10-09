@@ -22,7 +22,9 @@ export default function SelectedWorkerSheet() {
   const [location, setLocation] = useState();
   const [rating, setRating] = useState();
   const [service, setService] = useState();
+  const [address, setAddress] = useState();
   const [category, setCategory] = useState();
+  const [hourlyRate, setHourlyRate] = useState();
   const [image, setImage] = useState();
   const [_duration, setDuration] = useState();
   const [_distance, setDistance] = useState();
@@ -32,14 +34,16 @@ export default function SelectedWorkerSheet() {
   useEffect(() => {
     if (selectedWorker) {
       bottonSheetRef.current?.expand();
-      setName(selectedWorker.name);
-      setLocation(selectedWorker.address);
+      setName(selectedWorker.userId.name);
+      setLocation(selectedWorker.userId.location);
       setAge(selectedWorker.age);
-      setPhone(selectedWorker.phone);
-      setRating(selectedWorker.rating);
+      setPhone(selectedWorker.userId.phone);
+      setRating(selectedWorker.userId.rating);
       setService(selectedWorker.service);
       setCategory(selectedWorker.category);
+      setHourlyRate(selectedWorker.hourlyRate);
       setImage(selectedWorker.photo);
+      setAddress(selectedWorker.address);
       setDistance("");
       setDuration("");
       setDirection();
@@ -68,7 +72,7 @@ export default function SelectedWorkerSheet() {
     <BottomSheet
       ref={bottonSheetRef}
       index={-1}
-      snapPoints={["50% , 30%, 100%"]}
+      snapPoints={["40% , 30%, 100%"]}
       enablePanDownToClose
     >
       <BottomSheetView
@@ -79,27 +83,27 @@ export default function SelectedWorkerSheet() {
           {"    "}
           {name}
         </Text>
-        <Text className="font-bold  px-2 text-black  text-base text-center rounded-t-lg pl-5 mt-2 bg-black-500 text-white">
+        {/* <Text className="font-bold  px-2 text-black  text-base text-center rounded-t-lg pl-5 mt-2 bg-black-500 text-white">
           <MaterialIcons name="home-repair-service" size={18} color="white" />
           {"   service      "}
         </Text>
         <Text className="font-bold  px-2 text-black  text-base text-center rounded-b-lg pl-5 mb-2 bg-black-400 p-1">
           {service}
-        </Text>
+        </Text> */}
         <View className="flex-row items-center gap-3">
           <Image source={icons.client} className="w-[50px] h-[70px] rounded-xl " />
 
           <View className="flex flex-row flex-1 gap-2 items-center ms-2">
             <View className="items-start gap-1">
               <Text className="font-semibold">Age</Text>
-              <Text className="font-semibold">Phone</Text>
+              <Text className="font-semibold">hourlyRate</Text>
               <Text className="font-semibold">Address</Text>
               <Text className="font-semibold">Rating</Text>
               <Text className="font-semibold">Category</Text>
             </View>
             <View className="items-start gap-1">
               <Text className="font-medium ">: {age}</Text>
-              <Text className="font-medium">: {phone}</Text>
+              <Text className="font-medium">: Rs:{hourlyRate}/=</Text>
               <Text className="font-medium">: {location}</Text>
               <Text className="font-medium">
                 : <MaterialCommunityIcons name="star" size={16} color="red" />

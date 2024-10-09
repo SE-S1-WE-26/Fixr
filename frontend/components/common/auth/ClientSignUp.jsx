@@ -25,8 +25,8 @@ const ClientSignUp = () => {
     username: "",
     password: "",
     location: "",
-    latitude: "6.914796180809013",
-    longitude: "79.97397348721545",
+    latitude: 6.914796180809013,
+    longitude: 79.97397348721545,
   });
 
 
@@ -60,8 +60,8 @@ const ClientSignUp = () => {
     if (mylatitude && mylongitude) {
       setForm(prevForm => ({
         ...prevForm,
-        latitude: mylatitude.toString(),
-        longitude: mylongitude.toString(),
+        latitude: mylatitude,
+        longitude: mylongitude,
       }));
     }
   }, [mylatitude, mylongitude]);
