@@ -29,6 +29,14 @@ const workerSchema = new mongoose.Schema({
         type: Number, // Number of years
         required: true,
     },
+    latitude:{
+        type: String,
+        required: true,
+    },
+    longitude:{
+        type: String,
+        required: true,
+    }
 });
 
 const Worker = mongoose.model('Worker', workerSchema);
