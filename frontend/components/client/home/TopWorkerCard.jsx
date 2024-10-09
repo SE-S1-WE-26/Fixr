@@ -2,10 +2,21 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import StarRating from "react-native-star-rating-widget";
 import { icons } from "../../../constants";
+import { useRouter } from "expo-router";
 
 const TopWorkerCard = ({ data }) => {
+  const router = useRouter();
+  const handlePress = () => {
+    router.push({
+      pathname: "/pages/client/home/ContactWorker",
+      params: { worker: JSON.stringify(data) }, // Passing worker data
+    });
+  };
+
   return (
-    <TouchableOpacity className="bg-powder shadow px-2 pt-2 pb-2 rounded-lg max-w-[150px]">
+    <TouchableOpacity className="bg-powder shadow px-2 pt-2 pb-2 rounded-lg max-w-[155px]"
+      onPress={handlePress} // Navigate to ContactWorker on press
+    >
       <View>
         <Image
           source={data.image}
@@ -13,7 +24,7 @@ const TopWorkerCard = ({ data }) => {
         />
       </View>
       <View className="mt-2 items-start">
-        <Text className="font-bold text-lg" numberOfLines={1}>
+        <Text className="font-bold" numberOfLines={1}>
           {data.name}
         </Text>
         <View>

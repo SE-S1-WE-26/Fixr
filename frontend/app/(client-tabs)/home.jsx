@@ -12,10 +12,10 @@ import { icons } from "../../constants";
 
 const Home = () => {
   const router = useRouter();
-  const handleNavigation = () => {
-    // Navigate to Scanner screen
-    router.push("/pages/client/home/Scanner");
-  }
+  // const handleNavigation = () => {
+  //   // Navigate to Scanner screen
+  //   router.push("/pages/client/home/Scanner");
+  // }
 
   return (
     <SafeAreaView className="h-full bg-white pt-4">
@@ -28,24 +28,22 @@ const Home = () => {
         <PopualrCategoriesList />
         <View style={styles.paddingBottom} />
       </ScrollView>
-
-      <TouchableOpacity style={styles.scanner} onPress={handleNavigation}>
+      {/* <TouchableOpacity style={styles.scanner} onPress={handleNavigation}>
         <ScanIcon icon={icons.scanner}/>
-      </TouchableOpacity>
-
+      </TouchableOpacity> */}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  scanner: {
-    position: "absolute",
-    bottom: 10, 
-    right: 15, 
-    zIndex: 10, 
-  },
+  // scanner: {
+  //   position: "absolute",
+  //   bottom: 10, 
+  //   right: 15, 
+  //   zIndex: 10, 
+  // },
   paddingBottom: {
-    paddingBottom: 140, // Add padding below the PopularCategoriesList
+    paddingBottom: 10, // Add padding below the PopularCategoriesList
   },
 });
 

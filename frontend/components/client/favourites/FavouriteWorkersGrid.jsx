@@ -1,36 +1,37 @@
-import React from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { COLORS } from '../../../constants/theme';
+import React from 'react';
+import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { FavouriteWorkers } from '../../../constants/constants';
+import TopWorkerCard from '../home/TopWorkerCard';
 
 const FavouriteWorkersGrid = () => {
+  const numColumns = 2; // Define the number of columns
+  const screenWidth = Dimensions.get('window').width; // Get screen width
+  const itemWidth = (screenWidth - 40) / numColumns; // Calculate item width, with 40px total padding
+
   return (
-    <View className="grid grid-cols-2 gap-4 p-4">
-        <TouchableOpacity className="bg-white rounded-lg shadow-md">
-            <View className="p-4">
-            <Text className="font-bold text-lg">John Doe</Text>
-            <Text className="text-gray-500">Plumber</Text>
-            </View>
-        </TouchableOpacity>
-        <TouchableOpacity className="bg-white rounded-lg shadow-md">
-            <View className="p-4">
-            <Text className="font-bold text-lg">Jane Doe</Text>
-            <Text className="text-gray-500">Electrician</Text>
-            </View>
-        </TouchableOpacity>
-        <TouchableOpacity className="bg-white rounded-lg shadow-md">
-            <View className="p-4">
-            <Text className="font-bold text-lg">John Doe</Text>
-            <Text className="text-gray-500">Plumber</Text>
-            </View>
-        </TouchableOpacity>
-        <TouchableOpacity className="bg-white rounded-lg shadow-md">
-            <View className="p-4">
-            <Text className="font-bold text-lg">Jane Doe</Text>
-            <Text className="text-gray-500">Electrician</Text>
-            </View>
-        </TouchableOpacity>
-    </View>
-  )
-}
+    <FlatList
+      data={FavouriteWorkers}
+      renderItem={({ item }) => (
+        <View style={[styles.item, { width: itemWidth }]}>
+          <TopWorkerCard data={item} />
+        </View>
+      )}
+      keyExtractor={(item) => item.title}
+      numColumns={numColumns}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.gridContainer}
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  gridContainer: {
+    paddingBottom: 16,
+  },
+  item: {
+    margin: 10, // Adds margin between items for better spacing
+    alignItems: 'center', // Centers items within each card
+  },
+});
 
 export default FavouriteWorkersGrid;

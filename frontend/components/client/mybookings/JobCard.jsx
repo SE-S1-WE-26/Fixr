@@ -16,11 +16,11 @@ const JobCard = ({ jobName, date, time, handyman, qrcode }) => {
     }
 
     return (
-        <View className="flex min-h-[80px] mt-2 rounded-xl bg-powder shadow px-4 md:px-5 py-3 mx-4 md:mx-6 justify-center">
+        <View  style={styles.container}>
             <View className='flex flex-row items-center'>
                 <Image className='bg-orange w-10 h-10 rounded-full' />
                 <View className='ml-2'>
-                    <Text className='text-lg'>{jobName}</Text>
+                    <Text className='text-lg font-semibold'>{jobName}</Text>
                     <Text>Scheduled Date: {date}</Text>
                     <Text>Scheduled Time: {time}</Text>
                     <Text>Handyman: {handyman}</Text>
@@ -29,11 +29,11 @@ const JobCard = ({ jobName, date, time, handyman, qrcode }) => {
                     <ScanIcon icon={icons.scanner} />
                 </TouchableOpacity>
             </View>
-            <View className='flex flex-row'>
-                <TouchableOpacity className='bg-orange items-center justify-center p-1 rounded-lg'>
-                    <Text className='text-white'>View Handyman Details</Text>
+            <View className='flex flex-row justify-center'>
+                <TouchableOpacity className='bg-orange items-center justify-center p-2 rounded-lg mr-1'>
+                    <Text className='text-white'>Handyman Details</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className='border border-2 border-orange items-center justify-center p-1 rounded-lg'>
+                <TouchableOpacity className='border border-2 border-orange items-center justify-center p-1 rounded-lg ml-1'>
                     <Text>Cancel Appointment</Text>
                 </TouchableOpacity>
             </View>
@@ -42,14 +42,30 @@ const JobCard = ({ jobName, date, time, handyman, qrcode }) => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        minHeight: 80,
+        marginTop: 5,
+        marginBottom: 10,
+        borderRadius: 10,
+        backgroundColor: '#f9f9f9',
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        marginHorizontal: 10,
+        justifyContent: 'center',
+        // Shadow for iOS
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        // Shadow for Android
+        elevation: 5,
+    },
     scanner: {
         position: "absolute",
         bottom: 10,
         right: 10,
         zIndex: 10,
-    },
-    paddingBottom: {
-        paddingBottom: 140, // Add padding below the PopularCategoriesList
     },
 });
 

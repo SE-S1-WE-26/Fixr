@@ -1,8 +1,11 @@
+//pahan’s qr scanner
+
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator, TouchableOpacity, Alert, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { useRouter, useLocalSearchParams } from 'expo-router';  // useLocalSearchParams instead of useSearchParams
+import { useRouter, useLocalSearchParams, Stack } from 'expo-router';  // useLocalSearchParams instead of useSearchParams
+import { icons } from '../../../../constants';
 
 export default function Scanner() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -24,7 +27,7 @@ export default function Scanner() {
     if (!scanned) {  // Prevent duplicate scan handling
       setScanned(true);
       setIsLoading(true); // Start loader
-      
+
       const scannedData = {
         data,
         scannedDate: new Date().toLocaleString()
@@ -61,6 +64,22 @@ export default function Scanner() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerBackVisible: false,
+          headerShadowVisible: false,
+          headerTitle: 'Scan QR Code',
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Image
+                source={icons.back}
+                className="w-4 h-4 mr-5"
+                tintColor="orange"
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}  // Disable scanning after first scan
         style={StyleSheet.absoluteFillObject}
@@ -68,7 +87,15 @@ export default function Scanner() {
 
       {/* Overlay for scanning area */}
       <View style={styles.overlay}>
+      <View style={styles.topOverlay} />
+      <View style={styles.bottomOverlay} />
+      <View style={styles.leftOverlay} />
+      <View style={styles.rightOverlay} />
         <View style={styles.scanBox}>
+          <View style={[styles.corner, styles.topLeft]} />
+          <View style={[styles.corner, styles.topRight]} />
+          <View style={[styles.corner, styles.bottomLeft]} />
+          <View style={[styles.corner, styles.bottomRight]} />
           <Text style={styles.scanText}>Align QR code within the frame to scan</Text>
         </View>
       </View>
@@ -104,24 +131,89 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Darken background
+    zIndex: 0,  // Ensure the overlay is below the scan box
+  },
+  topOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '32%',  // Adjust height to cover top part
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Darken outside area
+  },
+  bottomOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '32%',  // Adjust height to cover bottom part
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  leftOverlay: {
+    position: 'absolute',
+    top: '32%',
+    bottom: '32%',
+    left: 0,
+    width: '16%',  // Adjust width to cover left side
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  rightOverlay: {
+    position: 'absolute',
+    top: '32%',
+    bottom: '32%',
+    right: 0,
+    width: '16%',  // Adjust width to cover right side
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   scanBox: {
-    width: 250,
-    height: 250,
-    borderWidth: 3,
-    borderColor: '#F59E2B',
-    borderRadius: 20,  // Rounded corners
+    width: 280,
+    height: 300,
+    borderRadius: 20,  // Rounded corners for the overall box
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
+    position: 'relative', // Necessary for positioning corners
+    zIndex: 1,  // Ensure the box is above the overlay
+  },
+  corner: {
+    width: 70,
+    height: 70,
+    borderColor: '#ffffff',
+    borderRadius: 5,
+    position: 'absolute',
+  },
+  topLeft: {
+    top: 0,
+    left: 0,
+    borderLeftWidth: 3,
+    borderTopWidth: 3,
+  },
+  topRight: {
+    top: 0,
+    right: 0,
+    borderRightWidth: 3,
+    borderTopWidth: 3,
+  },
+  bottomLeft: {
+    bottom: 0,
+    left: 0,
+    borderLeftWidth: 3,
+    borderBottomWidth: 3,
+  },
+  bottomRight: {
+    bottom: 0,
+    right: 0,
+    borderRightWidth: 3,
+    borderBottomWidth: 3,
   },
   scanText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
     marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
   },
   loadingOverlay: {
     position: 'absolute',

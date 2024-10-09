@@ -14,7 +14,7 @@ const TopWorkerList = () => {
       keyExtractor={(item) => item.title}
       horizontal // This makes the list scroll horizontally
       showsHorizontalScrollIndicator={false} // Hides the scrollbar for a cleaner UI
-      contentContainerStyle={{columnGap:10,paddingRight: 40}} // Optional: Adds padding to the left and right
+      contentContainerStyle={{columnGap:20,paddingRight: 40}} // Optional: Adds padding to the left and right
     />
   )
 }

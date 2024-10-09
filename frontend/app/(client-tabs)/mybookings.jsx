@@ -10,7 +10,7 @@ const MyBookings = () => {
     <SafeAreaView className="h-full bg-white">
       <ScrollView>
         <View className="w-full h-full">
-          <Header title={"My Jobs"} />
+          <Header title={"My Bookings"} />
           {MyJobsClient.map((job) => (
             <JobCard
               key={job.id}
