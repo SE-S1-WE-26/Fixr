@@ -6,6 +6,7 @@ import EOMCard from "../../components/worker/home/EOMCard";
 import TopWorkerList from "../../components/client/home/TopWorkerList";
 import PopualrCategoriesList from "../../components/client/home/PopularCategoriesList";
 import Heading from '../../components/common/Heading';
+import NearbyJobs from "../../components/worker/home/NearbyJobs";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 
@@ -67,6 +68,7 @@ const Home = () => {
         <HomeHeader />
         <EOMCard eom={eom} />
         <Heading name='Top Workers' link='/' />
+        <NearbyJobs />
         <TopWorkerList favorites={myData ? myData.favorites : []} />
         <Heading name="Popular Categories" link="/" />
         <PopualrCategoriesList />

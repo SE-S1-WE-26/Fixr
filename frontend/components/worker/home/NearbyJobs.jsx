@@ -12,7 +12,7 @@ const NearbyJobs = () => {
 
 <View>
 
-    <MapView style={{width:380 , height : 400}} compassFadeWhenNorth styleURL="mapbox://styles/mapbox/dark-v11" >
+    <MapView style={{width:380 , height : 200}} compassFadeWhenNorth styleURL="mapbox://styles/mapbox/dark-v11" >
     
       <Camera zoomLevel={12} centerCoordinate={[79.973763,6.914744]} />
     </MapView>
