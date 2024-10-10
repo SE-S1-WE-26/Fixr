@@ -5,6 +5,9 @@ import path from "../assets/images/path.png";
 import logo from "../assets/images/logo.png";
 import logoSmall from "../assets/images/logo-small.png";
 import empty from "../assets/images/empty.png";
+import gold from "../assets/images/gold.png";
+import silver from "../assets/images/silver.png";
+import bronze from "../assets/images/bronze.png";
 
 //Worker Images
 import trophy from '../assets/images/worker/trophy.png';
@@ -41,5 +44,8 @@ export default {
     path, 
     logo, 
     logoSmall, 
-    empty 
+    empty,
+    gold,
+    silver,
+    bronze 
 };
