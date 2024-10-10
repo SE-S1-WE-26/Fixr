@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
     profilePic: {
         type: String,
     },
+    phone: {
+        type: String,
+        required: true,
+    },
     username: {
         type: String,
         required: true,
@@ -30,6 +34,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    latitude:{
+        type: Number,
+        required: true,
+    },
+    longitude:{
+        type: Number,
+        required: true,
+    }
 }); 
 
 const User = mongoose.model('User', userSchema);
