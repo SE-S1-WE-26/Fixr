@@ -72,8 +72,6 @@ const WorkerTabsLayout = () => {
             ),
           }}
         />
-
-
       </Tabs>
     </>
   );

@@ -5,6 +5,10 @@ import FormatCurrency from "../../../utils/FormatCurrency";
 import { images } from "../../../constants";
 
 const LeaderboardCard = ({ worker,place }) => {
+  // Check if the worker is not null and contains the necessary fields
+  if (!worker || !worker.workerId || !worker.workerId.userId) {
+    return null; // Render nothing if the worker is not yet loaded
+  }
   return (
     <View className="flex flex-row mt-2 rounded-xl bg-powder py-4 px-3 mx-4 sm:mx-6 shadow items-center justify-between">
       <View className='flex flex-row items-center'>
