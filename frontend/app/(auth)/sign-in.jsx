@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, Alert } from "react-native";
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "../../components/common/CustomButton";
 import { Link, router } from "expo-router";
@@ -8,6 +8,7 @@ import { images } from "../../constants";
 import FormField from "../../components/common/FormField";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
 import TestLogin from "./TestLogin";
+import { ActivityIndicator } from "react-native";
 
 const SignIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -20,7 +21,7 @@ const SignIn = () => {
     setErrorMessage(""); // Reset error message
   
     try {
-        const response = await axios.post('http://192.168.1.3:8010/auth/signin', {
+        const response = await axios.post('http://192.168.8.103:8010/user/signin', {
             username: form.email, // Use form.email for username
             password: form.password
         });
@@ -55,6 +56,60 @@ const SignIn = () => {
       setIsSubmitting(false);
     }
   };
+
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Initially set to true
+
+  // Fetch users from the backend API
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("http://192.168.8.103:8010/user");
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      } finally {
+        setIsLoading(false); // Set loading to false after fetching
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  // Handle test login
+  const handleTestLogin = async (user) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post("http://192.168.8.103:8010/auth/signin", {
+        username: user.username, // Use the username from the selected user
+        password: user.password, // Assuming you have a test password for each user (use cautiously)
+      });
+
+      console.log("Sign in response:", response.data);
+
+      if (response.data.token) {
+        await AsyncStorage.setItem("token", response.data.token);
+        console.log("Token saved:", response.data.token);
+        router.push(response.data.redirectUrl);
+      }
+    } catch (error) {
+      console.error(
+        "Error signing in:",
+        error.response ? error.response.data : error.message
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView className="h-full">

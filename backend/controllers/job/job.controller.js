@@ -1,5 +1,6 @@
 const Job = require('../../models/job/job.model');
 const Client = require('../../models/client/client.model.js')
+const Worker = require('../../models/worker/worker.model.js')
 const jwt = require('jsonwebtoken');
 
 // Middleware to authenticate JWT
@@ -21,30 +22,9 @@ const authenticateJWT = (req, res, next) => {
 };
 
 // Get all jobs
-// const getAllJobs = async (req, res) => {
-//   try {
-//     const jobs = await Job.find().populate('clientId');
-//     res.status(200).json(jobs);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error fetching jobs', error });
-//   }
-// };
-
 const getAllJobs = async (req, res) => {
   try {
-    const userId = req.user.userId;
-
-    const client = await Client.findOne({ userId: userId });
-    console.log();
-    if (!client) {
-      return res.status(404).json({ message: 'Client not found for this user' });
-    }
-
-    const clientId = client._id;
-
-    const jobs = await Job.find({ clientId: clientId }).populate('clientId').populate({ path: 'scheduledWorkerId', match: { scheduled: true } });
-    if (!jobs.length) return res.status(404).json({ message: 'No jobs found by this client' });
-    console.log("Jobs: ", jobs);
+    const jobs = await Job.find().populate('clientId');
     res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching jobs', error });
@@ -62,7 +42,12 @@ const getJobById = async (req, res) => {
           select: 'profilePic' // Only select the profilePic field
         }
       })
-      .populate({ path: 'scheduledWorkerId', match: { scheduled: true } });
+      .populate({ path: 'scheduledWorkerId', match: { scheduled: true } })
+      .populate({
+        path: 'interestedHandymen',
+        populate: {
+          path: 'userId'
+        }});
 
     if (!job) {
       console.log("Job not found for ID:", req.params.id);
@@ -72,21 +57,32 @@ const getJobById = async (req, res) => {
     console.log("Job fetched successfully:", job);
     res.status(200).json(job);
   } catch (error) {
-    console.error("Error fetching job:", error.message);
+    console.error("Error fetching job by id:", error.message);
     res.status(500).json({ message: 'Error fetching job', error });
   }
 };
 
-
-
-// Get jobs by client ID
+// Get jobs by client token
 const getJobsByClientId = async (req, res) => {
   try {
-    const jobs = await Job.find({ clientId: req.params.clientId }).populate('clientId').populate({ path: 'scheduledWorkerId', match: { scheduled: true } });
+    const userId = req.user.userId;
+
+    const client = await Client.findOne({ userId: userId });
+    console.log();
+    if (!client) {
+      console.log("Client not found")
+      return res.status(404).json({ message: 'Client not found for this user' });
+    }
+
+    const clientId = client._id;
+
+    const jobs = await Job.find({ clientId: clientId }).populate('clientId').populate({ path: 'scheduledWorkerId', match: { scheduled: true } });
     if (!jobs.length) return res.status(404).json({ message: 'No jobs found by this client' });
+    console.log("Jobs: ", jobs);
     res.status(200).json(jobs);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching jobs by client ID', error });
+    console.error("Error fetching job for client:", error.message);
+    res.status(500).json({ message: 'Error fetching jobs for client', error });
   }
 };
 
@@ -142,6 +138,42 @@ const createJob = async (req, res) => {
   }
 };
 
+// Add worker to interestedHandymen of a job
+const addInterestedHandyman = async (req, res) => {
+  try {
+    // Get userId from token
+    const userId = req.user.userId;
+
+    // Find the worker who has the userId from the token
+    const worker = await Worker.findOne({ userId: userId });
+    if (!worker) {
+      return res.status(404).json({ message: 'Worker not found for this user' });
+    }
+    console.log("worker found to add to interested handymen")
+    // Find the job by its ID
+    const job = await Job.findById(req.params.jobId);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    // Check if the worker is already interested in the job
+    if (job.interestedHandymen.includes(worker._id)) {
+      console.log("Worker is already interested in this job");
+      return res.status(400).json({ message: 'Worker is already interested in this job' });
+    }
+
+    // Add worker's _id to the interestedHandymen array of the job
+    job.interestedHandymen.push(worker._id);
+
+    // Save the updated job
+    await job.save();
+    console.log('Worker added to interested Handymen successfully ', job);
+    res.status(200).json({ message: 'Worker added to interestedHandymen successfully', job });
+  } catch (error) {
+    console.error("Error adding worker to interestedHandymen:", error.message);
+    res.status(500).json({ message: 'Error adding worker to interestedHandymen', error });
+  }
+};
 
 // Update a job by ID
 const updateJob = async (req, res) => {
@@ -172,6 +204,7 @@ module.exports = {
   getJobsByClientId,
   getJobsByScheduledWorkerId,
   createJob,
+  addInterestedHandyman,
   updateJob,
   deleteJob
 };

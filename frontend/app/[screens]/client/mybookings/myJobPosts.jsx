@@ -18,7 +18,7 @@ const MyJobPosts = () => {
     const fetchJobs = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        const response = await fetch('http://192.168.8.103:8010/job/', {
+        const response = await fetch('http://192.168.8.103:8010/job/client/', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,

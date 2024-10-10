@@ -4,8 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar } from 'react-native-calendars';
 import icons from '../../../../constants/icons';
 import CustomButton from '../../../../components/common/CustomButton';
-import AlertBox from '../../../../components/client/AlertBox';  
 import ConfirmationBox from '../../../../components/client/ConfirmationBox';
+import router from 'expo-router';
 
 const scheduleAppointment = () => {
     const [selectedDate, setSelectedDate] = useState('2024-10-03');  // Default selected date
@@ -144,15 +144,6 @@ const scheduleAppointment = () => {
                     containerStyles={"mx-4 mb-5"}
                 />
             </ScrollView>
-            {/* Custom AlertBox Component */}
-            <AlertBox
-                visible={isAlertVisible}
-                onClose={() => setIsAlertVisible(false)}
-                message={alertMessage}
-                image={image}
-                title={title}
-            />
-
             <ConfirmationBox
             visible={isAlertVisible}
             image={image}
