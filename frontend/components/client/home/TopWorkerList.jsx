@@ -9,7 +9,7 @@ const TopWorkerList = ({ favorites }) => {
 
   const fetchWorkers = async () => {
     try {
-      const response = await axios.get('http://192.168.1.3:8010/worker/');
+      const response = await axios.get('https://fixerbackend.vercel.app/worker/');
       setWorkers(response.data);
     }
     catch (err) {
