@@ -1,13 +1,42 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useRoute } from '@react-navigation/native';  // Import useRoute to access passed params
+import { View, Text, StyleSheet,TouchableOpacity,Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter,Stack,useLocalSearchParams } from "expo-router";  // Import useRoute to access passed params
+import { icons } from "../../../../constants";
 
 export default function CompletedJob() {
-  const route = useRoute();  // Get the route object to access params
-  const { data, scannedDate, jobName, handymanName, startTime, totalJobTime } = route.params;  // Destructure the passed params
+  const router = useRouter();  // Get the route object to access params
+  const { data, scannedDate, jobStatus, jobName, handymanName, startTime, totalJobTime } = useLocalSearchParams();
+
+  const handelNavigate = () => {
+    route.push('/(client-tabs)/mybookings');
+    console.log('Navigating to mybookings');
+  }
 
   return (
+    <SafeAreaView className="h-full bg-white">
+    <Stack.Screen
+        options={{
+          headerBackVisible: false,
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Image
+                source={icons.back}
+                style={{ width: 24, height: 24 }} // Adjusted for better visibility
+                tintColor="orange"
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      />
     <View style={styles.container}>
+    <Image
+                source={icons.success}
+                style={{ width: 80, height: 80 }} // Adjusted for better visibility
+                className='mb-6'
+              />
       {/* Top Square with Job Completed Message */}
       <View style={styles.topBox}>
         <Text style={styles.heading}>Job Completed!</Text>
@@ -50,7 +79,12 @@ export default function CompletedJob() {
           Thank you for using our service!
         </Text>
       </View>
+
+      <TouchableOpacity className='mt-12 bg-orange py-2 px-8 rounded-lg' onPress={handelNavigate}>
+        <Text className='text-lg font-bold text-white'>Done</Text>
+      </TouchableOpacity>
     </View>
+    </SafeAreaView>
   );
 }
 

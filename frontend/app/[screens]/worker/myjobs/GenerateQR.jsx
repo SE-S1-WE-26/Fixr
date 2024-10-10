@@ -1,21 +1,48 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import QRCode from "react-native-qrcode-svg";
-import { useLocalSearchParams } from "expo-router";  // Correct hook from expo-router
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useLocalSearchParams, useRouter, Stack } from "expo-router"; // Correct hook from expo-router
+
+import { icons } from "../../../../constants";
 
 const GenerateQR = () => {
-  const { jobName,date,time,qrcode} = useLocalSearchParams();
+  const router = useRouter();
+  const { jobName, date, time, qrcode } = useLocalSearchParams();
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Job Name: {jobName}</Text>
-      <Text>Date: {date}</Text>
-      <Text>Time: {time}</Text>
-      <QRCode
-        value={`Job Code:${qrcode}`} // QR code contains Job ID
-        size={250}
+    <SafeAreaView className="h-full bg-white">
+      <Stack.Screen
+        options={{
+          headerBackVisible: false,
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Image
+                source={icons.back}
+                style={{ width: 24, height: 24 }} // Adjusted for better visibility
+                tintColor="orange"
+              />
+            </TouchableOpacity>
+          ),
+        }}
       />
-    </View>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View className="bg-powder border border-platinum rounded-lg p-2 border-2">
+      <View className='mb-4 justify-center'>
+      <Text className='text-xl font-semibold mx-auto my-3'>{jobName}</Text>
+          <View className='flex flex-row justify-between mx-3'>
+          <Text>{date}</Text>
+          <Text>{time}</Text>
+          </View>
+      </View>
+        <View className="bg-powder border border-platinum rounded-lg p-4 border-4">
+          <QRCode value={qrcode} size={250} />
+        </View>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 

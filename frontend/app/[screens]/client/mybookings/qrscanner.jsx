@@ -9,16 +9,9 @@ export default function Scanner() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [jobStatus, setJobStatus] = useState("Not Started"); // Job status state
-  console.log("Job Status:", jobStatus); // Log the job status for debugging
+  const [jobStatus, setJobStatus] = useState("Not Started");
   const router = useRouter();
-  const { qrcode } = useLocalSearchParams();  // Expected QR code passed from JobCard
-
-  // Log the expected QR code for debugging
-  useEffect(() => {
-    console.log("Expected QR Code from JobCard:", qrcode);
-  }, [qrcode]);
-
+  const { qrcode } = useLocalSearchParams();
 
   // Request camera permission on load
   useEffect(() => {
@@ -32,59 +25,49 @@ export default function Scanner() {
   const handleBarCodeScanned = ({ data }) => {
     if (!scanned) {
       setScanned(true);
-      setIsLoading(true); // Start loading
-
+      setIsLoading(true);
+  
       const scannedData = {
         data,
         scannedDate: new Date().toLocaleString(),
       };
-      // Log the scanned data for debugging
-      console.log("Scanned QR Code:", data);
-
-      // Extract the job code from the scanned data by removing the prefix
-      const scannedJobCode = data.replace("Job Code:", "").trim(); // Remove "Job Code:" prefix and extra spaces
-      // Log the cleaned-up scanned job code for debugging
-      console.log("Extracted Job Code from Scanned QR Code:", scannedJobCode);
-
-      // Now compare the cleaned-up scanned job code with the expected job code
-      if (scannedJobCode === qrcode) {
+  
+      if (data === qrcode) {
+        // Create an object to hold all data to pass
+        const jobDetails = {
+          ...scannedData,
+          jobStatus: jobStatus === "Not Started" ? "In Progress" : "Completed"
+        };
+  
         if (jobStatus === "Not Started") {
-          console.log("Job Status in not started if:", jobStatus); // Log the job status for debugging
-          // If job is not started, start the job
           setTimeout(() => {
-            setIsLoading(false); // Stop loader
-            setJobStatus("In Progress"); // Set job status to In Progress
-            console.log("Job Status after changing:", jobStatus); // Log the job status for debugging
+            setIsLoading(false);
+            setJobStatus("In Progress");
             router.push({
-              pathname: '/pages/client/home/CompletedJob',
-              params: { ...scannedData, jobStatus: "In Progress" }
+              pathname: '/pages/client/home/StartJob',
+              params: jobDetails, // Pass the object here
             });
           }, 1000);
         } else if (jobStatus === "In Progress") {
-          // If job is in progress, mark it as completed
           setTimeout(() => {
-            setIsLoading(false); // Stop loader
-            setJobStatus("Completed"); // Set job status to Completed
+            setIsLoading(false);
+            setJobStatus("Completed");
             router.push({
               pathname: '/pages/client/home/CompletedJob',
-              params: { ...scannedData, jobStatus: "Completed" }
+              params: jobDetails, // Pass the object here
             });
-            // // Reset the job status after completion
-            // setTimeout(() => {
-            //   setJobStatus("Not Started"); // Reset job status after completion
-            // }, 2000); // Allow time for user to see completion before resetting
           }, 1000);
         }
       } else {
-        // If the scanned code doesn't match
         setTimeout(() => {
           setIsLoading(false);
           Alert.alert('Error', 'Scanned QR code does not match the expected job code.');
-          setScanned(false);  // Reset for future scans
+          setScanned(false);
         }, 3000);
       }
     }
   };
+  
 
   if (hasPermission === null) {
     return <Text>Requesting camera permission...</Text>;
@@ -97,6 +80,7 @@ export default function Scanner() {
     <View style={styles.container}>
       <Stack.Screen
         options={{
+          headerShown: false,
           headerBackVisible: false,
           headerShadowVisible: false,
           headerTitle: 'Scan QR Code',
@@ -108,11 +92,10 @@ export default function Scanner() {
         }}
       />
       <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}  // Disable scanner if already scanned
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
 
-      {/* Overlay for scanning area */}
       <View style={styles.overlay}>
         <View style={styles.topOverlay} />
         <View style={styles.bottomOverlay} />
@@ -127,7 +110,6 @@ export default function Scanner() {
         </View>
       </View>
 
-      {/* Loading indicator during scan */}
       {isLoading && (
         <View style={styles.loadingOverlay}>
           <ActivityIndicator size="large" color="#fff" />
@@ -135,7 +117,6 @@ export default function Scanner() {
         </View>
       )}
 
-      {/* Custom back button */}
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>

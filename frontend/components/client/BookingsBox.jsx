@@ -12,7 +12,7 @@ const BookingsBox = ({ type, topic, handyman, date, time, amount, qrcode }) => {
     const handleNavigation = () => {
         // Navigate to Scanner screen and pass the expected QR code
         router.push({
-            pathname: "/pages/client/mybookings/Scanner",
+            pathname: "/pages/client/mybookings/qrscanner",
             params: { qrcode },  // Passing the expected QR code
         });
     }
