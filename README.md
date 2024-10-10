@@ -24,6 +24,7 @@ Navigate to the Android directory and clean the build:
 ```
 cd android
 ./gradlew clean
+cd ..
 
 ```
 
