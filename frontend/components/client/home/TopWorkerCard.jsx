@@ -38,7 +38,7 @@ const TopWorkerCard = ({ worker, isFavorite }) => {
   };
 
   return (
-    <TouchableOpacity className="bg-powder shadow px-2 pt-2 pb-2 rounded-lg max-w-[150px] my-4">
+    <TouchableOpacity className="bg-powder border border-2 border-platinum shadow px-2 pt-2 pb-2 rounded-lg max-w-[150px] my-4">
       <View>
         <Image
           source={{ uri: worker?.userId?.profilePic }}
