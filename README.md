@@ -14,11 +14,23 @@ npx expo install @firebase/auth
 npx expo install react-native-calendars
 npx expo install @mapbox/search-js-react
 npx expo install lottie-react-native
+
+```
+
+
+## Clean Android Build
+Navigate to the Android directory and clean the build:
+
+```
+cd android
+./gradlew clean
+
 ```
 
 
-
-
+## Run the Project
+Finally, run the project on your Android device or emulator:
 ```
-npx expo run android    
+npx expo run android
+
 ```
