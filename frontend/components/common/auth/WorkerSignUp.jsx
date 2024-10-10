@@ -22,6 +22,7 @@ const WorkerSignUp = () => {
     userType: "worker",
     name: "",
     email: "",
+    phone: "",
     username: "",
     password: "",
     location: "",
@@ -174,6 +175,13 @@ const WorkerSignUp = () => {
             style={{ marginBottom: 20 }}
             keyboardType="email-address"
             errorMessage={validationErrors.email}
+          />
+          <FormField
+            title="Phone"
+            value={form.phone}
+            handleChangeText={(text) => setForm({ ...form, email: text })}
+            style={{ marginBottom: 20 }}
+            keyboardType="phone-pad"
           />
           <FormField
             title="Username"

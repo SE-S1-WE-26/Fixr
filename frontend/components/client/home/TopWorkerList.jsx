@@ -1,21 +1,42 @@
 import { View, Text, FlatList } from 'react-native'
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import TopWorkerCard from './TopWorkerCard'
 import { TopWorkers } from '../../../constants/constants'
+import axios from 'axios'
 
-const TopWorkerList = () => {
+const TopWorkerList = ({ favorites }) => {
+  const[workers,setWorkers] = useState([]);
+
+  const fetchWorkers = async () => {
+    try {
+      const response = await axios.get('https://fixerbackend.vercel.app/worker/');
+      setWorkers(response.data);
+    }
+    catch (err) {
+      console.error('Error fetching workers:', err);
+    }
+  }
+
+  useEffect(() => {
+    fetchWorkers();
+  }
+  ,[]);
+
   return (
-    <FlatList
-      className="py-2 pl-6"
-      data={TopWorkers}
-      renderItem={({ item }) => (
-        <TopWorkerCard data={item}/>
+    <View className='mx-6'>
+      {workers.length > 0 ? (
+        <FlatList
+          data={workers}
+          keyExtractor={(worker) => worker._id}
+          renderItem={({ item }) => <TopWorkerCard worker={item} isFavorite={favorites.includes(item._id)}/>}
+          contentContainerStyle={{columnGap:12}}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
+      ) : (
+        <Text>No workers found</Text>
       )}
-      keyExtractor={(item) => item.title}
-      horizontal // This makes the list scroll horizontally
-      showsHorizontalScrollIndicator={false} // Hides the scrollbar for a cleaner UI
-      contentContainerStyle={{columnGap:10,paddingRight: 40}} // Optional: Adds padding to the left and right
-    />
+    </View>
   )
 }
 
