@@ -18,7 +18,7 @@ const ContactWorker = () => {
       <Text>Experience: {workerData.experience} years</Text>
       <View style={styles.ratingContainer}>
         <Text>Rating: {workerData.rating}</Text>
-        <StarRating rating={workerData.rating} starSize={20} />
+        {/* <StarRating rating={workerData.rating} starSize={20} /> */}
       </View>
       <Text>Location: {workerData.location}</Text>
       <Text style={styles.description}>{workerData.description}</Text>
