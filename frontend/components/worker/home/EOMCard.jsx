@@ -17,7 +17,7 @@ const EOMCard = ({ eom }) => {
   // Get the current month and year
   const getCurrentMonthYear = (year, month) => {
     const date = new Date(year, month - 1); // month is 0-indexed
-    const options = { year: 'numeric', month: 'long' };
+    const options = { year: "numeric", month: "long" };
     return date.toLocaleDateString(undefined, options); // e.g., "October, 2024"
   };
 
@@ -36,32 +36,40 @@ const EOMCard = ({ eom }) => {
   }
 
   return (
-    <TouchableOpacity
-      className="flex-row justify-between min-h-[100px] bg-powder py-2 px-4 rounded-xl mx-5 shadow"
-      onPress={handleNavigation}
-    >
-      <View className="flex-1">
-        <Text className="text-sm md:text-base font-medium">
-          Meet Our Employee of the Month!
-        </Text>
-        <View className="flex-row mt-2">
-          <Image
-            source={{ uri: eom?.workerId?.userId?.profilePic }}
-            style={{ height: 48, width: 48, borderRadius: 24 }}
-          />
-          <View className="ml-3 flex-1">
-            <Text
-              className="font-semibold text-xl md:text-2xl"
-              numberOfLines={1}
-            >
-              {eom?.workerId?.userId?.name}
-            </Text>
-            <View className="flex-row justify-between">
-              <View className="flex flex-row gap-4">
-                <Text className="font-medium text-sm">
-                  {getCurrentMonthYear(eom?.year, eom?.month)}
-                </Text>
-                <View className="flex flex-row items-center px-2">
+    <View>
+      <View className='mx-6'>
+      <Text className="text-sm md:text-base font-medium">
+        Meet Our Employee of the Month!
+      </Text>
+      <Text className="font-medium text-sm md:text-base font-medium absolute right-0 top-0 text-slate-500">
+        {getCurrentMonthYear(eom?.year, eom?.month)}
+      </Text>
+      </View>
+
+      <TouchableOpacity
+        className="flex-row justify-between items-center min-h-[100px] bg-powder border border-2 border-platinum py-2 mt-2 px-4 rounded-xl mx-5 shadow"
+        onPress={handleNavigation}
+      >
+        <View className="flex-1">
+          <View className="flex-row items-center">
+            <Image
+              source={{ uri: eom?.workerId?.userId?.profilePic }}
+              style={{ height: 48, width: 48, borderRadius: 24 }}
+            />
+            <View className="ml-3 flex-1">
+              <Text
+                className="font-semibold text-xl md:text-2xl"
+                numberOfLines={1}
+              >
+                {eom?.workerId?.userId?.name}
+              </Text>
+              <View className="flex-col-2 justify-between">
+                <View className="flex flex-row gap-4">
+                  <Text className="font-medium text-sm mr-4 ml-2">
+                    LKR {FormatCurrency(eom.workerId.earnings)}
+                  </Text>
+                </View>
+                <View className="flex flex-row items-center">
                   <Text className="font-medium text-sm text-slate-500">
                     {eom?.workerId?.userId.rating}
                   </Text>
@@ -73,19 +81,16 @@ const EOMCard = ({ eom }) => {
                   />
                 </View>
               </View>
-              <Text className="font-medium text-sm mr-4">
-                LKR {FormatCurrency(eom.workerId.earnings)}
-              </Text>
             </View>
           </View>
         </View>
-      </View>
-      <Image
-        source={images.trophy}
-        style={{ height: 64, width: 64 }}
-        className="self-center"
-      />
-    </TouchableOpacity>
+        <Image
+          source={images.trophy}
+          style={{ height: 64, width: 64 }}
+          className="self-center"
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
 
