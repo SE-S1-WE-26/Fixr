@@ -37,7 +37,11 @@ const getWorkerData = async (req, res) => {
 // Get all workers
 const getAllWorkers = async (req, res) => {
   try {
-    const workers = await Worker.find().populate('userId');
+    const workers = await Worker.find()
+    .populate('userId') // Populate personal data for each worker
+    .exec();
+
+    
     res.status(200).json(workers);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching workers', error });
