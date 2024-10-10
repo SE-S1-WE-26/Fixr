@@ -35,6 +35,7 @@ import halfStar from "../assets/icons/client/halfStar.png";
 import noStar from "../assets/icons/client/noStar.png";
 import close from '../assets/icons/client/close.png';
 import weatherWarning from '../assets/icons/client/weatherWarning.png';
+import scanner from '../assets/icons/client/scanner.png';
 
 export default {
   //Worker Icons
@@ -55,6 +56,7 @@ export default {
   noStar,
   close,
   weatherWarning,
+  scanner,
 
   //Common Icons
   play,

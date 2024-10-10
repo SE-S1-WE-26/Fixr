@@ -14,12 +14,11 @@ const MyJobs = () => {
           {MyJobsWorker.map((job) => (
             <WorkerJobCard
             key={job.id}
-            jobId={job.id}                // Job ID being passed
-            workerId={job.handymanId}      // Pass workerId (handymanId) here
+            jobId={job.id}               
             jobName={job.name}
             date={job.date}
-            time={job.time}
-            handyman={job.handyman}        // If you also need handyman name
+            time={job.time} 
+            qrcode={job.qrcode}   
           />
           ))}
         </View>

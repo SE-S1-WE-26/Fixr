@@ -1,20 +1,26 @@
-//pahan’s qr scanner
-
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ActivityIndicator, TouchableOpacity, Alert, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { useRouter, useLocalSearchParams, Stack } from 'expo-router';  // useLocalSearchParams instead of useSearchParams
+import { useRouter, useLocalSearchParams, Stack } from 'expo-router';
 import { icons } from '../../../../constants';
 
 export default function Scanner() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Loading state
-  const router = useRouter();  // Use router for navigation
-  const { qrcode } = useLocalSearchParams();  // Get the expected QR code passed from JobCard
+  const [isLoading, setIsLoading] = useState(false);
+  const [jobStatus, setJobStatus] = useState("Not Started"); // Job status state
+  console.log("Job Status:", jobStatus); // Log the job status for debugging
+  const router = useRouter();
+  const { qrcode } = useLocalSearchParams();  // Expected QR code passed from JobCard
 
-  // Request camera permission when the app starts
+  // Log the expected QR code for debugging
+  useEffect(() => {
+    console.log("Expected QR Code from JobCard:", qrcode);
+  }, [qrcode]);
+
+
+  // Request camera permission on load
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -23,40 +29,65 @@ export default function Scanner() {
   }, []);
 
   // Handle barcode scan
-  const handleBarCodeScanned = ({ type, data }) => {
-    if (!scanned) {  // Prevent duplicate scan handling
+  const handleBarCodeScanned = ({ data }) => {
+    if (!scanned) {
       setScanned(true);
-      setIsLoading(true); // Start loader
+      setIsLoading(true); // Start loading
 
       const scannedData = {
         data,
-        scannedDate: new Date().toLocaleString()
+        scannedDate: new Date().toLocaleString(),
       };
+      // Log the scanned data for debugging
+      console.log("Scanned QR Code:", data);
 
-      if (data === qrcode) {
-        // If the scanned code matches the expected QR code
-        setTimeout(() => {
-          setIsLoading(false); // Stop loader
-          // Navigate to new screen with scanned data
-          router.push({
-            pathname: '/pages/client/home/CompletedJob',
-            params: { ...scannedData }  // Passing the scanned data and date
-          });
-          // setScanned(false); // No need to reset right away since we already navigated
-        }, 1000);  // Delay to mimic processing time
+      // Extract the job code from the scanned data by removing the prefix
+      const scannedJobCode = data.replace("Job Code:", "").trim(); // Remove "Job Code:" prefix and extra spaces
+      // Log the cleaned-up scanned job code for debugging
+      console.log("Extracted Job Code from Scanned QR Code:", scannedJobCode);
+
+      // Now compare the cleaned-up scanned job code with the expected job code
+      if (scannedJobCode === qrcode) {
+        if (jobStatus === "Not Started") {
+          console.log("Job Status in not started if:", jobStatus); // Log the job status for debugging
+          // If job is not started, start the job
+          setTimeout(() => {
+            setIsLoading(false); // Stop loader
+            setJobStatus("In Progress"); // Set job status to In Progress
+            console.log("Job Status after changing:", jobStatus); // Log the job status for debugging
+            router.push({
+              pathname: '/pages/client/home/CompletedJob',
+              params: { ...scannedData, jobStatus: "In Progress" }
+            });
+          }, 1000);
+        } else if (jobStatus === "In Progress") {
+          // If job is in progress, mark it as completed
+          setTimeout(() => {
+            setIsLoading(false); // Stop loader
+            setJobStatus("Completed"); // Set job status to Completed
+            router.push({
+              pathname: '/pages/client/home/CompletedJob',
+              params: { ...scannedData, jobStatus: "Completed" }
+            });
+            // // Reset the job status after completion
+            // setTimeout(() => {
+            //   setJobStatus("Not Started"); // Reset job status after completion
+            // }, 2000); // Allow time for user to see completion before resetting
+          }, 1000);
+        }
       } else {
-        // If the scanned code does not match, show the error and pause scanning for 3 seconds
+        // If the scanned code doesn't match
         setTimeout(() => {
-          setIsLoading(false); // Stop loader
+          setIsLoading(false);
           Alert.alert('Error', 'Scanned QR code does not match the expected job code.');
           setScanned(false);  // Reset for future scans
-        }, 3000);  // Delay for error message
+        }, 3000);
       }
     }
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission...</Text>;
+    return <Text>Requesting camera permission...</Text>;
   }
   if (hasPermission === false) {
     return <Text>No access to camera. Please enable permissions in settings.</Text>;
@@ -71,26 +102,22 @@ export default function Scanner() {
           headerTitle: 'Scan QR Code',
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
-              <Image
-                source={icons.back}
-                className="w-4 h-4 mr-5"
-                tintColor="orange"
-              />
+              <Image source={icons.back} style={styles.backIcon} />
             </TouchableOpacity>
           ),
         }}
       />
       <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}  // Disable scanning after first scan
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}  // Disable scanner if already scanned
         style={StyleSheet.absoluteFillObject}
       />
 
       {/* Overlay for scanning area */}
       <View style={styles.overlay}>
-      <View style={styles.topOverlay} />
-      <View style={styles.bottomOverlay} />
-      <View style={styles.leftOverlay} />
-      <View style={styles.rightOverlay} />
+        <View style={styles.topOverlay} />
+        <View style={styles.bottomOverlay} />
+        <View style={styles.leftOverlay} />
+        <View style={styles.rightOverlay} />
         <View style={styles.scanBox}>
           <View style={[styles.corner, styles.topLeft]} />
           <View style={[styles.corner, styles.topRight]} />
@@ -100,7 +127,7 @@ export default function Scanner() {
         </View>
       </View>
 
-      {/* Show loading indicator when scanning */}
+      {/* Loading indicator during scan */}
       {isLoading && (
         <View style={styles.loadingOverlay}>
           <ActivityIndicator size="large" color="#fff" />
@@ -131,22 +158,22 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 0,  // Ensure the overlay is below the scan box
+    zIndex: 0,
   },
   topOverlay: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    height: '32%',  // Adjust height to cover top part
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Darken outside area
+    height: '32%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   bottomOverlay: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    height: '32%',  // Adjust height to cover bottom part
+    height: '32%',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   leftOverlay: {
@@ -154,7 +181,7 @@ const styles = StyleSheet.create({
     top: '32%',
     bottom: '32%',
     left: 0,
-    width: '16%',  // Adjust width to cover left side
+    width: '16%',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   rightOverlay: {
@@ -162,23 +189,23 @@ const styles = StyleSheet.create({
     top: '32%',
     bottom: '32%',
     right: 0,
-    width: '16%',  // Adjust width to cover right side
+    width: '16%',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   scanBox: {
     width: 280,
     height: 300,
-    borderRadius: 20,  // Rounded corners for the overall box
+    borderRadius: 20,
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative', // Necessary for positioning corners
-    zIndex: 1,  // Ensure the box is above the overlay
+    position: 'relative',
+    zIndex: 1,
   },
   corner: {
     width: 70,
     height: 70,
-    borderColor: '#ffffff',
+    borderColor: '#fff',
     borderRadius: 5,
     position: 'absolute',
   },
@@ -224,7 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    borderRadius: 10,  // Rounded corners for loading box
+    borderRadius: 10,
   },
   loadingText: {
     marginTop: 10,
@@ -237,11 +264,16 @@ const styles = StyleSheet.create({
     left: 20,
     padding: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    borderRadius: 20,  // Rounded corners for back button
+    borderRadius: 20,
     paddingHorizontal: 15,
   },
   backButtonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  backIcon: {
+    width: 24,
+    height: 24,
+    tintColor: 'orange',
   },
 });

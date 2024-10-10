@@ -4,13 +4,13 @@ import { useRouter } from "expo-router";
 import ScanIcon from "../../client/home/ScanIcon";
 import { icons } from "../../../constants";
 
-const WorkerJobCard = ({ jobName, date, time, handyman, jobId }) => {
+const WorkerJobCard = ({ jobId, jobName, date, time, qrcode }) => {
   const router = useRouter();
 
   const handleNavigation = () => {
     router.push({
       pathname: "/pages/worker/myjobs/GenerateQR",
-      params: { jobId, jobName, date, time, handyman }, // Pass the job details
+      params: { jobId, jobName, date, time, qrcode }, // Pass the job details
     });
   };
 
@@ -22,7 +22,6 @@ const WorkerJobCard = ({ jobName, date, time, handyman, jobId }) => {
           <Text style={styles.jobName}>{jobName}</Text>
           <Text>Scheduled Date: {date}</Text>
           <Text>Scheduled Time: {time}</Text>
-          <Text>Handyman: {handyman}</Text>
         </View>
         <TouchableOpacity style={styles.scanner} onPress={handleNavigation}>
           <ScanIcon icon={icons.scanner} />
