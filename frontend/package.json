@@ -13,6 +13,7 @@
     "@firebase/auth": "^1.7.9",
     "@gorhom/bottom-sheet": "4",
     "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-community/blur": "^4.4.1",
     "@react-native-picker/picker": "^2.8.1",
     "@rnmapbox/maps": "^10.1.31",
     "axios": "^1.7.7",
