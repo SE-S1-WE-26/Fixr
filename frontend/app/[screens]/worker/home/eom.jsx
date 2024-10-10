@@ -74,7 +74,7 @@ const EOM = () => {
           <EOMWinner worker={eomWinner} />
           <Heading name="Leaderboards" />
           <LeaderboardCard worker={eomSecond} place={2} />
-          <LeaderboardCard worker={eomThird} />
+          <LeaderboardCard worker={eomThird} place={3}/>
         </>
       )}
     </SafeAreaProvider>

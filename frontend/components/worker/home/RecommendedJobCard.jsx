@@ -70,14 +70,14 @@ const RecommendedJobCard = ({ job }) => {
   // Show loading indicator if loading or client is not yet loaded
   if (loading || !client) {
     return (
-      <View className="flex min-h-[140px] min-w-[380px] max-w-[380px] my-4 rounded-xl bg-powder shadow px-4 py-3 justify-center items-center">
+      <View className="flex min-h-[140px] min-w-[320px] max-w-[380px] border border-platinum my-4 rounded-xl bg-powder border-2 shadow px-4 py-3 justify-center ml-5 items-center">
         <ActivityIndicator size="large" color="orange" />
       </View>
     );
   }
 
   return (
-    <View className="flex min-h-[140px] min-w-[380px] max-w-[380px] my-4 rounded-xl bg-powder shadow px-4 py-3 justify-center">
+    <View className="flex min-h-[140px] min-w-[320px] max-w-[380px]  md:min-w-[380px] md:max-w-[380px] my-4 rounded-xl bg-powder shadow px-4 py-3 justify-center ml-5 border border-platinum border-2">
       {/* Top Section with Job and Client Info */}
       <View className="flex flex-row items-center">
         <View className="flex flex-row items-center">
@@ -87,7 +87,7 @@ const RecommendedJobCard = ({ job }) => {
           />
           <View className="ml-4">
             <Text
-              className="text-xl md:text-2xl font-semibold max-w-[220px] truncate"
+              className="text-lg md:text-xl font-semibold max-w-[160px] truncate"
               numberOfLines={1}
             >
               {job.title}

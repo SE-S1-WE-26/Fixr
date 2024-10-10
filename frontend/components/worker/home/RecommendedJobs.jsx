@@ -33,13 +33,13 @@ const RecommendedJobs = () => {
   }
 
   return (
-    <View className="mx-5">
+    <View>
       {jobs.length > 0 ? (
         <FlatList
           data={jobs}
           keyExtractor={(job) => job._id}
           renderItem={({ item }) => <RecommendedJobCard job={item} />}
-          contentContainerStyle={{columnGap:12}}
+          contentContainerStyle={{columnGap:0}}
           horizontal
           showsHorizontalScrollIndicator={false}
         />
