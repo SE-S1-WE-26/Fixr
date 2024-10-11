@@ -14,22 +14,22 @@
     "@gorhom/bottom-sheet": "4",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@google/generative-ai": "^0.21.0",
-    "@react-native-async-storage/async-storage": "^1.23.1",
+
     "@react-native-community/blur": "^4.4.1",
     "@react-native-picker/picker": "2.7.5",
     "@rnmapbox/maps": "^10.1.31",
-    "@react-native-picker/picker": "^2.8.1",
+
     "axios": "^1.7.7",
     "expo": "~51.0.37",
     "expo-constants": "~16.0.2",
     "expo-image-picker": "~15.0.7",
-    "expo-image-picker": "~15.0.7",
+
     "expo-linking": "~6.3.1",
     "expo-location": "~17.0.1",
     "expo-router": "~3.5.23",
     "expo-status-bar": "~1.12.1",
     "firebase": "^10.14.1",
-    "firebase": "^10.14.1",
+
     "lottie-react-native": "6.7.0",
     "nativewind": "^2.0.11",
     "punycode": "^2.3.1",
