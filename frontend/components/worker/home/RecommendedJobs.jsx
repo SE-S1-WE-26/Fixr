@@ -10,7 +10,7 @@ const RecommendedJobs = () => {
 
   const fetchJobs = async () => {
     try {
-      const response = await axios.get('http://192.168.1.3:8010/job/'); // Update with your API URL
+      const response = await axios.get('http://192.168.8.103:8010/job/'); // Update with your API URL
       setJobs(response.data);
     } catch (err) {
       setError('Error fetching jobs');

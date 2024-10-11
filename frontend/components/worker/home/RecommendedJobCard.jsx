@@ -30,7 +30,7 @@ const RecommendedJobCard = ({ job }) => {
     setIsLoading(true);
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch('http://192.168.1.3:8010/worker/mydata', {
+      const response = await fetch('http://192.168.8.103:8010/worker/mydata', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ const RecommendedJobCard = ({ job }) => {
 
   const fetchClientData = async (clientId) => {
     try {
-      const response = await axios.get(`http://192.168.1.3:8010/client/${clientId}`);
+      const response = await axios.get(`http://192.168.8.103:8010/client/${clientId}`);
       setClient(response.data);
     } catch (error) {
       console.error("Error fetching client:", error.message);
