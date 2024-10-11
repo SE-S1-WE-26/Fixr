@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, Image, Alert, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, ScrollView, Image, Alert, ActivityIndicator, TextInput, RefreshControl } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from "../../components/common/Header";
@@ -17,36 +17,38 @@ const Search = () => {
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [searchQuery, setSearchQuery] = useState(''); // State for search input
+  const [refreshing, setRefreshing] = useState(false); // State for refresh control
+
+  const fetchJobs = async () => {
+    try {
+      setIsLoading(true); // Start loading
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch('http://192.168.8.103:8010/job/client/', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const jobsData = await response.json();
+        setJobs(jobsData);
+        setFilteredJobs(jobsData); // Set filtered jobs initially to all jobs
+        console.log("Jobs: ", jobsData);
+      } else {
+        const errorData = await response.json();
+        console.log('Response status:', response.status, errorData);
+      }
+    } catch (error) {
+      console.error('Error fetching jobs:', error.message);
+    } finally {
+      setIsLoading(false); // Stop loading after fetching
+      setRefreshing(false); // Stop refreshing
+    }
+  };
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        setIsLoading(true); // Start loading
-        const token = await AsyncStorage.getItem('token');
-        const response = await fetch('http://192.168.8.103:8010/job/client/', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          const jobsData = await response.json();
-          setJobs(jobsData);
-          setFilteredJobs(jobsData); // Set filtered jobs initially to all jobs
-          console.log("Jobs: ", jobsData);
-        } else {
-          const errorData = await response.json();
-          console.log('Response status:', response.status, errorData);
-        }
-      } catch (error) {
-        console.error('Error fetching jobs:', error.message);
-      } finally {
-        setIsLoading(false); // Stop loading after fetching
-      }
-    };
-
     fetchJobs(); // Call the function
   }, []);
 
@@ -91,9 +93,24 @@ const Search = () => {
     setIsVisible(false);
   };
 
+  // Function to handle pull-to-refresh
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchJobs(); // Fetch jobs again
+  };
+
   return (
     <SafeAreaView className="h-full bg-white">
-      <ScrollView className="bg-white">
+      <ScrollView
+        className="bg-white"
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['orange']} // Customize color if needed
+          />
+        }
+      >
         <View className="w-full h-full">
           <Header title={"Search"} />
           <View className="flex-col">

@@ -1,9 +1,9 @@
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import { React, useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import JobTypeIconBar from '../../../../components/client/JobTypeIconBar';
 import InterestedHandyman from '../../../../components/client/InterestedHandyman';
-import { router, useRouter, useGlobalSearchParams } from 'expo-router';
+import { router, useGlobalSearchParams, useRouter } from 'expo-router';
 import axios from 'axios';
 
 const InterestedHandymen = () => {
@@ -14,30 +14,37 @@ const InterestedHandymen = () => {
     const [job, setJob] = useState(null);
     const [favorites, setFavorites] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // Loading state
+    const [refreshing, setRefreshing] = useState(false); // Refreshing state
+
+    const fetchJob = async () => {
+        if (jobId) {
+            try {
+                setIsLoading(true);
+                const response = await axios.get(`http://192.168.8.103:8010/job/${jobId}`);
+                setJob(response.data);
+                console.log("Job data fetched:", response.data);
+                const clientFavorites = response.data.clientId?.favorites || [];
+                setFavorites(clientFavorites);
+                console.log("Client favorites:", clientFavorites);
+            } catch (error) {
+                console.error('Error fetching job:', error.response?.data || error.message);
+            } finally {
+                setIsLoading(false); // Stop loading after fetching
+                setRefreshing(false); // Stop refreshing
+            }
+        }
+    };
 
     useEffect(() => {
         console.log("Params in interested handymen: ", params); // Log to check params structure
         console.log("Job Id in interested handymen: ", jobId);   // Log jobId
+        fetchJob(); // Fetch job data when component mounts or jobId changes
+    }, [jobId]); // Only run when jobId changes
 
-        if (jobId) {  // Ensure jobId exists before making the request
-            const fetchJob = async () => {
-                try {
-                    const response = await axios.get(`http://192.168.8.103:8010/job/${jobId}`);
-                    setJob(response.data);
-                    console.log("Job data fetched:", response.data);
-                    const clientFavorites = response.data.clientId?.favorites || [];
-                    setFavorites(clientFavorites);
-                    console.log("Client favorites:", clientFavorites);
-                } catch (error) {
-                    console.error('Error fetching job:', error.response?.data || error.message);
-                } finally {
-                    setIsLoading(false); // Stop loading after fetching
-                }
-            };
-
-            fetchJob();
-        }
-    }, [jobId]);  // Only run when jobId changes
+    const onRefresh = () => {
+        setRefreshing(true);
+        fetchJob(); // Fetch job data again when refreshing
+    };
 
     // Loading indicator
     if (isLoading) {
@@ -69,7 +76,11 @@ const InterestedHandymen = () => {
 
     return (
         <SafeAreaView className="bg-white h-full">
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['orange']} />
+                }
+            >
                 {/* Header */}
                 <View className="w-full px-4 md:px-6">
                     <Text className="text-3xl md:text-4xl font-bold">Interested Handymen</Text>

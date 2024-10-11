@@ -105,7 +105,7 @@ const AddJob = () => {
       clientId: "66fd9893a2a4bed234315070",
       address: address,
       city: city,
-      status: "open",
+      status: "pending",
       scheduled: false,
       budget: budget,
     };
@@ -126,7 +126,7 @@ const AddJob = () => {
             setTitle('');
             setDescription('');
             setCategory('');
-            setEnviroment('');
+            setEnvironment('');
             setAddress('');
             setCity('');
             setBudget('');

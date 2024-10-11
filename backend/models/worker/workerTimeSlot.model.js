@@ -2,10 +2,14 @@ const mongoose = require('mongoose');
 
 const SlotSchema = new mongoose.Schema({
     from: {
-        type: Date,
+        type: String,
         required: true,
     },
     to: {
+        type: String,
+        required: true,
+    },
+    date: {
         type: Date,
         required: true,
     },

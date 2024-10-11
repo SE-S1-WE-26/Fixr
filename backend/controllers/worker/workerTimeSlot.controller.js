@@ -58,6 +58,7 @@ const updateSlots = async (req, res) => {
     try {
         const { workerId } = req.params;
         const { occupiedSlots, blockedSlots } = req.body;
+        console.log("occupiedSlots: ", req.body);
 
         // Check if worker time slot exists
         let timeSlot = await WorkerTimeSlot.findOne({ workerId });
@@ -70,15 +71,26 @@ const updateSlots = async (req, res) => {
                 blockedSlots: blockedSlots || [],
             });
             await timeSlot.save();
+            console.log("New time slot created");
         } else {
             // Update existing time slot
             // Merge new occupied slots into existing ones
             if (occupiedSlots) {
                 occupiedSlots.forEach(slot => {
+                    const newSlot = {
+                        from: slot.from, // Expecting 'HH:MM'
+                        to: slot.to,     // Expecting 'HH:MM'
+                        date: slot.date, // Date for clarity
+                        jobId: slot.jobId || undefined, // Only include jobId if it's defined
+                    };
+
                     // Check if the slot already exists in occupiedSlots
-                    const exists = timeSlot.occupiedSlots.some(existingSlot => existingSlot._id.toString() === slot._id);
+                    const exists = timeSlot.occupiedSlots.some(existingSlot => existingSlot.jobId && existingSlot.jobId.toString() === newSlot.jobId);
                     if (!exists) {
-                        timeSlot.occupiedSlots.push(slot); // Add new slot if it doesn't exist
+                        timeSlot.occupiedSlots.push(newSlot); // Add new slot if it doesn't exist
+                        console.log(`Occupied slot added: ${JSON.stringify(newSlot)}`);
+                    } else {
+                        console.log(`Occupied slot already exists: ${JSON.stringify(newSlot)}`);
                     }
                 });
             }
@@ -86,24 +98,36 @@ const updateSlots = async (req, res) => {
             // Merge new blocked slots into existing ones
             if (blockedSlots) {
                 blockedSlots.forEach(slot => {
+                    const newSlot = {
+                        from: slot.from, // Expecting 'HH:MM'
+                        to: slot.to,     // Expecting 'HH:MM'
+                        date: slot.date, // Date for clarity
+                        jobId: slot.jobId || undefined, // Only include jobId if it's defined
+                    };
+
                     // Check if the slot already exists in blockedSlots
-                    const exists = timeSlot.blockedSlots.some(existingSlot => existingSlot._id.toString() === slot._id);
+                    const exists = timeSlot.blockedSlots.some(existingSlot => existingSlot.jobId && existingSlot.jobId.toString() === newSlot.jobId);
                     if (!exists) {
-                        timeSlot.blockedSlots.push(slot); // Add new slot if it doesn't exist
+                        timeSlot.blockedSlots.push(newSlot); // Add new slot if it doesn't exist
+                        console.log(`Blocked slot added: ${JSON.stringify(newSlot)}`);
+                    } else {
+                        console.log(`Blocked slot already exists: ${JSON.stringify(newSlot)}`);
                     }
                 });
             }
 
             await timeSlot.save();
-            console.log("TIme slot saved")
+            console.log("Time slot updated");
         }
 
+        // Send the updated time slots back as a response
         res.json(timeSlot);
     } catch (error) {
         console.error('Error updating time slots:', error);
         res.status(500).json({ message: 'Internal server error.' });
     }
 };
+
 
 // Update occupied or blocked slots using token
 const updateSlotsToken = async (req, res) => {
@@ -132,10 +156,17 @@ const updateSlotsToken = async (req, res) => {
             // Merge new occupied slots into existing ones
             if (occupiedSlots) {
                 occupiedSlots.forEach(slot => {
+                    // Create a new slot object with string times
+                    const newSlot = {
+                        from: slot.from,
+                        to: slot.to,
+                        date: slot.date,
+                        jobId: slot.jobId,
+                    };
                     // Check if the slot already exists in occupiedSlots
-                    const exists = timeSlot.occupiedSlots.some(existingSlot => existingSlot._id.toString() === slot._id);
+                    const exists = timeSlot.occupiedSlots.some(existingSlot => existingSlot.jobId.toString() === newSlot.jobId);
                     if (!exists) {
-                        timeSlot.occupiedSlots.push(slot); // Add new slot if it doesn't exist
+                        timeSlot.occupiedSlots.push(newSlot); // Add new slot if it doesn't exist
                     }
                 });
             }
@@ -143,10 +174,17 @@ const updateSlotsToken = async (req, res) => {
             // Merge new blocked slots into existing ones
             if (blockedSlots) {
                 blockedSlots.forEach(slot => {
+                    // Create a new slot object with string times
+                    const newSlot = {
+                        from: slot.from,
+                        to: slot.to,
+                        date: slot.date,
+                        jobId: slot.jobId,
+                    };
                     // Check if the slot already exists in blockedSlots
-                    const exists = timeSlot.blockedSlots.some(existingSlot => existingSlot._id.toString() === slot._id);
+                    const exists = timeSlot.blockedSlots.some(existingSlot => existingSlot.jobId.toString() === newSlot.jobId);
                     if (!exists) {
-                        timeSlot.blockedSlots.push(slot); // Add new slot if it doesn't exist
+                        timeSlot.blockedSlots.push(newSlot); // Add new slot if it doesn't exist
                     }
                 });
             }
@@ -160,7 +198,6 @@ const updateSlotsToken = async (req, res) => {
         res.status(500).json({ message: 'Internal server error.' });
     }
 };
-
 
 // Delete slots
 const deleteSlots = async (req, res) => {

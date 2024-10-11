@@ -414,16 +414,21 @@ const ScheduleAppointment = () => {
                 const requestBody = {
                     occupiedSlots: [
                         {
-                            from: `${selectedDate}T${selectedSlot.startTime}:00`, // 'YYYY-MM-DDTHH:MM:SS' in local time
-                            to: `${selectedDate}T${selectedSlot.endTime}:00`,     // 'YYYY-MM-DDTHH:MM:SS' in local time
-                            jobId,
+                            from: selectedSlot.startTime, // 'YYYY-MM-DDTHH:MM:SS' in local time
+                            to: selectedSlot.endTime,     // 'YYYY-MM-DDTHH:MM:SS' in local time
+                            jobId: jobId || undefined,  // Only include jobId if it's defined
+                            date: selectedDate,          // Include the date for clarity
                         }
                     ],
                 };
 
-                console.log("requestBody: ", requestBody);
+                console.log("requestBody: ", requestBody.occupiedSlots[0].from);
+                console.log("requestBody: ", requestBody.occupiedSlots[0].to);
+                console.log("requestBody: ", requestBody.occupiedSlots[0].date);
+                console.log("requestBody: ", requestBody.occupiedSlots[0].jobId);
 
-                axios.put(`http://192.168.8.103:8010/slots/update/${handymanId}`, JSON.stringify(requestBody))
+                if(requestBody.occupiedSlots[0].from && requestBody.occupiedSlots[0].to && requestBody.occupiedSlots[0].date && requestBody.occupiedSlots[0].jobId){
+                    axios.put(`http://192.168.8.103:8010/slots/update/${handymanId}`, requestBody)
                     .then(() => {
                         const slotStartTime = selectedSlot.startTime; // Assuming selectedSlot has a startTime property
 
@@ -449,6 +454,7 @@ const ScheduleAppointment = () => {
                     .catch(error => {
                         console.error('Error saving the slot:', error);
                     });
+                }
             } else {
                 setAlertMessage('Please select a time slot before confirming!');
                 setIsAlertVisible(true);
