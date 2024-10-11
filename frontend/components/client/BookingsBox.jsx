@@ -25,7 +25,7 @@ const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobSta
         console.log("worker id", workerId);
         try {
             const response = await axios.get(
-                `http://192.168.1.3:8010/worker/${workerId}`
+                `https://fixerbackend.vercel.app/worker/${workerId}`
             );
             setWorker(response.data);
         } catch (error) {

@@ -34,7 +34,7 @@ export default function StartJob() {
   const fetchWorker = async () => {
     console.log("worker id", workerId);
     try {
-      const response = await axios.get(`http://192.168.1.3:8010/worker/${workerId}`);
+      const response = await axios.get(`https://fixerbackend.vercel.app/worker/${workerId}`);
       setWorker(response.data);
     } catch (error) {
       console.error("Error fetching Worker Details:", error.response?.data || error);
