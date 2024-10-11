@@ -7,6 +7,7 @@ import ClientCard from "../../../../components/worker/home/ClientCard";
 import React, { useEffect, useState } from "react";
 import { useRouter, useGlobalSearchParams } from "expo-router";
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { icons } from "../../../../constants";
 
@@ -55,6 +56,22 @@ const JobDetails = () => {
     }
   }, [jobId]);
 
+  const handleApplyJob = async() => {
+    try{
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(`http://192.168.1.3:8010/job/interested/${jobId}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+    catch(err){
+
+    }
+  }
+
   return (
     <SafeAreaView className="h-full bg-white">
       <Stack.Screen
@@ -81,7 +98,7 @@ const JobDetails = () => {
         <ActivityIndicator size="large" color="orange" />
       </View>
       )}
-      <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5">
+      <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5" onPress={handleApplyJob}>
         <Text className="text-white font-semibold">Apply For The Job</Text>
       </TouchableOpacity>
     </SafeAreaView>

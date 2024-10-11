@@ -18,7 +18,7 @@ const MyJobPosts = () => {
     const fetchJobs = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        const response = await fetch('http://192.168.8.103:8010/job/', {
+        const response = await fetch('http://192.168.1.3:8010/job/client/', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const MyJobPosts = () => {
     setIsVisible(false);
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch(`http://192.168.8.103:8010/job/delete/${selectedJobId}`, {
+      const response = await fetch(`http://192.168.1.3:8010/job/delete/${selectedJobId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`, // Include token in headers

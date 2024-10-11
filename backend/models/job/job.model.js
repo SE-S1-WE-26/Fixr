@@ -79,7 +79,13 @@ const jobSchema = new mongoose.Schema({
   budget: {
     type: Number,
     required: true,
-  }
+  },
+  startTime: {
+    type: Date,
+  },
+  endTime: {
+    type: Date,
+  },
 });
 
 const Job = mongoose.model('Job', jobSchema);
