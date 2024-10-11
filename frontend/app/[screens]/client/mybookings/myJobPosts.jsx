@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image, Alert } from 'react-native';
 import Header from '../../../../components/common/Header';
 import images from '../../../../constants/images';
 import CustomButton from '../../../../components/common/CustomButton';
@@ -6,24 +6,74 @@ import icons from '../../../../constants/icons';
 import JobPostsBox from '../../../../components/client/JobPostsBox';
 import { router } from 'expo-router';
 import { React, useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ConfirmationBox from '../../../../components/client/ConfirmationBox';
 
 const MyJobPosts = () => {
   const [jobs, setJobs] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await axios.get('http://192.168.8.103:8010/job/');
-        setJobs(response.data); // Assuming jobs is the array in response
+        const token = await AsyncStorage.getItem('token');
+        const response = await fetch('http://192.168.1.3:8010/job/client/', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const jobsData = await response.json();
+          setJobs(jobsData);
+          console.log("Jobs: ", jobsData);
+        } else {
+          const errorData = await response.json();
+          console.log('Response status:', response.status, errorData);
+        }
       } catch (error) {
-        console.error('Error fetching jobs:', error.response?.data || error.message);
+        console.error('Error fetching jobs:', error.message);
       }
     };
 
     fetchJobs(); // Call the function
   }, []);
+
+  const handleDelete = (jobId) => {
+    setSelectedJobId(jobId); // Store the job ID of the job to be deleted
+    setIsVisible(true); // Show confirmation dialog
+  }
+
+  const handleConfirm = async () => {
+    setIsVisible(false);
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(`http://192.168.1.3:8010/job/delete/${selectedJobId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in headers
+        },
+      });
+
+      if (response.ok) {
+        Alert.alert('Success', 'Job deleted successfully.');
+        setJobs(jobs.filter(job => job._id !== selectedJobId)); // Update the job list after deletion
+      } else {
+        const errorData = await response.json();
+        Alert.alert('Error', errorData.message || 'Failed to delete the job.');
+      }
+    } catch (error) {
+      console.error('Error deleting the job:', error.message || error);
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
+  }
+
+  const handleCancel = () => {
+    setIsVisible(false);
+  }
 
   return (
     <ScrollView className="bg-white">
@@ -47,7 +97,7 @@ const MyJobPosts = () => {
                 <Text className="font-medium"> Add Post</Text>
               </View>
             }
-            handlePress={() => router.push("./addJob")} // Correct usage of router.push
+            handlePress={() => router.push("./addJob")}
             containerStyles={"absolute right-4 top-4 px-4 h-12 rounded-full"}
           />
         </View>
@@ -59,18 +109,33 @@ const MyJobPosts = () => {
               type={job.category.toLowerCase()}
               topic={job.title}
               description={job.description}
-              // handlePressJob={() => router.push(`./jobPost`, {jobId: job._id})} 
               handlePressJob={() => router.push({
                 pathname: './jobPost',
                 params: { jobId: job._id }
-              })} 
-              handlePressHandymen={() => router.push(`./interestedHandymen?jobId=${job._id}`)} // Correctly passing jobId
+              })}
+              handlePressHandymen={() => router.push({
+                pathname: './interestedHandymen',
+                params: { jobId: job._id }
+              })}
+              handleDelete={() => handleDelete(job._id)} // Pass the job ID to handleDelete
             />
-          )) 
+          ))
         ) : (
           <Text className="text-center text-gray-500">No job posts found</Text>
         )}
       </View>
+      <ConfirmationBox
+        visible={isVisible}
+        title={"Delete job post"}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        onConfirmMesg={"Delete"}
+        confirmButton={true}
+        cancelColor={"white"}
+        message={"Are you sure you want to delete this post? This action cannot be undone."}
+        image={"bin"}
+        confirmColor={"red-800"}
+      />
     </ScrollView>
   );
 }

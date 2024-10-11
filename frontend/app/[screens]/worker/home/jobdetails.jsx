@@ -7,6 +7,7 @@ import ClientCard from "../../../../components/worker/home/ClientCard";
 import React, { useEffect, useState } from "react";
 import { useRouter, useGlobalSearchParams } from "expo-router";
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { icons } from "../../../../constants";
 
@@ -59,8 +60,21 @@ const JobDetails = () => {
     }
   }, [jobId]);
 
-  // Combined loading state
-  const isLoading = loadingJob || loadingClient;
+  const handleApplyJob = async() => {
+    try{
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(`http://192.168.1.3:8010/job/interested/${jobId}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+    catch(err){
+
+    }
+  }
 
   return (
     <SafeAreaView className="bg-white h-full">

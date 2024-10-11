@@ -49,7 +49,7 @@ const getAllWorkers = async (req, res) => {
 // Get a single worker by ID
 const getWorkerById = async (req, res) => {
   try {
-    const worker = await Worker.findById(req.params.id);
+    const worker = await Worker.findById(req.params.id).populate('userId');
     if (!worker) return res.status(404).json({ message: 'Worker not found' });
     res.status(200).json(worker);
   } catch (error) {
@@ -124,5 +124,4 @@ module.exports = {
   deleteWorker,
   getWorkerData,
   authenticateJWT,
-  getCompletedJobs,
 };

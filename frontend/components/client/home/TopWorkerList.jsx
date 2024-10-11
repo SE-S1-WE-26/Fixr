@@ -6,10 +6,11 @@ import axios from 'axios'
 
 const TopWorkerList = ({ favorites }) => {
   const[workers,setWorkers] = useState([]);
+  const favoriteIds = favorites.map(favorite => favorite._id);
 
   const fetchWorkers = async () => {
     try {
-      const response = await axios.get('http://192.168.1.3:8010/worker/');
+      const response = await axios.get('https://fixerbackend.vercel.app/worker/');
       setWorkers(response.data);
     }
     catch (err) {
@@ -28,7 +29,7 @@ const TopWorkerList = ({ favorites }) => {
         <FlatList
           data={workers}
           keyExtractor={(worker) => worker._id}
-          renderItem={({ item }) => <TopWorkerCard worker={item} isFavorite={favorites.includes(item._id)}/>}
+          renderItem={({ item }) => <TopWorkerCard worker={item} isFavorite={favoriteIds.includes(item._id)}/>}
           contentContainerStyle={{columnGap:12}}
           horizontal
           showsHorizontalScrollIndicator={false}

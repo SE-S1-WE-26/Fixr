@@ -11,9 +11,9 @@ const ProfileCard = () => {
   const fetchMyData = async () => {
     setIsLoading(true);
     try {
-      const token = await AsyncStorage.getItem("token");
-      const response = await fetch("http://192.168.1.3:8010/worker/mydata", {
-        method: "GET",
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch('https://fixerbackend.vercel.app/worker/mydata', {
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -36,6 +36,7 @@ const ProfileCard = () => {
   useEffect(() => {
     fetchMyData();
   }, []);
+
 
   return (
     <View className="flex mt-2 rounded-xl bg-powder shadow border-4 border-platinum px-4 md:px-5 pt-4 md:pt-5 pb-3 mx-4 md:mx-6 justify-center">

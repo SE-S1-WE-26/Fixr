@@ -31,8 +31,6 @@ router.put('/update/:id', updateWorker);
 // Route to delete a worker by ID
 router.delete('/delete/:id', deleteWorker);
 
-// Route to get completed jobs by worker ID
-router.get('/myjobs', authenticateJWT, getCompletedJobs);
 
 
 module.exports = router;
