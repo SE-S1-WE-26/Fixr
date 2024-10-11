@@ -35,6 +35,7 @@ const ProfileCard = () => {
     fetchMyData();
   }, []);
 
+
   return (
     <View className="flex mt-2 rounded-xl bg-powder shadow px-4 md:px-5 pt-4 md:pt-5 pb-3 mx-4 md:mx-6 justify-center">
       {isLoading ? (
@@ -56,13 +57,13 @@ const ProfileCard = () => {
           </View>
           <View className="py-2 gap-1">
             <View className="flex flex-row">
-              <Text className="font-medium text-sm md:text-base">Age : </Text>
+              <Text className="font-medium text-sm md:text-base">Age: </Text>
               <Text className="text-sm md:text-base">
                 {workerData?.age} Years
               </Text>
             </View>
             <View className="flex flex-row">
-              <Text className="font-medium text-sm md:text-base">Experience : </Text>
+              <Text className="font-medium text-sm md:text-base">Experience: </Text>
               <Text className="text-sm md:text-base">
                 {workerData?.experience} Years
               </Text>

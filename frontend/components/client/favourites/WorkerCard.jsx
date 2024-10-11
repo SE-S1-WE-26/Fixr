@@ -9,7 +9,7 @@ import { useRouter } from "expo-router";
 const WorkerCard = ({ worker }) => {
     console.log(worker);
   return (
-    <TouchableOpacity className="bg-powder shadow px-2 pt-2 pb-2 rounded-lg max-w-[155px] my-4"
+    <TouchableOpacity className="border-2 border-platinum bg-powder shadow px-2 pt-2 pb-2 rounded-lg max-w-[155px] my-4"
       // Navigate to ContactWorker on press
     >
       <View>

@@ -35,7 +35,7 @@ const editJob = () => {
         const fetchJob = async () => {
             try {
                 const token = await AsyncStorage.getItem('token');
-                const response = await fetch(`http://192.168.8.103:8010/job/${jobId}`, {
+                const response = await fetch(`http://192.168.1.3:8010/job/${jobId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const editJob = () => {
 
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch(`http://192.168.8.103:8010/job/update/${jobId}`, {
+            const response = await fetch(`http://192.168.1.3:8010/job/update/${jobId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

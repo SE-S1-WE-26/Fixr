@@ -1,27 +1,44 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import React from "react";
+import { React, useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import ScanIcon from "../../client/home/ScanIcon";
 import { icons } from "../../../constants";
+import FormatDateTime from "../../../utils/FormatDateTime";
 
-const WorkerJobCard = ({ jobId, jobName, date, time, qrcode }) => {
+const WorkerJobCard = ({ job }) => {
   const router = useRouter();
+  const [qrcode, setQrcode] = useState(null);
+  const [jobName, setJobName] = useState(null);
+  const [date, setDate] = useState(null);
+  const [time, setTime] = useState(null);
+
+
+  // Use useEffect to set qrcode when job changes
+  useEffect(() => {
+    if (job) {
+      setQrcode(job._id);
+      setJobName(job.title);
+      setDate(job.scheduledDate);
+      setTime(job.scheduledTime);
+    }
+  }, [job]);
 
   const handleNavigation = () => {
     router.push({
       pathname: "/pages/worker/myjobs/GenerateQR",
-      params: { jobId, jobName, date, time, qrcode }, // Pass the job details
+      params: { jobName, date, time, qrcode }, // Pass the job details
     });
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Image style={styles.image} />
+        <Image style={styles.image} source={{ uri: job?.clientId?.userId?.profilePic }} />
         <View style={styles.details}>
-          <Text style={styles.jobName}>{jobName}</Text>
-          <Text>Scheduled Date: {date}</Text>
-          <Text>Scheduled Time: {time}</Text>
+          <Text style={styles.jobName}>{job?.title}</Text>
+          <Text className='text-slate-500 text-xs'>{job?.clientId?.userId?.name}</Text>
+          <Text>{FormatDateTime(job?.scheduledDate)}</Text>
+          <Text>{job?.scheduledTime}</Text>
         </View>
         <TouchableOpacity style={styles.scanner} onPress={handleNavigation}>
           <ScanIcon icon={icons.scanner} />
@@ -35,6 +52,7 @@ const WorkerJobCard = ({ jobId, jobName, date, time, qrcode }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -60,10 +78,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
     backgroundColor: "#ff6600",
-    borderRadius: 20,
+    borderRadius: 100,
   },
   details: {
     marginLeft: 10,

@@ -3,10 +3,11 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter, Stack } from "expo-router"; // Correct hook from expo-router
+import FormatDateTime from "../../../../utils/FormatDateTime";
 
 import { icons } from "../../../../constants";
 
-const GenerateQR = () => {
+const GenerateQR = ({job}) => {
   const router = useRouter();
   const { jobName, date, time, qrcode } = useLocalSearchParams();
 
@@ -33,7 +34,7 @@ const GenerateQR = () => {
       <View className='mb-4 justify-center'>
       <Text className='text-xl font-semibold mx-auto my-3'>{jobName}</Text>
           <View className='flex flex-row justify-between mx-3'>
-          <Text>{date}</Text>
+          <Text>{FormatDateTime(date)}</Text>
           <Text>{time}</Text>
           </View>
       </View>

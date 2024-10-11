@@ -19,29 +19,29 @@ const SignIn = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage(""); // Reset error message
-  
-    try {
-        const response = await axios.post('http://192.168.8.103:8010/user/signin', {
-            username: form.email, // Use form.email for username
-            password: form.password
-        });
-  
-        console.log('Sign in response:', response.data);
-      
-        if (response.data.token) {
-            await AsyncStorage.setItem('token', response.data.token);
-            console.log('Token saved:', response.data.token);
-            router.push(response.data.redirectUrl); // Default to /home if redirectUrl is not defined
-        }
-    } catch (error) {
-        //console.error('Error signing in:', error.response ? error.response.data : error.message);
-        setErrorMessage(error.response?.data?.message || "An unknown error occurred.");
-    } finally {
-        setIsSubmitting(false);
-    }
-};
 
-  
+    try {
+      const response = await axios.post("http://192.168.1.3:8010/user/signin", {
+        username: form.email, // Use form.email for username
+        password: form.password,
+      });
+
+      console.log("Sign in response:", response.data);
+
+      if (response.data.token) {
+        await AsyncStorage.setItem("token", response.data.token);
+        console.log("Token saved:", response.data.token);
+        router.push(response.data.redirectUrl); // Default to /home if redirectUrl is not defined
+      }
+    } catch (error) {
+      //console.error('Error signing in:', error.response ? error.response.data : error.message);
+      setErrorMessage(
+        error.response?.data?.message || "An unknown error occurred."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   // Function to save user role to AsyncStorage and redirect
   const handleLogin = async (role) => {
@@ -64,7 +64,7 @@ const SignIn = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://192.168.8.103:8010/user");
+        const response = await axios.get("http://192.168.1.3:8010/user");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -81,10 +81,13 @@ const SignIn = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://192.168.8.103:8010/auth/signin", {
-        username: user.username, // Use the username from the selected user
-        password: user.password, // Assuming you have a test password for each user (use cautiously)
-      });
+      const response = await axios.post(
+        "http://192.168.1.3:8010/auth/signin",
+        {
+          username: user.username, // Use the username from the selected user
+          password: user.password, // Assuming you have a test password for each user (use cautiously)
+        }
+      );
 
       console.log("Sign in response:", response.data);
 
@@ -120,17 +123,15 @@ const SignIn = () => {
             resizeMode="contain"
             className="w-24 h-24 mx-auto my-12"
           />
-          <Text className="text-2xl font-semibold -mt-4">
-            Login to Fixr
-          </Text>
-          <FormField 
+          <Text className="text-2xl font-semibold -mt-4">Login to Fixr</Text>
+          <FormField
             title="Email"
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
             otherStyles="mt-7"
             keyboardType="email-address"
           />
-          <FormField 
+          <FormField
             title="Password"
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
@@ -162,7 +163,10 @@ const SignIn = () => {
             <Text className="text-lg text-gray-400 font-medium">
               Don't have an account?
             </Text>
-            <Link href="/sign-up" className="text-lg font-semibold text-black-600">
+            <Link
+              href="/sign-up"
+              className="text-lg font-semibold text-black-600"
+            >
               Sign Up
             </Link>
           </View>
