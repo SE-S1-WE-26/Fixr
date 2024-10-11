@@ -56,6 +56,60 @@ const SignIn = () => {
     }
   };
 
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Initially set to true
+
+  // Fetch users from the backend API
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("https://fixerbackend.vercel.app/user");
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      } finally {
+        setIsLoading(false); // Set loading to false after fetching
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  // Handle test login
+  const handleTestLogin = async (user) => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post("https://fixerbackend.vercel.app/auth/signin", {
+        username: user.username, // Use the username from the selected user
+        password: user.password, // Assuming you have a test password for each user (use cautiously)
+      });
+
+      console.log("Sign in response:", response.data);
+
+      if (response.data.token) {
+        await AsyncStorage.setItem("token", response.data.token);
+        console.log("Token saved:", response.data.token);
+        router.push(response.data.redirectUrl);
+      }
+    } catch (error) {
+      console.error(
+        "Error signing in:",
+        error.response ? error.response.data : error.message
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView className="h-full">
       <ScrollView>

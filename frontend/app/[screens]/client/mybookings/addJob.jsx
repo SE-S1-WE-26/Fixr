@@ -16,6 +16,7 @@ import { Picker } from "@react-native-picker/picker";
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 import uploadImages from "../../../../utils/uploadImage";
 import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddJob = () => {
   const [title, setTitle] = useState("");
@@ -123,6 +124,7 @@ const AddJob = () => {
       budget: budget,
       images: imageURLs.length > 0 ? imageURLs : [],
     };
+
 
     try {
       const response = await axios.post(

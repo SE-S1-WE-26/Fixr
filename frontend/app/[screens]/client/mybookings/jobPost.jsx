@@ -6,7 +6,7 @@ import icons from '../../../../constants/icons'
 import { router, useRouter, useGlobalSearchParams } from 'expo-router'
 import { React, useState, useEffect } from 'react'
 import axios from 'axios';
-import { useRoute } from "@react-navigation/native";
+import ConfirmationBox from '../../../../components/client/ConfirmationBox';
 
 const JobPost = () => {
   const params = useGlobalSearchParams();
@@ -14,11 +14,13 @@ const JobPost = () => {
   const router = useRouter(); // Use router outside useEffect
 
   const [job, setJob] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState(null);
 
   useEffect(() => {
     console.log("Params: ", params); // Log to check params structure
     console.log("Job Id: ", jobId);   // Log jobId
-    
+
     if (jobId) {  // Ensure jobId exists before making the request
       const fetchJob = async () => {
         try {
@@ -43,11 +45,44 @@ const JobPost = () => {
     return <Text>Loading job...</Text>;  // Show loading while waiting for jobId
   }
 
+  const handleDelete = (jobId) => {
+    setSelectedJobId(jobId); // Store the job ID of the job to be deleted
+    setIsVisible(true); // Show confirmation dialog
+  }
+
+  const handleConfirm = async () => {
+    setIsVisible(false);
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(`http://192.168.8.103:8010/job/delete/${selectedJobId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in headers
+        },
+      });
+
+      if (response.ok) {
+        Alert.alert('Success', 'Job deleted successfully.');
+        setJobs(jobs.filter(job => job._id !== selectedJobId)); // Update the job list after deletion
+      } else {
+        const errorData = await response.json();
+        Alert.alert('Error', errorData.message || 'Failed to delete the job.');
+      }
+    } catch (error) {
+      console.error('Error deleting the job:', error.message || error);
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
+  }
+
+  const handleCancel = () => {
+    setIsVisible(false);
+  }
+
   return (
     <SafeAreaView className="bg-white h-full">
       <ScrollView>
-        <JobTypeIconBar 
-        type={job.category.toLowerCase()} 
+        <JobTypeIconBar
+          type={job.category.toLowerCase()}
         />
         <View className="relative w-full h-[120px] -mb-11 -mt-2">
           <CustomButton
@@ -57,7 +92,10 @@ const JobPost = () => {
                 <Text className="font-semibold">  Edit Post</Text>
               </View>
             }
-            handlePress={() => router.push("./addJob")}
+            handlePress={() => router.push({
+              pathname: "./editJob",
+              params: { jobId: jobId }
+            })}
             containerStyles={"absolute right-4 top-4 px-4 h-12 rounded-full"}
           />
         </View>
@@ -87,18 +125,34 @@ const JobPost = () => {
           </View>
           <CustomButton
             title={"View Interested Handymen"}
-            handlePress={() => router.push('./interestedHandymen')}
+            handlePress={() => router.push({
+              pathname: './interestedHandymen',
+              params: { jobId: jobId }
+            })}
             containerStyles={"mx-5 mb-4 text-sm"}
             textStyles={"text-base"}
           />
           <CustomButton
             title={"Delete Post"}
-            handlePress={() => router.push('./interestedHandymen')}
+            handlePress={() => handleDelete(job._id)}
             containerStyles={"mx-5 bg-red-800 mb-4"}
             textStyles={"text-base"}
           />
         </View>
       </ScrollView>
+      <ConfirmationBox
+        visible={isVisible}
+        title={"Delete job post"}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        onConfirmMesg={"Delete"}
+        onCancelMsg={"Cancel"}
+        confirmButton={true}
+        cancelColor={"white"}
+        message={"Are you sure you want to delete this post? This action cannot be undone."}
+        image={"bin"}
+        confirmColor={"red-800"}
+      />
     </SafeAreaView>
   )
 }
