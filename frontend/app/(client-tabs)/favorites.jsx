@@ -19,7 +19,7 @@ const Favorites = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       console.log("Token:", token);
-      const response = await fetch('https://fixerbackend.vercel.app/client/mydata', {
+      const response = await fetch('http://192.168.1.3:8010/client/mydata', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,

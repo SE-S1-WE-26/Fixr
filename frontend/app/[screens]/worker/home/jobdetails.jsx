@@ -22,7 +22,7 @@ const JobDetails = () => {
   // Function to fetch job data by ID
   const fetchJobData = async (id) => {
     try {
-      const response = await axios.get(`https://fixerbackend.vercel.app/job/${id}`);
+      const response = await axios.get(`http://192.168.1.3:8010/job/${id}`);
       const jobData = response.data;
       setJob(jobData);
 
@@ -41,7 +41,7 @@ const JobDetails = () => {
   // Function to fetch client data by client ID
   const fetchClientData = async (clientId) => {
     try {
-      const response = await axios.get(`https://fixerbackend.vercel.app/client/${clientId}`);
+      const response = await axios.get(`http://192.168.1.3:8010/client/${clientId}`);
       setClient(response.data);
       console.log("Client Data:", response.data); // Log the full response data
     } catch (error) {
@@ -59,7 +59,7 @@ const JobDetails = () => {
   const handleApplyJob = async() => {
     try{
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch(`https://fixerbackend.vercel.app/job/interested/${jobId}`, {
+      const response = await fetch(`http://192.168.1.3:8010/job/interested/${jobId}`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -98,7 +98,7 @@ const JobDetails = () => {
         <ActivityIndicator size="large" color="orange" />
       </View>
       )}
-      <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5">
+      <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5" onPress={handleApplyJob}>
         <Text className="text-white font-semibold">Apply For The Job</Text>
       </TouchableOpacity>
     </SafeAreaView>

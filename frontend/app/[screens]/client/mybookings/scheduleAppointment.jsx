@@ -42,7 +42,7 @@ const ScheduleAppointment = () => {
     // Function to fetch worker schedules
     const fetchWorkerSchedules = async () => {
         try {
-            const response = await axios.get(`https://fixerbackend.vercel.app/slots/${handymanId}`);
+            const response = await axios.get(`http://192.168.8.103:8010/slots/${handymanId}`);
             setWorkerSchedules(response.data);
             console.log("Fetched Schedules: ", response.data)
         } catch (error) {
@@ -54,7 +54,7 @@ const ScheduleAppointment = () => {
     // Function to fetch weather forecast data for a given latitude and longitude
     const fetchWeatherForecast = async (latitude, longitude) => {
         try {
-            const response = await axios.get(`https://fixerbackend.vercel.app/v1/forecast`, {
+            const response = await axios.get(`https://api.open-meteo.com/v1/forecast`, {
                 params: {
                     latitude: latitude,
                     longitude: longitude,
@@ -125,7 +125,7 @@ const ScheduleAppointment = () => {
     const fetchJobAndWeather = async () => {
         if (jobId) {  // Ensure jobId exists before making the request
             try {
-                const response = await axios.get(`https://fixerbackend.vercel.app/job/${jobId}`);
+                const response = await axios.get(`http://192.168.8.103:8010/job/${jobId}`);
                 setJob(response.data);
                 console.log("Job data fetched:", response.data);
 
@@ -146,7 +146,7 @@ const ScheduleAppointment = () => {
         }
         if (handymanId) {
             try {
-                const response_handymen = await axios.get(`https://fixerbackend.vercel.app/worker/${handymanId}`);
+                const response_handymen = await axios.get(`http://192.168.8.103:8010/worker/${handymanId}`);
                 setHandyman(response_handymen.data);
                 console.log("Handyman data fetched:", response_handymen.data);
                 fetchWorkerSchedules();
@@ -202,7 +202,7 @@ const ScheduleAppointment = () => {
 
     const fetchWorkerSchedulesForDate = async (dateString) => {
         try {
-            const response = await axios.get(`https://fixerbackend.vercel.app/slots/${handymanId}`);
+            const response = await axios.get(`http://192.168.8.103:8010/slots/${handymanId}`);
 
             console.log("API Response: ", response.data); // Log the complete response
 
@@ -370,7 +370,7 @@ const ScheduleAppointment = () => {
 
             try {
                 const token = await AsyncStorage.getItem('token');
-                const response = await fetch(`https://fixerbackend.vercel.app/job/update/${jobId}`, {
+                const response = await fetch(`http://192.168.8.103:8010/job/update/${jobId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -428,7 +428,7 @@ const ScheduleAppointment = () => {
                 console.log("requestBody: ", requestBody.occupiedSlots[0].jobId);
 
                 if(requestBody.occupiedSlots[0].from && requestBody.occupiedSlots[0].to && requestBody.occupiedSlots[0].date && requestBody.occupiedSlots[0].jobId){
-                    axios.put(`https://fixerbackend.vercel.app/slots/update/${handymanId}`, requestBody)
+                    axios.put(`http://192.168.8.103:8010/slots/update/${handymanId}`, requestBody)
                     .then(() => {
                         const slotStartTime = selectedSlot.startTime; // Assuming selectedSlot has a startTime property
 

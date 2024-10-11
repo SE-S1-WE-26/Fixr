@@ -20,7 +20,7 @@ const InterestedHandymen = () => {
         if (jobId) {
             try {
                 setIsLoading(true);
-                const response = await axios.get(`https://fixerbackend.vercel.app/job/${jobId}`);
+                const response = await axios.get(`http://192.168.8.103:8010/job/${jobId}`);
                 setJob(response.data);
                 console.log("Job data fetched:", response.data);
                 const clientFavorites = response.data.clientId?.favorites || [];
@@ -42,7 +42,7 @@ const InterestedHandymen = () => {
         if (jobId) {  // Ensure jobId exists before making the request
           const fetchJob = async () => {
             try {
-              const response = await axios.get(`https://fixerbackend.vercel.app/job/${jobId}`);
+              const response = await axios.get(`http://192.168.1.3:8010/job/${jobId}`);
               setJob(response.data);
               console.log("Job data fetched:", response.data);
               console.log()

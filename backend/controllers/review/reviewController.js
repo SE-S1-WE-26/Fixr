@@ -10,19 +10,24 @@ const addNewReview = async (req, res) => {
   }
 };
 
-// Get all reviews
+// Get all workers
 const getAllReview = async (req, res) => {
-  try {
-    const reviews = await Review.find();
-    res.status(200).json(reviews);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching reviews", error });
-  }
-};
+    try {
+      console.log("Fetching all reviews...");
+      const reviews = await Review.find();
+      console.log("Fetched reviews:", reviews);
+      res.status(200).json(reviews);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      res.status(500).json({ message: "Error fetching reviews", error });
+    }
+  };
+  
+  
 
-// Get all reviews for a specific user
 const getOneUserReview = async (req, res) => {
   try {
+    // Fetch all reviews for a specific user based on userId
     const reviews = await Review.find({ userId: req.params.userId });
     if (!reviews.length) return res.status(404).json({ message: 'No reviews found for this user' });
     res.status(200).json(reviews);
@@ -31,23 +36,8 @@ const getOneUserReview = async (req, res) => {
   }
 };
 
-// Delete a specific review
-const deleteReview = async (req, res) => {
-  const { reviewId } = req.params;
-  try {
-    const deletedReview = await Review.findByIdAndDelete(reviewId);
-    if (!deletedReview) {
-      return res.status(404).json({ message: 'Review not found' });
-    }
-    res.status(200).json({ message: 'Review deleted successfully', deletedReview });
-  } catch (error) {
-    res.status(500).json({ message: 'Error deleting review', error });
-  }
-};
-
 module.exports = {
   getAllReview,
   addNewReview,
   getOneUserReview,
-  deleteReview,
 };

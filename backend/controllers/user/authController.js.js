@@ -21,7 +21,7 @@ exports.signupUser = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, rating, location, email, profilePic, username, password, userType, age, socialLinks, earnings, category, hourlyRate, experience, place, latitude ,longitude } = req.body;
+    const { name, rating, location, email, profilePic, username, password, userType, age, socialLinks, earnings, category, hourlyRate, experience, place } = req.body;
 
     try {
         // Check if the username or email already exists
@@ -38,9 +38,7 @@ exports.signupUser = async (req, res) => {
             email,
             profilePic,
             username,
-            password,// Store the raw password (not recommended)
-            longitude,
-            latitude 
+            password, // Store the raw password (not recommended)
         });
 
         // Save user to the database
@@ -57,8 +55,6 @@ exports.signupUser = async (req, res) => {
                 hourlyRate,
                 experience,
                 place,
-                longitude,
-                latitude
             });
 
             await newWorker.save();
