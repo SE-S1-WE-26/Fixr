@@ -14,7 +14,9 @@ npx expo install @firebase/auth
 npx expo install react-native-calendars
 npx expo install @mapbox/search-js-react
 npx expo install lottie-react-native
-
+npx expo install expo-image-picker
+npx expo install firebase
+npx expo install @google/generative-ai
 ```
 
 
