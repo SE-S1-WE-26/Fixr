@@ -5,9 +5,9 @@ const Heading = ({name,link}) => {
   return (
     <View className="flex-row justify-between items-center mx-6 mt-5">
         <Text className="text-2xl font-medium">{name}</Text>
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Text className="text-lg text-gray-500 font-medium">View All</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
   )
 }

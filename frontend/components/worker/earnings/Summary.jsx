@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import {React,useState,useEffect} from "react";
 import {
   CalcTotalEarnings,
   CalcCompanyFee,
@@ -7,13 +7,28 @@ import {
 } from "../../../utils/CalcEarnings";
 import FormatCurrency from "../../../utils/FormatCurrency";
 
-const Summary = () => {
-  const totalEarnings = CalcTotalEarnings(500, 76);
-  const companyFee = CalcCompanyFee(38000, 5);
+const Summary = ({data}) => {
+  const jobList = data;
+  const [totalEarnings,setTotalEarnings] = useState(0);
+ const calcTotalEarnings = (jobList) => {
+    let total = 0;
+    jobList.forEach((job) => {
+      total += job.budget;
+    });
+    return total;
+  }
+
+  useEffect(() => {
+    setTotalEarnings(calcTotalEarnings(jobList));
+  }
+  ,[jobList]);
+
+  // const totalEarnings = CalcTotalEarnings(500, 76);
+  const companyFee = CalcCompanyFee(totalEarnings, 5);
   const netAmount = CalcNetAmount(totalEarnings, companyFee);
 
   return (
-    <View className="flex mt-2 rounded-xl bg-powder shadow px-4 md:px-5 py-4 md:py-5 mx-4 md:mx-6 justify-center">
+    <View className="flex mt-2 rounded-xl bg-powder border border-4 border-platinum shadow px-4 md:px-5 py-4 md:py-5 mx-4 md:mx-6 justify-center">
       <View>
         <View className="flex-row justify-between">
           <Text className="text-base md:text-lg">Hourly Rate</Text>

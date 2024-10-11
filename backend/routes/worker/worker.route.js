@@ -7,6 +7,8 @@ const {
   deleteWorker,
   getWorkerData,
   authenticateJWT,
+  getCompletedJobs,
+  getAllJobsForWorker,
 } = require('../../controllers/worker/worker.controller');
 
 const router = express.Router();
@@ -29,6 +31,8 @@ router.put('/update/:id', updateWorker);
 // Route to delete a worker by ID
 router.delete('/delete/:id', deleteWorker);
 
+// Route to get completed jobs by worker ID
+router.get('/myjobs', authenticateJWT, getCompletedJobs);
 
 
 module.exports = router;

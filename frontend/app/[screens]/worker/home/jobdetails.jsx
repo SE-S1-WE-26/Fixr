@@ -12,14 +12,16 @@ import { icons } from "../../../../constants";
 
 const JobDetails = () => {
   const router = useRouter();
-  const { jobId,jobCost } = useGlobalSearchParams();
+  const { jobId, jobCost } = useGlobalSearchParams();
 
   const [job, setJob] = useState(null);
   const [client, setClient] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingJob, setLoadingJob] = useState(true);
+  const [loadingClient, setLoadingClient] = useState(true);
 
   // Function to fetch job data by ID
   const fetchJobData = async (id) => {
+    setLoadingJob(true); // Set loading state for job data
     try {
       const response = await axios.get(`http://192.168.1.3:8010/job/${id}`);
       const jobData = response.data;
@@ -31,20 +33,22 @@ const JobDetails = () => {
       }
     } catch (error) {
       console.error("Error fetching job:", error.message);
-      setLoading(false);
     } finally {
-      setLoading(false); // Ensure loading state is updated in all cases
+      setLoadingJob(false); // Ensure loading state is updated for job data
     }
   };
 
   // Function to fetch client data by client ID
   const fetchClientData = async (clientId) => {
+    setLoadingClient(true); // Set loading state for client data
     try {
       const response = await axios.get(`http://192.168.1.3:8010/client/${clientId}`);
       setClient(response.data);
       console.log("Client Data:", response.data); // Log the full response data
     } catch (error) {
       console.error("Error fetching client:", error.message);
+    } finally {
+      setLoadingClient(false); // Ensure loading state is updated for client data
     }
   };
 
@@ -55,8 +59,11 @@ const JobDetails = () => {
     }
   }, [jobId]);
 
+  // Combined loading state
+  const isLoading = loadingJob || loadingClient;
+
   return (
-    <SafeAreaView className="h-full bg-white">
+    <SafeAreaView className="bg-white h-full">
       <Stack.Screen
         options={{
           headerBackVisible: false,
@@ -73,17 +80,25 @@ const JobDetails = () => {
           ),
         }}
       />
-      <JobInfo job={job} jobCost={jobCost} loading={loading} />
-      {client && client.userId ? ( // Check if client and userId are defined
-        <ClientCard client={client} loading={loading} />
+      {isLoading ? (
+        <View className="flex h-full w-full justify-center items-cente">
+          <ActivityIndicator size="large" color="orange" />
+        </View>
       ) : (
-        <View className="flex w-full justify-center items-center">
-        <ActivityIndicator size="large" color="orange" />
-      </View>
+        <View className='-mt-6 h-full'>
+          <JobInfo job={job} jobCost={jobCost} loading={loadingJob} />
+          {client && client.userId ? ( // Check if client and userId are defined
+            <ClientCard client={client} loading={loadingClient} />
+          ) : (
+            <View className="flex w-full justify-center items-center">
+              <Text>No client details available</Text>
+            </View>
+          )}
+          <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5">
+            <Text className="text-white font-semibold">Apply For The Job</Text>
+          </TouchableOpacity>
+        </View>
       )}
-      <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5">
-        <Text className="text-white font-semibold">Apply For The Job</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };

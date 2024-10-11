@@ -32,11 +32,11 @@ const TestLogin = () => {
         password: user.password  // Assuming you have a test password for each user (use cautiously)
       });
 
-      console.log('Sign in response:', response.data);
+      // console.log('Sign in response:', response.data);
 
       if (response.data.token) {
         await AsyncStorage.setItem('token', response.data.token);
-        console.log('Token saved:', response.data.token);
+        // console.log('Token saved:', response.data.token);
         router.push(response.data.redirectUrl);
       }
     } catch (error) {

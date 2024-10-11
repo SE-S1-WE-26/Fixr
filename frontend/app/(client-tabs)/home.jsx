@@ -19,7 +19,7 @@ const Home = () => {
     setIsLoading(true);
     try {
       const token = await AsyncStorage.getItem('token');
-      console.log("Token:", token);
+      // console.log("Token:", token);
       const response = await fetch('http://192.168.1.3:8010/client/mydata', {
         method: 'GET',
         headers: {
@@ -34,7 +34,7 @@ const Home = () => {
 
       const data = await response.json();
       setMyData(data);
-      console.log("My Data:", data);
+      // console.log("My Data:", data);
     } catch (error) {
       console.error(error);
     } finally {
