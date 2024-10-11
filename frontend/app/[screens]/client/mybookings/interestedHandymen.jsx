@@ -3,13 +3,13 @@ import { React, useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import JobTypeIconBar from '../../../../components/client/JobTypeIconBar';
 import InterestedHandyman from '../../../../components/client/InterestedHandyman';
-import { router, useGlobalSearchParams, useRouter } from 'expo-router';
+import { useGlobalSearchParams, useRouter } from 'expo-router';
 import axios from 'axios';
 
 const InterestedHandymen = () => {
     const params = useGlobalSearchParams();
-    const { jobId } = params; // Destructure jobId directly from params
-    const router = useRouter(); // Use router outside useEffect
+    const { jobId } = params;
+    const router = useRouter();
 
     const [job, setJob] = useState(null);
     const [favorites, setFavorites] = useState([]);
@@ -20,12 +20,10 @@ const InterestedHandymen = () => {
         if (jobId) {
             try {
                 setIsLoading(true);
-                const response = await axios.get(`http://192.168.8.103:8010/job/${jobId}`);
+                const response = await axios.get(`http://192.168.8.101:8010/job/${jobId}`);
                 setJob(response.data);
-                console.log("Job data fetched:", response.data);
                 const clientFavorites = response.data.clientId?.favorites || [];
                 setFavorites(clientFavorites);
-                console.log("Client favorites:", clientFavorites);
             } catch (error) {
                 console.error('Error fetching job:', error.response?.data || error.message);
             } finally {
@@ -36,33 +34,25 @@ const InterestedHandymen = () => {
     };
 
     useEffect(() => {
-        console.log("Params in interested handymen: ", params); // Log to check params structure
-        console.log("Job Id in interested handymen: ", jobId);   // Log jobId
-    
-        if (jobId) {  // Ensure jobId exists before making the request
-          const fetchJob = async () => {
-            try {
-              const response = await axios.get(`http://192.168.1.3:8010/job/${jobId}`);
-              setJob(response.data);
-              console.log("Job data fetched:", response.data);
-              console.log()
-            } catch (error) {
-              console.error('Error fetching job:', error.response?.data || error.message);
-            }
-          };
-    
-          fetchJob();
+        if (jobId) {
+            fetchJob();
         }
-      }, [jobId]);  // Only run when jobId changes
-    
-      if (!jobId) {
-        return <Text>Loading job details...</Text>;  // Show loading while waiting for jobId
-      }
-    
-      if (!job) {
-        return <Text>Loading job...</Text>;  // Show loading while waiting for jobId
-      }
-    
+    }, [jobId]);
+
+    const onRefresh = () => {
+        setRefreshing(true); // Start the refresh indicator
+        fetchJob(); // Fetch the job details again
+    };
+
+    if (isLoading) {
+        return (
+            <SafeAreaView className="bg-white h-full justify-center items-center">
+                <ActivityIndicator size="large" color="orange" />
+                <Text>Loading handymen details...</Text>
+            </SafeAreaView>
+        );
+    }
+
     return (
         <SafeAreaView className="bg-white h-full">
             <ScrollView
@@ -81,17 +71,17 @@ const InterestedHandymen = () => {
                 <View className="flex-col mt-2">
                     {job.interestedHandymen && job.interestedHandymen.length > 0 ? (
                         job.interestedHandymen.map((handyman, index) => {
-                            // Check if this handyman's ID is in the client's favorites
                             const isFavourite = favorites.includes(handyman._id);
-                            console.log("isFav: ", isFavourite);
-
+                            const durationInHours_val = Math.ceil(parseFloat(job.estDuration));
+                            const calculatedCost = durationInHours_val * handyman.hourlyRate;
                             return (
                                 <InterestedHandyman
                                     key={index}
                                     clientId={job.clientId?._id || ''}
+                                    estCost={calculatedCost}
                                     handymanId={handyman._id}
                                     handyman={handyman.userId?.name || "Job Details: "}
-                                    isFavourite={isFavourite} // Set based on favorites check
+                                    isFavourite={isFavourite}
                                     jobTitle={handyman.category || "Handyman"}
                                     rate={handyman.hourlyRate || "0.00"}
                                     rating={handyman.userId?.rating || 0}

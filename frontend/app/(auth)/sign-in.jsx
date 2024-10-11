@@ -21,7 +21,7 @@ const SignIn = () => {
     setErrorMessage(""); // Reset error message
 
     try {
-      const response = await axios.post("http://192.168.1.3:8010/user/signin", {
+      const response = await axios.post("http://192.168.8.101:8010/user/signin", {
         username: form.email, // Use form.email for username
         password: form.password,
       });
@@ -64,7 +64,7 @@ const SignIn = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://192.168.1.3:8010/user");
+        const response = await axios.get("http://192.168.8.101:8010/user");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -82,7 +82,7 @@ const SignIn = () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.3:8010/auth/signin",
+        "http://192.168.8.101:8010/auth/signin",
         {
           username: user.username, // Use the username from the selected user
           password: user.password, // Assuming you have a test password for each user (use cautiously)

@@ -17,7 +17,7 @@ const MyBookings = () => {
     setIsLoading(true);
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch('http://192.168.1.3:8010/job/client/scheduled', {
+      const response = await fetch('http://192.168.8.101:8010/job/client/scheduled', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -82,10 +82,7 @@ const MyBookings = () => {
             source={images.myBookings}
             className="mx-auto"
           />
-          <CustomButton
-            title={"My Job Posts"}
-            handlePress={() => router.push('../screens/client/mybookings/myJobPosts')}
-          />
+          
           {renderBookingsList()}
         </View>
       </ScrollView>
