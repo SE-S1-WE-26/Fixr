@@ -5,7 +5,7 @@ import HomeHeader from "../../components/worker/home/HomeHeader";
 import EOMCard from "../../components/worker/home/EOMCard";
 import NearbyJobs from "../../components/worker/home/NearbyJobs";
 import RecommendedJobs from "../../components/worker/home/RecommendedJobs";
-import Heading from '../../components/common/Heading';
+import Heading from "../../components/common/Heading";
 import axios from "axios";
 
 const Home = () => {
@@ -14,10 +14,10 @@ const Home = () => {
 
   const fetchCurentEom = async () => {
     try {
-      const response = await axios.get('http://192.168.8.103:8010/eom/current');
+      const response = await axios.get("http://192.168.1.3:8010/eom/current");
       setEom(response.data[0]);
     } catch (err) {
-      console.error('Error fetching EOM:', err);
+      console.error("Error fetching EOM:", err);
     } finally {
       setLoading(false);
     }
@@ -30,8 +30,8 @@ const Home = () => {
     <SafeAreaView className="h-full bg-white pt-4">
       <ScrollView>
         <HomeHeader />
-        <EOMCard eom={eom}/>
-        <Heading name='Nearby Jobs' link='/' />
+        <EOMCard eom={eom} />
+        <Heading name="Nearby Jobs" link="/" />
         <NearbyJobs />
         <Heading name="Recommended Jobs" link="/" />
         <RecommendedJobs />

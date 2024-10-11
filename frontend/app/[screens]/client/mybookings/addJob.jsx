@@ -16,7 +16,6 @@ import { Picker } from "@react-native-picker/picker";
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 import uploadImages from "../../../../utils/uploadImage";
 import * as ImagePicker from "expo-image-picker";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddJob = () => {
   const [title, setTitle] = useState("");
@@ -67,7 +66,7 @@ const AddJob = () => {
       );
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const prompt = `Based on the job description and title, estimate the approximate and most accurate minimum number of hours to complete the job.\nJob title: ${title}\nJob Description: ${description}\nReturn just a number or a number with one decimal place`;
+      const prompt = `Based on the job description and title, estimate the approximate and most accurate minimum number of hours to complete the job.\nJob title: ${title}\nJob Description: ${description}\nReturn just a number or a number with one decimal place (eg. 2.5) and also return a number less than 16`;
 
       const result = await model.generateContent(prompt);
       const responseText = await result.response.text(); // Make sure to await the text() method
@@ -91,62 +90,76 @@ const AddJob = () => {
     }
   };
 
+  // Handle form submission with axios
   const handlePostJob = async () => {
-    if (!title || !description || !category || !environment || !address || !city) {
-      Alert.alert('Error', 'Please fill all the fields before submitting.');
+    if (
+      !title ||
+      !description ||
+      !category ||
+      !environment ||
+      !address ||
+      !city
+    ) {
+      Alert.alert("Error", "Please fill all the fields before submitting.");
       return;
+    }
+
+    let imageURLs = [];
+    if (imageURIs.length > 0) {
+      imageURLs = await uploadImages({ folder: "jobs", imageURIs }); // Pass the array of URIs
     }
 
     const jobData = {
       title: title,
       description: description,
       category: category,
-      environment: environment, // Spelling corrected
+      estDuration: estJobDuration,
+      environment: environment,
       clientId: "66fd9893a2a4bed234315070",
       address: address,
       city: city,
       status: "pending",
       scheduled: false,
       budget: budget,
+      images: imageURLs.length > 0 ? imageURLs : [],
     };
 
     try {
-        const token = await AsyncStorage.getItem('token');
-        const response = await fetch('http://192.168.8.103:8010/job/create', {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(jobData),
-        });
+      const response = await axios.post(
+        "http://192.168.1.3:8010/job/create",
+        jobData
+      );
 
-        if (response.ok) { // Changed to response.ok to check for success
-            Alert.alert('Success', 'Job posted successfully.');
-            setTitle('');
-            setDescription('');
-            setCategory('');
-            setEnvironment('');
-            setAddress('');
-            setCity('');
-            setBudget('');
-        } else {
-            // Parse response body for error details
-            const errorData = await response.json(); // Parse the error response
-            console.log('Response status:', response.status);
-            Alert.alert('Error', errorData.message || 'Failed to post the job.');
-        }
+      if (response.status === 201) {
+        Alert.alert("Success", "Job posted successfully.");
+        setTitle("");
+        setDescription("");
+        setCategory("");
+        setEnvironment("");
+        setAddress("");
+        setCity("");
+        setBudget("");
+        setEstJobDuration("");
+      } else {
+        console.log("Response status:", response.status);
+        console.log("Response data:", response.data);
+        Alert.alert(
+          "Error",
+          response.data.message || "Failed to post the job."
+        );
+      }
     } catch (error) {
-        console.error('Error posting the job:', error.message || error);
-        Alert.alert('Error', 'Something went wrong. Please try again.');
+      console.error(
+        "Error posting the job:",
+        error.response?.data || error.message
+      );
+      Alert.alert("Error", "Something went wrong. Please try again.");
     }
   };
 
   const handleEstimateDuration = () => {
     getEstimatedDuration(title, description);
   };
-
-  
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-white">

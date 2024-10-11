@@ -1,4 +1,5 @@
 const Worker = require('../../models/worker/worker.model');
+const Job = require('../../models/job/job.model');
 
 // In your worker.controller.js
 
@@ -92,6 +93,7 @@ const deleteWorker = async (req, res) => {
   }
 };
 
+
 module.exports = {
   getAllWorkers,
   getWorkerById,
@@ -99,5 +101,5 @@ module.exports = {
   updateWorker,
   deleteWorker,
   getWorkerData,
-  authenticateJWT,
+  authenticateJWT
 };

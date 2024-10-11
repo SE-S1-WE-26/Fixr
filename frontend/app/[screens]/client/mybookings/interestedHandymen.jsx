@@ -38,42 +38,31 @@ const InterestedHandymen = () => {
     useEffect(() => {
         console.log("Params in interested handymen: ", params); // Log to check params structure
         console.log("Job Id in interested handymen: ", jobId);   // Log jobId
-        fetchJob(); // Fetch job data when component mounts or jobId changes
-    }, [jobId]); // Only run when jobId changes
-
-    const onRefresh = () => {
-        setRefreshing(true);
-        fetchJob(); // Fetch job data again when refreshing
-    };
-
-    // Loading indicator
-    if (isLoading) {
-        return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size="large" color="orange" />
-                <Text>Loading handyman details...</Text>
-            </View>
-        );
-    }
-
-    // If jobId is not available
-    if (!jobId) {
-        return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <Text>Job ID is missing.</Text>
-            </View>
-        );
-    }
-
-    // If job data is not available
-    if (!job) {
-        return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <Text>Loading job data...</Text>
-            </View>
-        );
-    }
-
+    
+        if (jobId) {  // Ensure jobId exists before making the request
+          const fetchJob = async () => {
+            try {
+              const response = await axios.get(`http://192.168.1.3:8010/job/${jobId}`);
+              setJob(response.data);
+              console.log("Job data fetched:", response.data);
+              console.log()
+            } catch (error) {
+              console.error('Error fetching job:', error.response?.data || error.message);
+            }
+          };
+    
+          fetchJob();
+        }
+      }, [jobId]);  // Only run when jobId changes
+    
+      if (!jobId) {
+        return <Text>Loading job details...</Text>;  // Show loading while waiting for jobId
+      }
+    
+      if (!job) {
+        return <Text>Loading job...</Text>;  // Show loading while waiting for jobId
+      }
+    
     return (
         <SafeAreaView className="bg-white h-full">
             <ScrollView

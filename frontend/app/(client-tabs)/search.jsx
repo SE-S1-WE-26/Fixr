@@ -19,17 +19,17 @@ const Search = () => {
   const [searchQuery, setSearchQuery] = useState(''); // State for search input
   const [refreshing, setRefreshing] = useState(false); // State for refresh control
 
-  const fetchJobs = async () => {
-    try {
-      setIsLoading(true); // Start loading
-      const token = await AsyncStorage.getItem('token');
-      const response = await fetch('http://192.168.8.103:8010/job/client/', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await fetch('http://192.168.1.3:8010/job/client/', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
       if (response.ok) {
         const jobsData = await response.json();
@@ -69,7 +69,7 @@ const Search = () => {
     setIsVisible(false);
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch(`http://192.168.8.103:8010/job/delete/${selectedJobId}`, {
+      const response = await fetch(`http://192.168.1.3:8010/job/delete/${selectedJobId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`, // Include token in headers

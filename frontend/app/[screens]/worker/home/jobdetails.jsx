@@ -22,7 +22,7 @@ const JobDetails = () => {
   // Function to fetch job data by ID
   const fetchJobData = async (id) => {
     try {
-      const response = await axios.get(`http://192.168.8.103:8010/job/${id}`);
+      const response = await axios.get(`http://192.168.1.3:8010/job/${id}`);
       const jobData = response.data;
       setJob(jobData);
 
@@ -41,7 +41,7 @@ const JobDetails = () => {
   // Function to fetch client data by client ID
   const fetchClientData = async (clientId) => {
     try {
-      const response = await axios.get(`http://192.168.8.103:8010/client/${clientId}`);
+      const response = await axios.get(`http://192.168.1.3:8010/client/${clientId}`);
       setClient(response.data);
       console.log("Client Data:", response.data); // Log the full response data
     } catch (error) {
@@ -59,7 +59,7 @@ const JobDetails = () => {
   const handleApplyJob = async() => {
     try{
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch(`http://192.168.8.103:8010/job/interested/${jobId}`, {
+      const response = await fetch(`http://192.168.1.3:8010/job/interested/${jobId}`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
