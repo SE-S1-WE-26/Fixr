@@ -53,7 +53,7 @@ const getClientById = async (req, res) => {
     // Populate the userId field with the user's name and other attributes you want
     const client = await Client.findById(req.params.id).populate({
       path: 'userId', 
-      select: 'name email profilePic rating', // Only select the fields you need from the user
+      select: 'name email profilePic rating phone', // Only select the fields you need from the user
     });
     if (!client) return res.status(404).json({ message: 'Client not found' });
     res.status(200).json(client);

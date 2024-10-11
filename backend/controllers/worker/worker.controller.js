@@ -13,6 +13,7 @@ const authenticateJWT = (req, res, next) => {
             if (err) {
                 return res.sendStatus(403);
             }
+            console.log("User from JWT:", user);
             req.user = user;
             next();
         });
@@ -93,6 +94,27 @@ const deleteWorker = async (req, res) => {
   }
 };
 
+// Get all completed jobs for the authenticated worker
+const getCompletedJobs = async (req, res) => {
+  console.log("Worker ID:", req.user.userId);
+  try {
+      // Find jobs where the worker is scheduled and the job status is 'completed'
+      const completedJobs = await Job.find({
+          scheduledWorkerId: mongoose.Types.ObjectId(req.user.userId),
+          status: 'completed',
+      }); // Populate client details if needed
+
+      if (!completedJobs.length) {
+          return res.status(404).json({ message: 'No completed jobs found for this worker.' });
+      }
+
+      res.status(200).json(completedJobs);
+  } catch (error) {
+      res.status(500).json({ message: 'Error fetching completed jobs', error });
+  }
+};
+
+
 
 module.exports = {
   getAllWorkers,
@@ -101,5 +123,5 @@ module.exports = {
   updateWorker,
   deleteWorker,
   getWorkerData,
-  authenticateJWT
+  authenticateJWT,
 };

@@ -36,7 +36,6 @@ const Home = () => {
       const data = await response.json();
       setMyData(data);
       console.log("My Data:", data);
-      console.log("My Data:", data.favorites[0]._id);
     } catch (error) {
       console.error(error);
     } finally {
