@@ -16,6 +16,7 @@ import { Picker } from "@react-native-picker/picker";
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 import uploadImages from "../../../../utils/uploadImage";
 import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddJob = () => {
   const [title, setTitle] = useState("");
@@ -91,49 +92,58 @@ const AddJob = () => {
   };
 
   const handlePostJob = async () => {
+
     if (!title || !description || !category || !enviroment || !address || !city) {
       Alert.alert('Error', 'Please fill all the fields before submitting.');
       return;
     }
-  
-    // Job data payload
+
     const jobData = {
-      title: title,
-      description: description,
-      category: category,
-      environment: enviroment, // Spelling corrected
-      clientId: "66fd9893a2a4bed234315070",
-      address: address,
-      city: city,
-      status: "open",
-      scheduled: false,
-      budget: budget,
+        title,
+        description,
+        category,
+        environment: enviroment,
+        address,
+        city,
+        status: "pending",
+        scheduled: false,
+        budget,
     };
 
     try {
-      // Send a POST request to the backend API using axios
-      const response = await axios.post('http://192.168.8.103:8010/job/create', jobData);
-  
-      if (response.status === 201) {
-        Alert.alert('Success', 'Job posted successfully.');
-        // Clear form after successful submission
-        setTitle('');
-        setDescription('');
-        setCategory('');
-        setEnviroment('');  // Fixed typo
-        setAddress('');
-        setCity('');
-        setBudget('');  // Clear budget field as well
-      } else {
-        console.log('Response status:', response.status);  // Debugging status code
-        Alert.alert('Error', response.data.message || 'Failed to post the job.');
-      }
+        const token = await AsyncStorage.getItem('token');
+        const response = await fetch('http://192.168.8.103:8010/job/create', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jobData),
+        });
+
+        if (response.ok) { // Changed to response.ok to check for success
+            Alert.alert('Success', 'Job posted successfully.');
+            setTitle('');
+            setDescription('');
+            setCategory('');
+            setEnviroment('');
+            setAddress('');
+            setCity('');
+            setBudget('');
+        } else {
+            // Parse response body for error details
+            const errorData = await response.json(); // Parse the error response
+            console.log('Response status:', response.status);
+            Alert.alert('Error', errorData.message || 'Failed to post the job.');
+        }
     } catch (error) {
-      console.error('Error posting the job:', error.response?.data || error.message);
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+        console.error('Error posting the job:', error.message || error);
+        Alert.alert('Error', 'Something went wrong. Please try again.');
     }
-  };
+};
+
   
+
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-white">
