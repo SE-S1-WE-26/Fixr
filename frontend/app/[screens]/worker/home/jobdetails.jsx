@@ -81,6 +81,9 @@ const JobDetails = () => {
         <ActivityIndicator size="large" color="orange" />
       </View>
       )}
+      <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5">
+        <Text className="text-white font-semibold">Apply For The Job</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
