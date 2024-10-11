@@ -4,7 +4,7 @@ import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import images from '../../constants/images'
 
-const JobPostsBox = ({ type, topic, description, handlePressJob, handlePressHandymen }) => {
+const JobPostsBox = ({ type, topic, description, handlePressJob, handlePressHandymen, handleDelete }) => {
     return (
         <SafeAreaView className={`rounded-xl mx-auto shadow-smw-[340px] w-11/12 pb-4 border border-gray-300 flex flex-col mb-2`}>
             <View className='flex-row -mt-3 left-4'>
@@ -23,7 +23,7 @@ const JobPostsBox = ({ type, topic, description, handlePressJob, handlePressHand
                         <Text className="text-white font-medium">View Post</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity >
+                <TouchableOpacity onPress={handleDelete}>
                     <View className={` bg-red-800 rounded-xl px-2.5 h-[35px] flex-row items-center w-40 justify-center`}>
                         <Text className="text-white font-medium">Delete Post</Text>
                     </View>

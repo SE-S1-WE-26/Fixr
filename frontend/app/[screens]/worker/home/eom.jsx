@@ -20,7 +20,7 @@ const EOM = () => {
 
   const fetchCurentEom = async () => {
     try {
-      const response = await axios.get('http://192.168.1.3:8010/eom/current');
+      const response = await axios.get('http://192.168.8.103:8010/eom/current');
       setEomWinner(response.data[0]);
       setEomSecond(response.data[1]);
       setEomThird(response.data[2]);

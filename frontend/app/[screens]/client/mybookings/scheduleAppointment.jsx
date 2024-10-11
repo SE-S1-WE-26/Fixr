@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar } from 'react-native-calendars';
 import icons from '../../../../constants/icons';
 import CustomButton from '../../../../components/common/CustomButton';
-import AlertBox from '../../../../components/client/AlertBox';  
+import ConfirmationBox from '../../../../components/client/ConfirmationBox';
+import router from 'expo-router';
 
 const scheduleAppointment = () => {
     const [selectedDate, setSelectedDate] = useState('2024-10-03');  // Default selected date
@@ -12,6 +13,11 @@ const scheduleAppointment = () => {
     const [alertMessage, setAlertMessage] = useState('');             // Alert message
     const [title, setTitle] = useState('');
     const [image, setImage] = useState('');
+    const [confirmButton, setConfirmButton] = useState(false);
+    const [cancelMsg, setCancelMsg] = useState('');
+    const [cancelColor, setCancelColor] = useState('');
+    const [cancelTextStyle, setCancelTextStyle] = useState('');
+
 
     // Dates with special markings
     const markedDates = {
@@ -37,7 +43,11 @@ const scheduleAppointment = () => {
             setAlertMessage('Sorry, the selected date is fully booked! Please select another date.');
             setIsAlertVisible(true);
             setTitle("Error");
-            setImage("close");
+            setImage("error");
+            setConfirmButton(false);
+            setCancelMsg("Close");
+            setCancelColor("white");
+            setCancelTextStyle('');
         }
         // If the date has a weather warning, show custom alert
         else if (markedDates[dateString]?.selectedColor === '#B0BEC5') {
@@ -45,12 +55,20 @@ const scheduleAppointment = () => {
             setIsAlertVisible(true);
             setTitle("Weather Warning");
             setImage("weatherWarning");
+            setConfirmButton(true);
+            setCancelMsg("No");
+            setCancelColor("red-800");
+            setCancelTextStyle('text-white');
         }
         else {
             // If it's a regular selectable date
             setSelectedDate(dateString);
         }
     };
+
+    const handleCancel = ()=> {
+        setIsAlertVisible(false);
+    }
 
     return (
         <SafeAreaView className="bg-white h-full">
@@ -126,13 +144,17 @@ const scheduleAppointment = () => {
                     containerStyles={"mx-4 mb-5"}
                 />
             </ScrollView>
-            {/* Custom AlertBox Component */}
-            <AlertBox
-                visible={isAlertVisible}
-                onClose={() => setIsAlertVisible(false)}
-                message={alertMessage}
-                image={image}
-                title={title}
+            <ConfirmationBox
+            visible={isAlertVisible}
+            image={image}
+            message={alertMessage}
+            title={title}
+            cancelColor={cancelColor}
+            onCancelMsg={cancelMsg}
+            confirmButton={confirmButton}
+            onConfirmMesg={"Yes"}
+            cancelTextStyle={cancelTextStyle}
+            onCancel={handleCancel}
             />
 
         </SafeAreaView>

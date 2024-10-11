@@ -36,6 +36,8 @@ import halfStar from "../assets/icons/client/halfStar.png";
 import noStar from "../assets/icons/client/noStar.png";
 import close from '../assets/icons/client/close.png';
 import weatherWarning from '../assets/icons/client/weatherWarning.png';
+import bin from '../assets/icons/client/bin.png';
+import error from '../assets/icons/client/error.png';
 import scanner from '../assets/icons/client/scanner.png';
 
 export default {
@@ -57,6 +59,8 @@ export default {
   noStar,
   close,
   weatherWarning,
+  bin,
+  error,
   scanner,
 
   //Common Icons
