@@ -65,7 +65,7 @@ const ReviewCardOne = ({ workerData }) => {
 
     } catch (error) {
       console.error(error);
-      Alert.alert("Error", "Failed to delete review");
+      //Alert.alert("Error", "Failed to delete review");
     } finally {
       setIsDeletingReview(false);
     }
