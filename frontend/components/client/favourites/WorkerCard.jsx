@@ -6,48 +6,11 @@ import { icons } from "../../../constants";
 import StarRating from "react-native-star-rating-widget";
 import { useRouter } from "expo-router";
 
-const TopWorkerCard = ({ worker, isFavorite }) => {
-  const router = useRouter();
-  const handlePress = () => {
-    router.push({
-      pathname: "/pages/client/home/ContactWorker",
-      params: { worker: JSON.stringify(data) }, // Passing worker data
-    });
-  };
-  // State to manage the favorite status
-  const [favorite, setFavorite] = useState(isFavorite);
-
-  useEffect(() => {
-    setFavorite(isFavorite); // Sync initial state
-  }, [isFavorite]);
-
-  const handleFavorite = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      const response = await axios.post(
-        'http://192.168.1.3:8010/client/favorite',
-        { workerId: worker._id },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      // Toggle the favorite status in the state based on response
-      if (response.status === 200) {
-        setFavorite(!favorite);
-        console.log("Toggled favorite status for worker:", worker);
-      }
-    } catch (error) {
-      console.error("Error toggling favorite status:", error);
-    }
-  };
-
+const WorkerCard = ({ worker }) => {
+    console.log(worker);
   return (
     <TouchableOpacity className="bg-powder shadow px-2 pt-2 pb-2 rounded-lg max-w-[155px] my-4"
-      onPress={handlePress} // Navigate to ContactWorker on press
+      // Navigate to ContactWorker on press
     >
       <View>
         <Image
@@ -72,14 +35,14 @@ const TopWorkerCard = ({ worker, isFavorite }) => {
           </View>
         </View>
       </View>
-      <TouchableOpacity className="absolute top-0 right-0 bg-white pr-2 pt-2 pb-1 pl-2 rounded-bl-xl rounded-tr-lg" onPress={handleFavorite}>
+      {/* <TouchableOpacity className="absolute top-0 right-0 bg-white pr-2 pt-2 pb-1 pl-2 rounded-bl-xl rounded-tr-lg" >
         <Image
           source={favorite ? icons.redlike : icons.like}
           className={`w-6 h-6 ${favorite ? "" : "opacity-30"}`}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </TouchableOpacity>
   );
 };
 
-export default TopWorkerCard;
+export default WorkerCard;

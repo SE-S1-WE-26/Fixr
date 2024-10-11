@@ -29,22 +29,32 @@ const MyBookings = () => {
               date={"23/10/2024"}
               time={"02:00PM-04:00PM"}
               amount={"LKR 2,500.00"}
+              qrcode={"123456789"}
+              id={"111"}
+              workerId={"122345232"}
             />
             <BookingsBox
-              type={"plumbing"}
-              topic={"Leaking Kitchen Sink"}
-              handyman={"Janaka Fernando"}
+              type={"roofing"}
+              topic={"Roof Leak Repair"}
+              handyman={"Kamal Perera"}
               date={"23/10/2024"}
               time={"02:00PM-04:00PM"}
               amount={"LKR 2,500.00"}
+              qrcode={"223456789"}
+              id={"222"}
+              workerId={"122345233"}
+
             />
             <BookingsBox
-              type={"plumbing"}
-              topic={"Leaking Kitchen Sink"}
-              handyman={"Janaka Fernando"}
+              type={"painting"}
+              topic={"Painting"}
+              handyman={"Sunil Silva"}
               date={"23/10/2024"}
               time={"02:00PM-04:00PM"}
               amount={"LKR 2,500.00"}
+              qrcode={"323456789"}
+              id={"333"}
+              workerId={"122345234"}
             />
           </View>
 
