@@ -64,6 +64,9 @@ const ClientCard = ({ client }) => {
           </TouchableOpacity>
         </View>
       </View>
+      <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2">
+        <Text className="text-white font-semibold">Apply For The Job</Text>
+      </TouchableOpacity>
     </View>
   );
 };
