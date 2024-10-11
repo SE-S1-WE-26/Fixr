@@ -24,6 +24,7 @@ const userRouter = require('./routes/user/user.route');
 //Worker Side
 const workerRouter = require('./routes/worker/worker.route');
 const eomRouter = require('./routes/worker/eom.route');
+const workerTimeSlotRouter = require('./routes/worker/workerTimeSlot.route');
 
 //Client Side
 const clientRouter = require('./routes/client/client.route');
@@ -40,6 +41,7 @@ app.use('/user', userRouter);
 //Worker Side
 app.use('/worker', workerRouter);
 app.use('/eom', eomRouter);
+app.use('/slots', workerTimeSlotRouter);
 
 //Client Side
 app.use('/client', clientRouter);

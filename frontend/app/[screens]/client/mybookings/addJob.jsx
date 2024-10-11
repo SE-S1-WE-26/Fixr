@@ -92,22 +92,22 @@ const AddJob = () => {
   };
 
   const handlePostJob = async () => {
-
-    if (!title || !description || !category || !enviroment || !address || !city) {
+    if (!title || !description || !category || !environment || !address || !city) {
       Alert.alert('Error', 'Please fill all the fields before submitting.');
       return;
     }
 
     const jobData = {
-        title,
-        description,
-        category,
-        environment: enviroment,
-        address,
-        city,
-        status: "pending",
-        scheduled: false,
-        budget,
+      title: title,
+      description: description,
+      category: category,
+      environment: environment, // Spelling corrected
+      clientId: "66fd9893a2a4bed234315070",
+      address: address,
+      city: city,
+      status: "open",
+      scheduled: false,
+      budget: budget,
     };
 
     try {
@@ -140,10 +140,13 @@ const AddJob = () => {
         console.error('Error posting the job:', error.message || error);
         Alert.alert('Error', 'Something went wrong. Please try again.');
     }
-};
+  };
+
+  const handleEstimateDuration = () => {
+    getEstimatedDuration(title, description);
+  };
 
   
-
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-white">

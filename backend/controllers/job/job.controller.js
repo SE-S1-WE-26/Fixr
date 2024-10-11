@@ -89,7 +89,7 @@ const getJobsByClientId = async (req, res) => {
 // Get jobs by scheduled worker ID (only if scheduled is true)
 const getJobsByScheduledWorkerId = async (req, res) => {
   try {
-    const jobs = await Job.find({ scheduledWorkerId: req.params.scheduledWorkerId, scheduled: true })
+    const jobs = await Job.find({ scheduledWorkerId: req.params.id, scheduled: true })
       .populate('clientId')
       .populate('scheduledWorkerId');
 
