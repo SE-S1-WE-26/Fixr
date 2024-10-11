@@ -122,7 +122,7 @@ const ReviewWidget = (props) => {
   };
 
   return (
-    <BottomSheet ref={bottomSheetRef} snapPoints={["71%"]} enablePanDownToClose>
+    <BottomSheet index={-1} ref={bottomSheetRef} snapPoints={["71%"]} enablePanDownToClose>
       <BottomSheetScrollView style={{ flex: 1 }}>
         {isLoading ? (
           <ActivityIndicator size="large" color="#0000ff" />

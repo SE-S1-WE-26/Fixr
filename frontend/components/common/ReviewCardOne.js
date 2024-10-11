@@ -41,7 +41,7 @@ const ReviewCardOne = ({ workerData }) => {
       const token = await AsyncStorage.getItem("token");
 
       const response = await fetch(
-        `http://192.168.37.210:8010/worker/deletereview/${reviewId}`,
+        `https://fixerbackend.vercel.app/worker/deletereview/${reviewId}`,
         {
           method: "DELETE",
         }

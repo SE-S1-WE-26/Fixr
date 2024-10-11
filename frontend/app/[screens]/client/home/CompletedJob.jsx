@@ -44,11 +44,11 @@ export default function CompletedJob() {
 
   const fetchJobDetails = async () => {
     try {
-      const jobResponse = await axios.get(`http://192.168.1.3:8010/job/${id}`);
+      const jobResponse = await axios.get(`https://fixerbackend.vercel.app/job/${id}`);
       setJob(jobResponse.data);
 
       if (workerId) {
-        const workerResponse = await axios.get(`http://192.168.1.3:8010/worker/${workerId}`);
+        const workerResponse = await axios.get(`https://fixerbackend.vercel.app/worker/${workerId}`);
         setWorker(workerResponse.data);
       }
     } catch (err) {
@@ -94,7 +94,7 @@ export default function CompletedJob() {
 
   const updateJobCostDatabase = async (jobId, jobCost) => {
     try {
-      const response = await axios.put(`http://192.168.1.3:8010/job/cost/${jobId}`, { cost: jobCost });
+      const response = await axios.put(`https://fixerbackend.vercel.app/job/cost/${jobId}`, { cost: jobCost });
       if (response.status === 200) {
         console.log("Job cost updated successfully:", response.data);
       } else {

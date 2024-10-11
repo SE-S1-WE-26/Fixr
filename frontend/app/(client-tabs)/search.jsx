@@ -199,6 +199,7 @@ const Search = () => {
       </ScrollView>
     </SafeAreaView>
   );
-};
+})
+    };
 
 export default Search;
