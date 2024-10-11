@@ -1,53 +1,60 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, ActivityIndicator, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import JobTypeIconBar from '../../../../components/client/JobTypeIconBar'
 import CustomButton from '../../../../components/common/CustomButton'
 import icons from '../../../../constants/icons'
-import { router, useRouter, useGlobalSearchParams } from 'expo-router'
-import { React, useState, useEffect } from 'react'
+import { useRouter, useGlobalSearchParams } from 'expo-router'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import ConfirmationBox from '../../../../components/client/ConfirmationBox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const JobPost = () => {
   const params = useGlobalSearchParams();
-  const { jobId } = params; // Destructure jobId directly from params
-  const router = useRouter(); // Use router outside useEffect
+  const { jobId } = params;
+  const router = useRouter();
 
   const [job, setJob] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Initially set to true to show loading indicator
 
   useEffect(() => {
-    console.log("Params: ", params); // Log to check params structure
-    console.log("Job Id: ", jobId);   // Log jobId
+    console.log("Params: ", params);
+    console.log("Job Id: ", jobId);
 
-    if (jobId) {  // Ensure jobId exists before making the request
+    if (jobId) {
       const fetchJob = async () => {
         try {
           const response = await axios.get(`http://192.168.1.3:8010/job/${jobId}`);
           setJob(response.data);
           console.log("Job data fetched:", response.data);
-          console.log()
         } catch (error) {
           console.error('Error fetching job:', error.response?.data || error.message);
+        } finally {
+          setIsLoading(false); // Stop loading once the job data is fetched
         }
       };
 
       fetchJob();
+    } else {
+      setIsLoading(false); // Stop loading if no jobId is found
     }
-  }, [jobId]);  // Only run when jobId changes
+  }, [jobId]);
 
-  if (!jobId) {
-    return <Text>Loading job details...</Text>;  // Show loading while waiting for jobId
-  }
-
-  if (!job) {
-    return <Text>Loading job...</Text>;  // Show loading while waiting for jobId
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="orange" />
+        <Text>Loading job details...</Text>
+      </View>
+    );
   }
 
   const handleDelete = (jobId) => {
-    setSelectedJobId(jobId); // Store the job ID of the job to be deleted
-    setIsVisible(true); // Show confirmation dialog
+    setSelectedJobId(jobId);
+    setIsVisible(true);
   }
 
   const handleConfirm = async () => {
@@ -57,13 +64,13 @@ const JobPost = () => {
       const response = await fetch(`http://192.168.1.3:8010/job/delete/${selectedJobId}`, {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${token}`, // Include token in headers
+          Authorization: `Bearer ${token}`, 
         },
       });
 
       if (response.ok) {
         Alert.alert('Success', 'Job deleted successfully.');
-        setJobs(jobs.filter(job => job._id !== selectedJobId)); // Update the job list after deletion
+        setJob(null); // Clear job data after deletion
       } else {
         const errorData = await response.json();
         Alert.alert('Error', errorData.message || 'Failed to delete the job.');
@@ -81,9 +88,11 @@ const JobPost = () => {
   return (
     <SafeAreaView className="bg-white h-full">
       <ScrollView>
-        <JobTypeIconBar
-          type={job.category.toLowerCase()}
-        />
+        {job &&
+          <JobTypeIconBar
+            type={job.category.toLowerCase()}
+          />
+        }
         <View className="relative w-full h-[120px] -mb-11 -mt-2">
           <CustomButton
             title={
@@ -96,49 +105,51 @@ const JobPost = () => {
               pathname: "./editJob",
               params: { jobId: jobId }
             })}
-            containerStyles={"absolute right-4 top-4 px-4 h-12 rounded-full"}
+            containerStyles={"absolute right-4 top-4 px-4 h-12 rounded-xl"}
           />
         </View>
 
         {/* Job Info */}
-        <View className="border border-gray-200 mx-4 rounded-xl py-2 mb-4">
-          <Text className="text-center font-bold text-xl my-3">{job.title}</Text>
-          <View className="ml-7 mb-4">
-            <Text className="font-medium text-lg">Job Description</Text>
-            <Text className=" text-sm">{job.description}</Text>
+        {job &&
+          <View className="border border-gray-200 mx-4 rounded-xl py-2 mb-4">
+            <Text className="text-center font-bold text-xl my-3">{job.title}</Text>
+            <View className="ml-7 mb-4">
+              <Text className="font-medium text-lg">Job Description</Text>
+              <Text className=" text-sm">{job.description}</Text>
+            </View>
+            <View className="ml-7 mb-4">
+              <Text className="font-medium text-lg">Job Category</Text>
+              <Text className="text-base">{job.category}</Text>
+            </View>
+            <View className="ml-7 mb-4">
+              <Text className="font-medium text-lg">Indoor/Outdoor Work</Text>
+              <Text className="text-base">{job.environment}</Text>
+            </View>
+            <View className="ml-7 mb-4">
+              <Text className="font-medium text-lg">Address Line</Text>
+              <Text className="text-base">{job.address}</Text>
+            </View>
+            <View className="ml-7 mb-4">
+              <Text className="font-medium text-lg">City</Text>
+              <Text className="text-base">{job.city}</Text>
+            </View>
+            <CustomButton
+              title={"View Interested Handymen"}
+              handlePress={() => router.push({
+                pathname: './interestedHandymen',
+                params: { jobId: jobId }
+              })}
+              containerStyles={"mx-5 mb-4 text-sm"}
+              textStyles={"text-base"}
+            />
+            <CustomButton
+              title={"Delete Post"}
+              handlePress={() => handleDelete(job._id)}
+              containerStyles={"mx-5 bg-red-800 mb-4"}
+              textStyles={"text-base"}
+            />
           </View>
-          <View className="ml-7 mb-4">
-            <Text className="font-medium text-lg">Job Category</Text>
-            <Text className="text-base">{job.category}</Text>
-          </View>
-          <View className="ml-7 mb-4">
-            <Text className="font-medium text-lg">Indoor/Outdoor Work</Text>
-            <Text className="text-base">{job.environment}</Text>
-          </View>
-          <View className="ml-7 mb-4">
-            <Text className="font-medium text-lg">Address Line</Text>
-            <Text className="text-base">{job.address}</Text>
-          </View>
-          <View className="ml-7 mb-4">
-            <Text className="font-medium text-lg">City</Text>
-            <Text className="text-base">{job.city}</Text>
-          </View>
-          <CustomButton
-            title={"View Interested Handymen"}
-            handlePress={() => router.push({
-              pathname: './interestedHandymen',
-              params: { jobId: jobId }
-            })}
-            containerStyles={"mx-5 mb-4 text-sm"}
-            textStyles={"text-base"}
-          />
-          <CustomButton
-            title={"Delete Post"}
-            handlePress={() => handleDelete(job._id)}
-            containerStyles={"mx-5 bg-red-800 mb-4"}
-            textStyles={"text-base"}
-          />
-        </View>
+        }
       </ScrollView>
       <ConfirmationBox
         visible={isVisible}
@@ -154,7 +165,7 @@ const JobPost = () => {
         confirmColor={"red-800"}
       />
     </SafeAreaView>
-  )
+  );
 }
 
 export default JobPost;
