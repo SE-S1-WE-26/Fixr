@@ -32,6 +32,10 @@ const clientRouter = require('./routes/client/client.route');
 //Jobs
 const jobRouter = require('./routes/job/job.router');
 
+//Reviews
+
+const reviewRouter = require('./routes/review/review.route');
+
 
 //Use Routes
 //User
@@ -39,7 +43,7 @@ app.use('/auth', authRouter);
 app.use('/user', userRouter);
 
 //Worker Side
-app.use('/worker', workerRouter);
+app.use('/worker', workerRouter ,reviewRouter);
 app.use('/eom', eomRouter);
 app.use('/slots', workerTimeSlotRouter);
 

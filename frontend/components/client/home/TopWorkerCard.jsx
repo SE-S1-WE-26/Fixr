@@ -25,7 +25,7 @@ const TopWorkerCard = ({ worker, isFavorite }) => {
     try {
       const token = await AsyncStorage.getItem('token');
       const response = await axios.post(
-        'http://192.168.1.3:8010/client/favorite',
+        'https://fixerbackend.vercel.app/lient/favorite',
         { workerId: worker._id },
         {
           headers: {
