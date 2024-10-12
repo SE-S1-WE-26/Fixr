@@ -46,7 +46,7 @@ const TopWorkerCard = ({ worker, isFavorite }) => {
   };
 
   return (
-    <TouchableOpacity className="bg-powder border-2 border-platinum shadow px-2 pt-2 pb-2 rounded-lg max-w-[155px] my-4"
+    <TouchableOpacity className="bg-powder shadow px-2 pt-2 pb-2 rounded-lg max-w-[155px] my-4"
       onPress={handlePress} // Navigate to ContactWorker on press
     >
       <View>

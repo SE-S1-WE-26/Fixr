@@ -17,7 +17,7 @@ const MyBookings = () => {
     setIsLoading(true);
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch('http://192.168.1.3:8010/job/client/scheduled', {
+      const response = await fetch('https://fixerbackend.vercel.app/job/client/scheduled', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -64,9 +64,11 @@ const MyBookings = () => {
   if (isLoading) {
     return (
       <SafeAreaView className="h-full bg-white">
-        <View className="flex-1 justify-center items-center">
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
+        <ScrollView>
+          <View className="w-full h-full flex justify-center items-center">
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }

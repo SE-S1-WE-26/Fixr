@@ -12,7 +12,7 @@ const TestLogin = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('https://fixerbackend.vercel.app/user');
+        const response = await axios.get('http://192.168.8.101:8010/user');
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -27,16 +27,16 @@ const TestLogin = () => {
     setIsLoading(true);
     
     try {
-      const response = await axios.post('https://fixerbackend.vercel.app/auth/signin', {
+      const response = await axios.post('http://192.168.8.101:8010/auth/signin', {
         username: user.username, // Use the username from the selected user
         password: user.password  // Assuming you have a test password for each user (use cautiously)
       });
 
-      // console.log('Sign in response:', response.data);
+      console.log('Sign in response:', response.data);
 
       if (response.data.token) {
         await AsyncStorage.setItem('token', response.data.token);
-        // console.log('Token saved:', response.data.token);
+        console.log('Token saved:', response.data.token);
         router.push(response.data.redirectUrl);
       }
     } catch (error) {

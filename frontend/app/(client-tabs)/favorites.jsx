@@ -7,7 +7,6 @@ import FavouriteWorkersGrid from "../../components/client/favourites/FavouriteWo
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from '@react-navigation/native';
-import Heading from "../../components/common/Heading";
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
@@ -20,7 +19,7 @@ const Favorites = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       console.log("Token:", token);
-      const response = await fetch('http://192.168.1.3:8010/client/mydata', {
+      const response = await fetch('https://fixerbackend.vercel.app/client/mydata', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -66,8 +65,7 @@ const Favorites = () => {
           <Header title={"Favorites"} />
         </View>
         <PopularCategoriesList />
-        {/* <SearchBar /> */}
-        <Heading name="Favourite Workers" />
+        <SearchBar />
         <FavouriteWorkersGrid workers={favorites} /> 
       </ScrollView>
     </SafeAreaView>

@@ -12,6 +12,7 @@ const RecommendedJobs = () => {
     try {
       const response = await axios.get('https://fixerbackend.vercel.app/job/'); // Update with your API URL
       setJobs(response.data);
+      setLoading(false);
     } catch (err) {
       setError('Error fetching jobs');
       console.error(err);
@@ -45,7 +46,7 @@ const RecommendedJobs = () => {
         />
       ) : (
         <Text>No jobs found</Text>
-      )}
+      )}        
     </View>
   );
 };

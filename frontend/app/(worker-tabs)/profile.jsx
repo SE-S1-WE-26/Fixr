@@ -2,31 +2,27 @@ import React, { useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, View } from "react-native";
 import Header from "../../components/common/Header";
-import ReviewCard from "../../components/common/ReviewCard";
 import ProfileCard from "../../components/worker/profile/ProfileCard";
 import Summary from "../../components/worker/profile/Summary";
 import Heading from "../../components/common/Heading";
-import BottomSheet from "@gorhom/bottom-sheet"; // Assuming you're using @gorhom/bottom-sheet
-
+import ReviewWidget from "../../components/common/ReviewCard"; // Update if needed
 
 const Profile = () => {
-  const bottonSheetRef = useRef(); // ref for the bottom sheet
+  const bottomSheetRef = useRef();
 
   return (
     <>
-    <SafeAreaView className="h-full bg-white">
-      <Header title={"Profile"} />
-      <ScrollView>
-        <ProfileCard />
-        <Heading name="Summary" link="/" />
-        {/* Pass the ref to the Summary */}
-        {/* <Summary rating={bottonSheetRef} /> */}
-      </ScrollView>
+      <SafeAreaView className="h-full bg-white">
+        <Header title={"Profile"} />
+        <ScrollView>
+          <ProfileCard />
+          <Heading name="Summary" link="/" />
+          <Summary rating={bottomSheetRef} />
+        </ScrollView>
 
-    </SafeAreaView>
-      <>
-        {/* <ReviewCard rating={bottonSheetRef} /> */}
-      </>
+      {/* Pass bottomSheetRef to ReviewWidget */}
+      <ReviewWidget rating={bottomSheetRef} />
+      </SafeAreaView>
     </>
   );
 };

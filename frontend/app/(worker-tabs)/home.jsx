@@ -14,7 +14,7 @@ const Home = () => {
 
   const fetchCurentEom = async () => {
     try {
-      const response = await axios.get('http://192.168.1.3:8010/eom/current');
+      const response = await axios.get('https://fixerbackend.vercel.app/eom/current');
       setEom(response.data[0]);
     } catch (err) {
       console.error("Error fetching EOM:", err);
@@ -32,7 +32,7 @@ const Home = () => {
         <HomeHeader />
         <EOMCard eom={eom} />
         <Heading name="Nearby Jobs" link="/" />
-        {/* <NearbyJobs /> */}
+        <NearbyJobs />
         <Heading name="Recommended Jobs" link="/" />
         <RecommendedJobs />
       </ScrollView>

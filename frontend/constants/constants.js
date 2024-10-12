@@ -1,28 +1,5 @@
 import { images,icons } from "../constants";
 
-export const Social = [
-  {
-    id: 1,
-    name: "Facebook",
-    icon: images.facebook,
-  },
-  {
-    id: 2,
-    name: "Instagram",
-    icon: images.instagram,
-  },
-  {
-    id: 3,
-    name: "WhatsApp",
-    icon: images.whatsapp,
-  },
-  {
-    id: 4,
-    name: "Messenger",
-    icon: images.messenger,
-  },
-];
-
 export const EarningsList = [
   {
     id: 1,

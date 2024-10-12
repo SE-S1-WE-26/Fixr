@@ -15,7 +15,7 @@ const MyJobs = () => {
     setIsLoading(true);
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch('http://192.168.1.3:8010/worker/mydata', {
+      const response = await fetch('https://fixerbackend.vercel.app/worker/mydata', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -39,7 +39,7 @@ const MyJobs = () => {
 
   const fetchMyJobs = async (workerId) => {
     try {
-      const response = await fetch(`http://192.168.1.3:8010/job/worker/${workerId}`);
+      const response = await fetch(`https://fixerbackend.vercel.app/job/worker/${workerId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch jobs');
       }

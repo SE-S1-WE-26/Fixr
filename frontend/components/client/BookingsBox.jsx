@@ -12,32 +12,22 @@ import ScanIcon from '../../components/client/home/ScanIcon';
 const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobStatus, id }) => {
     const router = useRouter();
     const [worker, setWorker] = useState(null);
-    const [loading, setLoading] = useState(true); // Add loading state
-
-    const handleNavigation = () => {
-        // Navigate to Scanner screen and pass the expected QR code
-        router.push({
-            pathname: "/pages/client/mybookings/qrscanner",
-            params: { qrcode, jobStatus, title, id, workerId }, // Passing the expected QR code
-        });
-    };
-
-    const displayJobStatus = (status) => {
-        if(status === 'pending') {
-            return <Text className="mt-1 text-base left-1 text-slate-500">Pending</Text>;
-        }else if(status === 'ongoing') {
-            return <Text className="mt-1 text-base left-1 text-orange">Ongoing</Text>;
-        }else if(status === 'completed') {
-            return <Text className="mt-1 text-base left-1 text-green-900">Completed</Text>;
-        }else if(status === 'cancelled') {
-            return <Text className="mt-1 text-base left-1 text-red-800">Cancelled</Text>;
-        }
-    }
+    const [loading, setLoading] = useState(true);
+    const [isAlertVisible, setIsAlertVisible] = useState(false);
+    const [alertDetails, setAlertDetails] = useState({
+        cancelMsg: '',
+        alertTitle: '',
+        image: '',
+        message: '',
+        cancelColor: '',
+        cancelTextStyle: '',
+        confirmButton: false,
+    });
 
     const fetchWorker = async () => {
         try {
             const response = await axios.get(
-                `https://fixerbackend.vercel.app//worker/${workerId}`
+                `https://fixerbackend.vercel.app/worker/${workerId}`
             );
             setWorker(response.data);
         } catch (error) {
@@ -76,7 +66,7 @@ const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobSta
 
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch(`https://fixerbackend.vercel.app/job/update/${id}`, {
+            const response = await fetch(`http://192.168.8.101:8010/job/update/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -131,11 +121,8 @@ const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobSta
                 </View>
             </View>
             <View className="flex-row justify-between items-center px-4">
-                <View>
                 <Text className="mt-1 text-base left-1">Handyman: {worker?.userId?.name}</Text>
-                {displayJobStatus(jobStatus)}
-                </View>
-                <TouchableOpacity onPress={handleNavigation}>
+                <TouchableOpacity onPress={() => router.push({ pathname: "/pages/client/mybookings/qrscanner", params: { qrcode, jobStatus, title, id, workerId } })}>
                     <ScanIcon icon={icons.scanner} />
                 </TouchableOpacity>
             </View>

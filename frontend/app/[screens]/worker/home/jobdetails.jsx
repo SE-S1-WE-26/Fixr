@@ -13,18 +13,16 @@ import { icons } from "../../../../constants";
 
 const JobDetails = () => {
   const router = useRouter();
-  const { jobId, jobCost } = useGlobalSearchParams();
+  const { jobId,jobCost } = useGlobalSearchParams();
 
   const [job, setJob] = useState(null);
   const [client, setClient] = useState(null);
-  const [loadingJob, setLoadingJob] = useState(true);
-  const [loadingClient, setLoadingClient] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   // Function to fetch job data by ID
   const fetchJobData = async (id) => {
-    setLoadingJob(true); // Set loading state for job data
     try {
-      const response = await axios.get(`http://192.168.1.3:8010/job/${id}`);
+      const response = await axios.get(`https://fixerbackend.vercel.app/job/${id}`);
       const jobData = response.data;
       setJob(jobData);
 
@@ -34,22 +32,20 @@ const JobDetails = () => {
       }
     } catch (error) {
       console.error("Error fetching job:", error.message);
+      setLoading(false);
     } finally {
-      setLoadingJob(false); // Ensure loading state is updated for job data
+      setLoading(false); // Ensure loading state is updated in all cases
     }
   };
 
   // Function to fetch client data by client ID
   const fetchClientData = async (clientId) => {
-    setLoadingClient(true); // Set loading state for client data
     try {
-      const response = await axios.get(`http://192.168.1.3:8010/client/${clientId}`);
+      const response = await axios.get(`https://fixerbackend.vercel.app/client/${clientId}`);
       setClient(response.data);
       console.log("Client Data:", response.data); // Log the full response data
     } catch (error) {
       console.error("Error fetching client:", error.message);
-    } finally {
-      setLoadingClient(false); // Ensure loading state is updated for client data
     }
   };
 
@@ -63,23 +59,21 @@ const JobDetails = () => {
   const handleApplyJob = async() => {
     try{
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch(`http://192.168.1.3:8010/job/interested/${jobId}`, {
+      const response = await fetch(`https://fixerbackend.vercel.app/job/interested/${jobId}`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
-      const data = await response.json();
-      console.log("Applied for job:", data);
     }
     catch(err){
-      console.error("Error applying for job:", err.message);
+
     }
   }
 
   return (
-    <SafeAreaView className="bg-white h-full">
+    <SafeAreaView className="h-full bg-white">
       <Stack.Screen
         options={{
           headerBackVisible: false,
@@ -96,25 +90,17 @@ const JobDetails = () => {
           ),
         }}
       />
-      {loadingJob ? (
-        <View className="flex h-full w-full justify-center items-cente">
-          <ActivityIndicator size="large" color="orange" />
-        </View>
+      <JobInfo job={job} jobCost={jobCost} loading={loading} />
+      {client && client.userId ? ( // Check if client and userId are defined
+        <ClientCard client={client} loading={loading} />
       ) : (
-        <View className='-mt-6 h-full'>
-          <JobInfo job={job} jobCost={jobCost} loading={loadingJob} />
-          {client && client.userId ? ( // Check if client and userId are defined
-            <ClientCard client={client} loading={loadingClient} />
-          ) : (
-            <View className="flex w-full justify-center items-center">
-              <Text>No client details available</Text>
-            </View>
-          )}
-          <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5" onPress={handleApplyJob}>
-            <Text className="text-white font-semibold">Apply For The Job</Text>
-          </TouchableOpacity>
-        </View>
+        <View className="flex w-full justify-center items-center">
+        <ActivityIndicator size="large" color="orange" />
+      </View>
       )}
+      <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5">
+        <Text className="text-white font-semibold">Apply For The Job</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
