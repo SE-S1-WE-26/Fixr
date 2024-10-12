@@ -90,17 +90,25 @@ const JobDetails = () => {
           ),
         }}
       />
-      <JobInfo job={job} jobCost={jobCost} loading={loading} />
-      {client && client.userId ? ( // Check if client and userId are defined
-        <ClientCard client={client} loading={loading} />
+      {loadingJob ? (
+        <View className="flex h-full w-full justify-center items-cente">
+          <ActivityIndicator size="large" color="orange" />
+        </View>
       ) : (
-        <View className="flex w-full justify-center items-center">
-        <ActivityIndicator size="large" color="orange" />
-      </View>
+        <View className='-mt-6 h-full'>
+          <JobInfo job={job} jobCost={jobCost} loading={loadingJob} />
+          {client && client.userId ? ( // Check if client and userId are defined
+            <ClientCard client={client} loading={loadingClient} />
+          ) : (
+            <View className="flex w-full justify-center items-center">
+              <Text>No client details available</Text>
+            </View>
+          )}
+          <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5" onPress={handleApplyJob}>
+            <Text className="text-white font-semibold">Apply For The Job</Text>
+          </TouchableOpacity>
+        </View>
       )}
-      <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5">
-        <Text className="text-white font-semibold">Apply For The Job</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };

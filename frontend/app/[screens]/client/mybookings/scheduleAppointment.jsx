@@ -10,31 +10,6 @@ import axios from 'axios';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Utility function to get the ordinal suffix (st, nd, rd, th) for the day
-const getOrdinalSuffix = (day) => {
-    if (day > 3 && day < 21) return 'th'; // 4th to 20th always use 'th'
-    switch (day % 10) {
-        case 1: return 'st';
-        case 2: return 'nd';
-        case 3: return 'rd';
-        default: return 'th';
-    }
-};
-
-// Utility function to format date as "28th October 2024"
-const formatDate = (date) => {
-    const day = date.getDate();
-    const monthNames = [
-        "January", "February", "March", "April", "May", "June", "July",
-        "August", "September", "October", "November", "December"
-    ];
-    const month = monthNames[date.getMonth()];
-    const year = date.getFullYear();
-    const suffix = getOrdinalSuffix(day);
-    return `${day}${suffix} ${month} ${year}`;
-};
-
-
 const ScheduleAppointment = () => {
     const [selectedDate, setSelectedDate] = useState(''); // Default selected date
     const [isAlertVisible, setIsAlertVisible] = useState(false);      // Alert state
@@ -58,11 +33,6 @@ const ScheduleAppointment = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [durationInHours, setDurationInHours] = useState(null);
     const [selectedWeatherDay, setSelectedWeatherDay] = useState(false);
-
-    // Calculate the date 16 days from today
-    const currentDate = new Date();
-    const warningExpiryDate = new Date(currentDate.setDate(currentDate.getDate() + 16));
-    const formattedExpiryDate = formatDate(warningExpiryDate);
 
     // Add state variables to hold scheduled data
     const [scheduledDate, setScheduledDate] = useState('');
@@ -382,21 +352,21 @@ const ScheduleAppointment = () => {
         setSelectedDate(selectedWeatherDay);
 
         setIsLoading(false); // Stop loading once the schedules are fetched
-
+        
     };
 
-    const handleCancel = () => {
-        setIsAlertVisible(false);
-    }
+        const handleCancel = () => {
+            setIsAlertVisible(false);
+        }
 
-    const handleSlotSelect = (slot) => {
-        setSelectedSlot(slot); // Assuming slot has the necessary properties
-        console.log('Selected Slot:', slot); // Debug log to check what is being selected
-    };
+        const handleSlotSelect = (slot) => {
+            setSelectedSlot(slot); // Assuming slot has the necessary properties
+            console.log('Selected Slot:', slot); // Debug log to check what is being selected
+        };
 
-    // Updated updateJob function to accept parameters directly
-    const updateJob = async ({ scheduledDate, scheduledTime, scheduledWorkerId }) => {
-        if (!jobId) return;
+        // Updated updateJob function to accept parameters directly
+        const updateJob = async ({ scheduledDate, scheduledTime, scheduledWorkerId }) => {
+            if (!jobId) return;
 
             try {
                 const token = await AsyncStorage.getItem('token');
@@ -414,48 +384,48 @@ const ScheduleAppointment = () => {
                     }),
                 });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("Job updated successfully:", data);
+                setAlertMessage('Time slot successfully booked!');
+                setIsAlertVisible(true);
+                setTitle("Success");
+                setImage("success");
+                setConfirmButton(false);
+                setCancelMsg("Close");
+                setCancelColor("white");
+                setCancelTextStyle('');
+
+                // Delay the navigation using setTimeout
+                setTimeout(() => {
+                    router.push('../../../(client-tabs)/mybookings');
+                }, 1800);
+            } catch (error) {
+                console.error('Error updating job:', error.message);
             }
+        };
 
-            const data = await response.json();
-            console.log("Job updated successfully:", data);
-            setAlertMessage('Time slot successfully booked!');
-            setIsAlertVisible(true);
-            setTitle("Success");
-            setImage("success");
-            setConfirmButton(false);
-            setCancelMsg("Close");
-            setCancelColor("white");
-            setCancelTextStyle('');
+        const handleSlotConfirm = () => {
+            if (selectedSlot) {
+                // Prepare request body and call the API to confirm the selected slot
+                const requestBody = {
+                    occupiedSlots: [
+                        {
+                            from: selectedSlot.startTime, // 'YYYY-MM-DDTHH:MM:SS' in local time
+                            to: selectedSlot.endTime,     // 'YYYY-MM-DDTHH:MM:SS' in local time
+                            jobId: jobId || undefined,  // Only include jobId if it's defined
+                            date: selectedDate,          // Include the date for clarity
+                        }
+                    ],
+                };
 
-            // Delay the navigation using setTimeout
-            setTimeout(() => {
-                router.push('../../../(client-tabs)/mybookings');
-            }, 1800);
-        } catch (error) {
-            console.error('Error updating job:', error.message);
-        }
-    };
-
-    const handleSlotConfirm = () => {
-        if (selectedSlot) {
-            // Prepare request body and call the API to confirm the selected slot
-            const requestBody = {
-                occupiedSlots: [
-                    {
-                        from: selectedSlot.startTime, // 'YYYY-MM-DDTHH:MM:SS' in local time
-                        to: selectedSlot.endTime,     // 'YYYY-MM-DDTHH:MM:SS' in local time
-                        jobId: jobId || undefined,  // Only include jobId if it's defined
-                        date: selectedDate,          // Include the date for clarity
-                    }
-                ],
-            };
-
-            console.log("requestBody: ", requestBody.occupiedSlots[0].from);
-            console.log("requestBody: ", requestBody.occupiedSlots[0].to);
-            console.log("requestBody: ", requestBody.occupiedSlots[0].date);
-            console.log("requestBody: ", requestBody.occupiedSlots[0].jobId);
+                console.log("requestBody: ", requestBody.occupiedSlots[0].from);
+                console.log("requestBody: ", requestBody.occupiedSlots[0].to);
+                console.log("requestBody: ", requestBody.occupiedSlots[0].date);
+                console.log("requestBody: ", requestBody.occupiedSlots[0].jobId);
 
                 if(requestBody.occupiedSlots[0].from && requestBody.occupiedSlots[0].to && requestBody.occupiedSlots[0].date && requestBody.occupiedSlots[0].jobId){
                     axios.put(`https://fixerbackend.vercel.app/slots/update/${handymanId}`, requestBody)
@@ -484,130 +454,123 @@ const ScheduleAppointment = () => {
                     .catch(error => {
                         console.error('Error saving the slot:', error);
                     });
+                }
+            } else {
+                setAlertMessage('Please select a time slot before confirming!');
+                setIsAlertVisible(true);
+                setImage("error");
+                setCancelMsg("Close")
+                setTitle("Error")
             }
-        } else {
-            setAlertMessage('Please select a time slot before confirming!');
-            setIsAlertVisible(true);
-            setImage("error");
-            setCancelMsg("Close")
-            setTitle("Error")
+        };
+
+        if (isLoading) {
+            return (
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <ActivityIndicator size="large" color="orange" />
+                    <Text>Loading...</Text>
+                </View>
+            );
         }
+
+        return (
+            <SafeAreaView className="bg-white h-full">
+                <ScrollView>
+                    {/* Header */}
+                    <View className="w-full px-4 md:px-6">
+                        <Text className="text-3xl md:text-4xl font-bold">Schedule Appointment</Text>
+                    </View>
+
+                    {/* Worker Information */}
+                    <View className="flex-row ml-2 mt-4">
+                        <Image
+                            source={{uri : handyman.userId.profilePic}}
+                            className="w-14 h-14 rounded-full bg-orange"
+                            resizeMode='contain'
+                        />
+                        <Text className="text-xl font-bold ml-5 mt-5">{handyman.userId.name}</Text>
+                    </View>
+
+                    {/* Job Estimation */}
+                    <View className="flex-col ml-4 mt-2">
+                        <Text className="text-lg font-semibold">Job Estimation</Text>
+                        <View className="flex-row mt-2">
+                            <Image
+                                source={icons.clock}
+                                className="w-5 h-5"
+                                resizeMode='contain'
+                                tintColor={"#F9B42B"}
+                            />
+                            <Text className="text-base font-medium ml-2" >{job.estDuration} Hours</Text>
+                        </View>
+                        <View className="flex-row mt-1">
+                            <Image
+                                source={icons.earnings}
+                                className="w-5 h-5"
+                                resizeMode='contain'
+                                tintColor={"#F9B42B"}
+                            />
+                            <Text className="text-base font-medium ml-2">LKR {estCost}</Text>
+                        </View>
+                    </View>
+
+                    {/* Select Date */}
+                    <Text className="text-lg font-semibold mt-5 ml-4">Select a Date:</Text>
+                    <Calendar
+                        current={selectedDate}
+                        minDate={new Date().toISOString().split('T')[0]}
+                        onDayPress={handleDayPress}
+                        markedDates={markedDates}
+                        theme={{
+                            arrowColor: '#2D9CDB',
+                            todayTextColor: '#2D9CDB',
+                            selectedDayBackgroundColor: '#2D9CDB',
+                            dayTextColor: 'black',
+                        }}
+                    />
+
+                    {/* Time Slots */}
+                    <Text className="text-lg font-semibold mt-5 ml-4">Select a Time Slot:</Text>
+                    {/* Available Time Slots */}
+                    <View className="flex-wrap flex-row mt-2 mb-4 justify-center">
+                        {availableTimeSlots.map((slot, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                onPress={() => handleSlotSelect(slot)}
+                                className={`p-3 m-1 rounded-lg ${selectedSlot === slot ? 'bg-yellow' : 'bg-gray-200'
+                                    }`}
+                            >
+                                <Text className="text-xs">{slot.slot}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+
+                    {/* Schedule Button */}
+                    <CustomButton
+                        title={"Confirm"}
+                        handlePress={handleSlotConfirm}
+                        containerStyles={"mx-4 mb-5"}
+                    />
+                </ScrollView>
+
+                {/* Confirmation Alert */}
+                {isAlertVisible && (
+                    <ConfirmationBox
+                        visible={isAlertVisible}
+                        image={image}
+                        message={alertMessage}
+                        title={title}
+                        cancelColor={cancelColor}
+                        onCancelMsg={cancelMsg}
+                        confirmButton={confirmButton}
+                        onConfirmMesg={"Yes"}
+                        cancelTextStyle={cancelTextStyle}
+                        onCancel={handleCancel}
+                        onConfirm={handleYesWeatherWarning}
+                    />
+                )}
+            </SafeAreaView>
+        );
     };
 
-    if (isLoading) {
-        return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size="large" color="orange" />
-                <Text>Loading...</Text>
-            </View>
-        );
-    }
-
-    return (
-        <SafeAreaView className="bg-white h-full">
-            <ScrollView>
-                {/* Header */}
-                <View className="w-full px-4 md:px-6">
-                    <Text className="text-3xl md:text-4xl font-bold">Schedule Appointment</Text>
-                </View>
-
-                {/* Worker Information */}
-                <View className="flex-row ml-4 mt-4">
-                    <Image
-                        source={{ uri: handyman.userId.profilePic }}
-                        className="w-14 h-14 rounded-full bg-gray-200"
-                        resizeMode='contain'
-                    />
-                    <Text className="text-2xl font-medium ml-5 mt-5">{handyman.userId.name}</Text>
-                </View>
-
-                {/* Job Estimation */}
-                <View className="flex-col ml-4 mt-2">
-                    <Text className="text-lg font-medium">Job Estimation</Text>
-                    <View className="flex-row mt-2">
-                        <Image
-                            source={icons.clock}
-                            className="w-5 h-5"
-                            resizeMode='contain'
-                            tintColor={"#F9B42B"}
-                        />
-                        <Text className="text-base  ml-2" >{job.estDuration} Hours</Text>
-                    </View>
-                    <View className="flex-row mt-1">
-                        <Image
-                            source={icons.earnings}
-                            className="w-5 h-5"
-                            resizeMode='contain'
-                            tintColor={"#F9B42B"}
-                        />
-                        <Text className="text-base ml-2">LKR {estCost}</Text>
-                    </View>
-                </View>
-
-                {/* Select Date */}
-                <Text className="text-lg font-medium mt-5 ml-4">Select a Date:</Text>
-                <Calendar
-                    current={selectedDate}
-                    minDate={new Date().toISOString().split('T')[0]}
-                    onDayPress={handleDayPress}
-                    markedDates={markedDates}
-                    theme={{
-                        arrowColor: '#2D9CDB',
-                        todayTextColor: '#2D9CDB',
-                        selectedDayBackgroundColor: '#2D9CDB',
-                        dayTextColor: 'black',
-                    }}
-                />
-
-                <View className="flex flex-row mx-4 mt-2">
-                    <Text className="text-gray-500 text-sm text-justify">
-                        <Text className="text-orange text-sm mr-2">Note: </Text>
-                        Weather warnings are available only until {formattedExpiryDate}
-                    </Text>
-                </View>
-
-                {/* Time Slots */}
-                <Text className="text-lg font-semibold mt-5 ml-4">Select a Time Slot:</Text>
-                {/* Available Time Slots */}
-                <View className="flex-wrap flex-row mt-2 mb-4 justify-center">
-                    {availableTimeSlots.map((slot, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            onPress={() => handleSlotSelect(slot)}
-                            className={`p-3 m-1 rounded-lg ${selectedSlot === slot ? 'bg-yellow' : 'bg-gray-200'
-                                }`}
-                        >
-                            <Text className="text-xs">{slot.slot}</Text>
-                        </TouchableOpacity>
-                    ))}
-                </View>
-
-                {/* Schedule Button */}
-                <CustomButton
-                    title={"Confirm"}
-                    handlePress={handleSlotConfirm}
-                    containerStyles={"mx-4 mb-5"}
-                />
-            </ScrollView>
-
-            {/* Confirmation Alert */}
-            {isAlertVisible && (
-                <ConfirmationBox
-                    visible={isAlertVisible}
-                    image={image}
-                    message={alertMessage}
-                    title={title}
-                    cancelColor={cancelColor}
-                    onCancelMsg={cancelMsg}
-                    confirmButton={confirmButton}
-                    onConfirmMesg={"Yes"}
-                    cancelTextStyle={cancelTextStyle}
-                    onCancel={handleCancel}
-                    onConfirm={handleYesWeatherWarning}
-                />
-            )}
-        </SafeAreaView>
-    );
-};
-
-export default ScheduleAppointment;
+    export default ScheduleAppointment;

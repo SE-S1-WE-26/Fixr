@@ -1,13 +1,12 @@
-import { View, Text, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import ConfirmationBox from './ConfirmationBox';
-import FormatDateTime from '../../utils/FormatDateTime';
+import images from '../../constants/images';
 import icons from '../../constants/icons';
 import ScanIcon from '../../components/client/home/ScanIcon';
+import axios from 'axios'; 
+import FormatDateTime from '../../utils/FormatDateTime';
 
 const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobStatus, id }) => {
     const router = useRouter();
@@ -25,15 +24,16 @@ const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobSta
     });
 
     const fetchWorker = async () => {
+        console.log("worker id", workerId);
         try {
             const response = await axios.get(
                 `https://fixerbackend.vercel.app/worker/${workerId}`
             );
             setWorker(response.data);
         } catch (error) {
-            console.error("Error fetching Worker Details:", error);
+            console.error("Error fetching Worker Details:", error.response?.data || error);
         } finally {
-            setLoading(false);
+            setLoading(false); // Set loading to false after the fetch attempt
         }
     };
 
@@ -106,18 +106,18 @@ const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobSta
     }
 
     return (
-        <SafeAreaView className="rounded-xl mt-3 mx-auto shadow-sm w-11/12 h-60 border border-gray-300 flex flex-col">
+        <SafeAreaView className="rounded-xl mt-3 mx-auto shadow-sm w-[340px] w-11/12 h-60 border border-gray-300 flex flex-col">
             <View className="flex-row left-4 -mt-3 items-center">
                 <View className="items-center rounded-full border border-gray-100">
                     <Image
-                        source={{ uri: worker?.userId?.profilePic }}
+                        source={{uri: worker?.userId?.profilePic}}
                         className="w-12 h-12 rounded-full"
                         resizeMethod="contain"
                     />
                 </View>
                 <View className='ml-1'>
-                    <Text className="font-semibold text-lg ml-2">{title}</Text>
-                    <Text className="font-medium text-slate-500 text-xs ml-2">{type}</Text>
+                <Text className="font-semibold text-lg ml-2">{title}</Text>
+                <Text className="font-medium text-slate-500 text-xs ml-2">{type}</Text>
                 </View>
             </View>
             <View className="flex-row justify-between items-center px-4">
@@ -126,42 +126,46 @@ const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobSta
                     <ScanIcon icon={icons.scanner} />
                 </TouchableOpacity>
             </View>
-            <View className="flex-row mt-3 justify-evenly">
-                <View className="bg-blue-300 rounded-lg px-2 h-[30px] flex-row items-center gap-1">
-                    <Image source={icons.calendar} className="w-4 h-4 mb-1" resizeMode="contain" />
+            <View className="flex-row gap-1 mt-2 justify-center">
+                <View className="bg-blue-200 rounded-lg px-2 h-[30px] flex-row items-center gap-1">
+                    <Image
+                        source={icons.calendar}
+                        className="w-4 h-4 mb-1"
+                        resizeMode="contain"
+                        tintColor={"black"}
+                    />
                     <Text className="text-xs mb-1">{FormatDateTime(date)}</Text>
                 </View>
                 <View className="bg-green-300 rounded-lg px-1 h-[30px] flex-row items-center gap-1">
-                    <Image source={icons.clock} className="w-4 h-4 mb-1" resizeMode="contain" />
+                    <Image
+                        source={icons.clock}
+                        className="w-4 h-4 mb-1"
+                        resizeMode="contain"
+                        tintColor={"black"}
+                    />
                     <Text className="text-xs mb-1">{time}</Text>
                 </View>
-                {amount && (
-                    <View className="bg-amber-300 rounded-lg px-1 h-[30px] flex-row items-center gap-1">
-                        <Image source={icons.earnings} className="w-4 h-4 mb-1" resizeMode="contain" />
-                        <Text className="text-xs mb-1">{amount}</Text>
-                    </View>
-                )}
+                <View className="bg-amber-300 rounded-lg px-1 h-[30px] flex-row items-center gap-1">
+                    <Image
+                        source={icons.earnings}
+                        className="w-4 h-4 mb-1"
+                        resizeMode="contain"
+                    />
+                    <Text className="text-xs mb-1">{amount}</Text>
+                </View>
             </View>
-            <View className="flex-row mt-4 justify-center px-1">
-                <TouchableOpacity className=" bg-red-800 rounded-lg px-3 h-[35px] flex-row w-11/12 justify-center" onPress={handleCancelAppointment}>
-                    <View>
-                        <Text className="mt-2 text-center text-white font-medium">Cancel Appointment</Text>
-                    </View>
-                </TouchableOpacity>
+            <View className="flex-row mt-4 justify-between px-1">
+                <View className="bg-white border-2 border-yellow rounded-lg px-2.5 h-[30px] flex-row">
+                    <TouchableOpacity>
+                        <Text className="mt-0.5">Handyman Profile</Text>
+                    </TouchableOpacity>
+                </View>
+                <View className="bg-white border-2 border-red-800 rounded-lg px-2.5 h-[30px] flex-row">
+                    <TouchableOpacity>
+                        <Text className="mt-0.5">Cancel Appointment</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <ConfirmationBox
-                visible={isAlertVisible}
-                image={alertDetails.image}
-                message={alertDetails.message}
-                title={alertDetails.alertTitle}
-                cancelColor={alertDetails.cancelColor}
-                cancelTextStyle={alertDetails.cancelTextStyle}
-                onCancelMsg={alertDetails.cancelMsg}
-                confirmButton={alertDetails.confirmButton}
-                onConfirmMesg={"Yes"}
-                onConfirm={handleConfirmClose}
-                onCancel={handleOnClose}
-            />
         </SafeAreaView>
     );
 };

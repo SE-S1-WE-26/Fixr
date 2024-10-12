@@ -1,6 +1,6 @@
 import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
 import React, { useState } from "react";
-
+import { icons } from "../../../constants";
 
 const ImageItem = ({ uri }) => {
   const [loading, setLoading] = useState(true);
@@ -58,7 +58,7 @@ const JobInfo = ({ job, loading, jobCost }) => {
             <Text className="text-base font-medium">Location</Text>
             <Text className="text-lg font-bold">{job.city}, Sri Lanka</Text>
           </View>
-          <View className="items-end">
+          <View className='items-end'>
             <Text className="text-base font-medium">Est. Job Time</Text>
             <Text className="text-4xl font-bold text-orange">
               {job.estDuration} Hours
@@ -67,12 +67,30 @@ const JobInfo = ({ job, loading, jobCost }) => {
         </View>
         <Text className="my-6">{job.description}</Text>
         <View>
-          <FlatList
-            horizontal
-            data={job.images}
-            renderItem={({ item }) => <ImageItem uri={item} />}
-            keyExtractor={(item, index) => index.toString()}
-          />
+          {job.images && job.images.length > 0 ? (
+            <FlatList
+              horizontal
+              data={job.images}
+              renderItem={({ item }) => <ImageItem uri={item} />}
+              keyExtractor={(item, index) => index.toString()}
+              showsHorizontalScrollIndicator={false}
+            />
+          ) : (
+            <View
+              style={{
+                height: 150, // Same height as the image item
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#f0f0f0", // Light grey background
+                borderWidth: 1,
+                borderColor: "#d1d1d1", // Border color
+                borderRadius: 12, // Rounded corners
+                marginHorizontal: 8, // Margin to match the FlatList items
+              }}
+            >
+              <Text style={{ color: "#888888" }}>No images available</Text>
+            </View>
+          )}
         </View>
         <View className="mt-8">
           <Text className="text-base font-medium">Est. Job Cost</Text>
