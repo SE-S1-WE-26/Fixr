@@ -15,8 +15,23 @@ npx expo install react-native-calendars
 npx expo install lottie-react-native
 npx expo install expo-image-picker
 npx expo install firebase
-npx expo install @google/generative-a
+npx expo install @google/generative-ai
 npm install -g sharp-cli
+npx expo install @mapbox/search-js-react
+npx expo install @react-native-community/blur react-native-reanimated
+npx expo install expo-camera
+npx expo install axios
+npx expo install @react-native-picker/picker
+npx expo install expo-dev-client
+
+```
+
+##clean Gradle
+```
+cd android
+./gradlew clean
+cd ..
+
 
 ```
 
