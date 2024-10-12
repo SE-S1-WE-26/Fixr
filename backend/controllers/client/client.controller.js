@@ -23,7 +23,12 @@ const authenticateJWT = (req, res, next) => {
 const getMyData = async (req, res) => {
   try {
       // Find worker by userId from the JWT
-      const client = await Client.findOne({ userId: req.user.userId }).populate('userId');
+      const client = await Client.findOne({ userId: req.user.userId })
+      .populate('userId')
+      .populate({
+        path: 'favorites', // This will populate the favorites field
+        populate: { path: 'userId', select: 'name profilePic rating' } // This populates the userId in the Worker document
+      });
       if (!client) return res.status(404).json({ message: 'Worker not found' });
 
       res.status(200).json(client);

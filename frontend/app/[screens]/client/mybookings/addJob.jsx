@@ -67,7 +67,7 @@ const AddJob = () => {
       );
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const prompt = `Based on the job description and title, estimate the approximate and most accurate minimum number of hours to complete the job.\nJob title: ${title}\nJob Description: ${description}\nReturn just a number or a number with one decimal place`;
+      const prompt = `Based on the job description and title, estimate the approximate and most accurate minimum number of hours to complete the job.\nJob title: ${title}\nJob Description: ${description}\nReturn just a number or a number with one decimal place (eg. 2.5) and also return a number less than 16`;
 
       const result = await model.generateContent(prompt);
       const responseText = await result.response.text(); // Make sure to await the text() method
@@ -91,6 +91,7 @@ const AddJob = () => {
     }
   };
 
+  // Handle form submission with axios
   // Handle form submission with axios
   const handlePostJob = async () => {
     if (
@@ -128,7 +129,7 @@ const AddJob = () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.3:8010/job/create",
+        "https://fixerbackend.vercel.app/job/create",
         jobData
       );
 

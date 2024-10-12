@@ -1,12 +1,57 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import icons from '../../constants/icons'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ConfirmationBox from './ConfirmationBox';
 
-const InterestedHandyman = ({ handyman, isFavourite, jobTitle, rate, rating, viewProfileHandlePress, scheduleAppointmentHandlePress, declineHandlePress }) => {
+const InterestedHandyman = ({ handyman, isFavourite, jobTitle, rate, rating, viewProfileHandlePress, scheduleAppointmentHandlePress, declineHandlePress, clientId, handymanId, handymanImage, estCost }) => {
     const [favourite, setFavourite] = useState(isFavourite);
-    const handleFavouritePress = () => {
-        setFavourite(!favourite);
+    const [job, setJob] = useState(null);
+    const [isVisible, setIsVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
+    useEffect(() => {
+        setFavourite(isFavourite);
+    }, [isFavourite]);
+
+    const handleFavouritePress = async () => {
+        try {
+            console.log("Initial fav value: ", favourite);
+            const token = await AsyncStorage.getItem('token');
+            const response = await fetch('https://fixerbackend.vercel.app/client/favorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    workerId: handymanId,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                if (favourite) {
+                    setIsVisible(true);
+                    setAlertMessage("Handyman Removed from Favorites!");
+                }
+                else {
+                    setIsVisible(true);
+                    setAlertMessage("Handyman Added to Favorites");
+                }
+                setFavourite(!favourite);
+            } else {
+                console.error("Failed to update favorites:", data.message);
+            }
+        } catch (error) {
+            console.error("Error updating favorite status:", error);
+        }
+    }
+
+    const handleOnClose = () => {
+        setIsVisible(false);
     }
 
     const renderStars = (rating) => {
@@ -56,13 +101,13 @@ const InterestedHandyman = ({ handyman, isFavourite, jobTitle, rate, rating, vie
     };
 
     return (
-        <SafeAreaView className={`rounded-xl mx-auto shadow-smw-[340px] w-11/12 pb-4 border border-gray-300 flex flex-col mb-2`}>
+        <SafeAreaView className={`rounded-xl mx-auto shadow-smw-[340px] w-11/12 pb-2 border border-gray-300 flex flex-col mb-2`}>
             <View className='flex-row -mt-3 left-4'>
                 {/* handyman profile photo */}
-                <View>
+                <View className="w-14 h-14">
                     <Image
-                        source={icons.worker}
-                        className="w-12 h-12"
+                        source={handymanImage}
+                        className="w-12 h-12 rounded-full bg-gray-200"
                         resizeMode='contain'
                     />
                 </View>
@@ -81,9 +126,10 @@ const InterestedHandyman = ({ handyman, isFavourite, jobTitle, rate, rating, vie
                             />
                         </TouchableOpacity>
                     </View>
-                    <Text>{jobTitle}</Text>
+                    {/* <Text>{jobTitle}</Text> */}
                     {/* rating */}
                     <View className="flex-row">
+                        <Text className="font-bold">{rating} </Text>
                         {renderStars(rating)}
                     </View>
                 </View>
@@ -94,24 +140,35 @@ const InterestedHandyman = ({ handyman, isFavourite, jobTitle, rate, rating, vie
                 </View>
             </View>
             <View className="flex-row justify-between px-3 mt-2">
-                <TouchableOpacity onPress={viewProfileHandlePress}>
+                {/* <TouchableOpacity onPress={viewProfileHandlePress}>
                     <View className={` bg-black-800 rounded-xl px-2.5 h-[30px] flex-row w-36 items-center justify-center`}>
                         <Text className="text-white font-medium">View Profile</Text>
                     </View>
-                </TouchableOpacity>
-                <TouchableOpacity >
-                    <View className={` bg-red-700 rounded-xl px-2.5 h-[30px] w-36 flex-row items-center justify-center`}>
-                        <Text className="text-white font-medium">Decline</Text>
+                </TouchableOpacity> */}
+                <View className="flex flex-col">
+                    <Text>Est. Cost</Text>
+                    <View className="flex-row">
+                        <Text className="text-small font-bold mt-1">LKR </Text>
+                        <Text className="text-orange text-2xl font-bold -mt-1">{estCost}</Text>
+                    </View>
+                </View>
+                <TouchableOpacity onPress={scheduleAppointmentHandlePress} className="mt-1">
+                    <View className={` bg-amber-600 rounded-xl px-2.5 h-[40px] w-48 flex-row items-center justify-center`}>
+                        <Text className="font-medium text-center text-white">Schedule Appointment</Text>
                     </View>
                 </TouchableOpacity>
             </View>
-            <View className="justify-center px-3 mt-2" >
-                <TouchableOpacity onPress={scheduleAppointmentHandlePress}>
-                    <View className={` bg-yellow rounded-xl px-2.5 h-[32px] flex-row items-center justify-center`}>
-                        <Text className="font-medium">Schedule Appointment</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
+
+            <ConfirmationBox
+                visible={isVisible}
+                image={"success"}
+                title={"Success"}
+                message={alertMessage}
+                cancelColor={"green-700"}
+                cancelTextStyle={"text-white"}
+                onCancel={handleOnClose}
+                onCancelMsg={"Got it!"}
+            />
         </SafeAreaView>
     )
 }

@@ -88,7 +88,7 @@ const ReviewWidget = (props) => {
 
       const data = await response.json();
       console.log("Review added:", data);
-      Alert.alert("Success", "Your review has been added successfully!");
+      //Alert.alert("Success", "Your review has been added successfully!");
 
       // Clear the review input and update the success state
       setReviewText("");
@@ -122,7 +122,7 @@ const ReviewWidget = (props) => {
   };
 
   return (
-    <BottomSheet ref={bottomSheetRef} snapPoints={["71%"]} enablePanDownToClose>
+    <BottomSheet index={-1} ref={bottomSheetRef} snapPoints={["71%"]} enablePanDownToClose>
       <BottomSheetScrollView style={{ flex: 1 }}>
         {isLoading ? (
           <ActivityIndicator size="large" color="#0000ff" />

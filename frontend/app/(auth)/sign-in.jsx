@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, Image, ActivityIndicator,TouchableOpacity } from "react-native";
-import { React, useState,useEffect } from "react";
+import { View, Text, ScrollView, Image, Alert , ActivityIndicator, TouchableOpacity } from "react-native";
+import { React, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "../../components/common/CustomButton";
 import { Link, router } from "expo-router";
@@ -7,6 +7,7 @@ import axios from "axios";
 import { images } from "../../constants";
 import FormField from "../../components/common/FormField";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
+
 
 const SignIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -19,18 +20,18 @@ const SignIn = () => {
     setErrorMessage(""); // Reset error message
 
     try {
-      const response = await axios.post("https://fixerbackend.vercel.app/auth/signin", {
-        username: form.email, // Use form.email for username
-        password: form.password,
-      });
-
-      console.log("Sign in response:", response.data);
-
-      if (response.data.token) {
-        await AsyncStorage.setItem("token", response.data.token);
-        console.log("Token saved:", response.data.token);
-        router.push(response.data.redirectUrl); // Default to /home if redirectUrl is not defined
-      }
+        const response = await axios.post('https://fixerbackend.vercel.app/auth/signin', {
+            username: form.email, // Use form.email for username
+            password: form.password
+        });
+  
+        console.log('Sign in response:', response.data);
+      
+        if (response.data.token) {
+            await AsyncStorage.setItem('token', response.data.token);
+            console.log('Token saved:', response.data.token);
+            router.push(response.data.redirectUrl); // Default to /home if redirectUrl is not defined
+        }
     } catch (error) {
       //console.error('Error signing in:', error.response ? error.response.data : error.message);
       setErrorMessage(
@@ -79,10 +80,13 @@ const SignIn = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("https://fixerbackend.vercel.app/auth/signin", {
-        username: user.username, // Use the username from the selected user
-        password: user.password, // Assuming you have a test password for each user (use cautiously)
-      });
+      const response = await axios.post(
+        "https://fixerbackend.vercel.app/auth/signin",
+        {
+          username: user.username, // Use the username from the selected user
+          password: user.password, // Assuming you have a test password for each user (use cautiously)
+        }
+      );
 
       console.log("Sign in response:", response.data);
 
@@ -111,6 +115,7 @@ const SignIn = () => {
 
   return (
     <SafeAreaView className="h-full">
+      
       <ScrollView>
         <View className="w-full justify-center h-full px-10 my-2">
           <Image

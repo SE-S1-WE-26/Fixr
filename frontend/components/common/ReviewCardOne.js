@@ -41,7 +41,7 @@ const ReviewCardOne = ({ workerData }) => {
       const token = await AsyncStorage.getItem("token");
 
       const response = await fetch(
-        `http://192.168.37.210:8010/worker/deletereview/${reviewId}`,
+        `https://fixerbackend.vercel.app/worker/deletereview/${reviewId}`,
         {
           method: "DELETE",
         }
@@ -65,7 +65,7 @@ const ReviewCardOne = ({ workerData }) => {
 
     } catch (error) {
       console.error(error);
-      Alert.alert("Error", "Failed to delete review");
+      //Alert.alert("Error", "Failed to delete review");
     } finally {
       setIsDeletingReview(false);
     }

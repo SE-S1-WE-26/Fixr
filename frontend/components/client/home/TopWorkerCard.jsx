@@ -4,8 +4,16 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { icons } from "../../../constants";
 import StarRating from "react-native-star-rating-widget";
+import { useRouter } from "expo-router";
 
 const TopWorkerCard = ({ worker, isFavorite }) => {
+  const router = useRouter();
+  const handlePress = () => {
+    router.push({
+      pathname: "/pages/client/home/ContactWorker",
+      params: { worker: JSON.stringify(data) }, // Passing worker data
+    });
+  };
   // State to manage the favorite status
   const [favorite, setFavorite] = useState(isFavorite);
 
@@ -38,7 +46,9 @@ const TopWorkerCard = ({ worker, isFavorite }) => {
   };
 
   return (
-    <TouchableOpacity className="bg-powder border border-2 border-platinum shadow px-2 pt-2 pb-2 rounded-lg max-w-[150px] my-4">
+    <TouchableOpacity className="bg-powder shadow px-2 pt-2 pb-2 rounded-lg max-w-[155px] my-4"
+      onPress={handlePress} // Navigate to ContactWorker on press
+    >
       <View>
         <Image
           source={{ uri: worker?.userId?.profilePic }}

@@ -16,6 +16,7 @@ import next from '../assets/icons/common/next.png';
 import like from '../assets/icons/common/like.png';
 import redlike from '../assets/icons/common/redlike.png';
 import edit from '../assets/icons/common/edit.png';
+import success from '../assets/icons/common/success.png';
 
 //Worker Icons
 import jobs from "../assets/icons/worker/job.png";
@@ -37,6 +38,8 @@ import close from '../assets/icons/client/close.png';
 import weatherWarning from '../assets/icons/client/weatherWarning.png';
 import bin from '../assets/icons/client/bin.png';
 import error from '../assets/icons/client/error.png';
+import scanner from '../assets/icons/client/scanner.png';
+import cancel from '../assets/icons/client/cancel.png';
 
 export default {
   //Worker Icons
@@ -59,6 +62,8 @@ export default {
   weatherWarning,
   bin,
   error,
+  scanner,
+  cancel,
 
   //Common Icons
   play,
@@ -79,4 +84,5 @@ export default {
   like,
   redlike,
   edit,
+  success,
 };
