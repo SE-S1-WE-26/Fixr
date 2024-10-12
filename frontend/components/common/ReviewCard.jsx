@@ -88,7 +88,7 @@ const ReviewWidget = (props) => {
 
       const data = await response.json();
       console.log("Review added:", data);
-      //Alert.alert("Success", "Your review has been added successfully!");
+      Alert.alert("Success", "Your review has been added successfully!");
 
       // Clear the review input and update the success state
       setReviewText("");

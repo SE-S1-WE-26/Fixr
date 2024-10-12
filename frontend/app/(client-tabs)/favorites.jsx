@@ -7,6 +7,7 @@ import FavouriteWorkersGrid from "../../components/client/favourites/FavouriteWo
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from '@react-navigation/native';
+import Heading from "../../components/common/Heading";
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
@@ -65,7 +66,8 @@ const Favorites = () => {
           <Header title={"Favorites"} />
         </View>
         <PopularCategoriesList />
-        <SearchBar />
+        {/* <SearchBar /> */}
+        <Heading name="Favourite Workers" />
         <FavouriteWorkersGrid workers={favorites} /> 
       </ScrollView>
     </SafeAreaView>
