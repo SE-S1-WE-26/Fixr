@@ -39,6 +39,7 @@ import weatherWarning from '../assets/icons/client/weatherWarning.png';
 import bin from '../assets/icons/client/bin.png';
 import error from '../assets/icons/client/error.png';
 import scanner from '../assets/icons/client/scanner.png';
+import cancel from '../assets/icons/client/cancel.png';
 
 export default {
   //Worker Icons
@@ -62,6 +63,7 @@ export default {
   bin,
   error,
   scanner,
+  cancel,
 
   //Common Icons
   play,

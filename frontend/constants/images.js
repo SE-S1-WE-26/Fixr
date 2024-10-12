@@ -26,6 +26,7 @@ import roofing from '../assets/images/client/categories/roofing.png';
 import plumbing from '../assets/images/client/categories/plumbing.png';
 import electrical from '../assets/images/client/categories/electricworks.png';
 import painting from '../assets/images/client/categories/painting.png';
+import gardening from '../assets/images/client/categories/gardening.png';
 
 export default { 
     //Worker Images
@@ -40,6 +41,7 @@ export default {
     repair,
     myJobPosts,
     addJob,
+    gardening,
 
     //Common Images
     profile, 

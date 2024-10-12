@@ -46,7 +46,7 @@ const Search = () => {
       setIsLoading(false); // Stop loading after fetching
       setRefreshing(false); // Stop refreshing
     }
-  };
+  }
 
   useEffect(() => {
     fetchJobs(); // Call the function
@@ -119,20 +119,8 @@ const Search = () => {
               className="mx-auto"
               resizeMode='contain'
             />
-            <TextInput
-              placeholder="Search job titles..."
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              style={{
-                height: 40,
-                borderColor: 'gray',
-                borderWidth: 1,
-                borderRadius: 5,
-                paddingHorizontal: 10,
-                margin: 10,
-              }}
-            />
-            <View className="relative w-full h-[120px] -mb-11 -mt-2">
+
+            <View className="relative w-full h-[120px] -mb-12 -mt-2">
               <CustomButton
                 title={
                   <View className="flex-row items-center">
@@ -150,6 +138,18 @@ const Search = () => {
               />
             </View>
 
+            <TextInput
+              placeholder="Search job titles..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              style={{
+                height: 40,
+                borderColor: 'gray',
+                margin: 10,
+              }}
+              className="mx-4 rounded-xl border px-3"
+            />
+
             {/* Show loading indicator while fetching jobs */}
             {isLoading ? (
               <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -165,6 +165,7 @@ const Search = () => {
                     type={job.category.toLowerCase()}
                     topic={job.title}
                     description={job.description}
+                    estDuration={job.estDuration}
                     handlePressJob={() => router.push({
                       pathname: '../screens/client/mybookings/jobPost',
                       params: { jobId: job._id }
