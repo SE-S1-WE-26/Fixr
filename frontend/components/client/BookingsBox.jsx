@@ -66,7 +66,7 @@ const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobSta
 
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch(`http://192.168.8.101:8010/job/update/${id}`, {
+            const response = await fetch(`http://192.168.244.210:8010/job/update/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

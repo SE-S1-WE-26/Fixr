@@ -19,17 +19,16 @@ const Search = () => {
   const [searchQuery, setSearchQuery] = useState(''); // State for search input
   const [refreshing, setRefreshing] = useState(false); // State for refresh control
 
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-        const response = await fetch('https://fixerbackend.vercel.app/job/', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+  const fetchJobs = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch('http://192.168.244.210:8010/job/client/', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
       if (response.ok) {
         const jobsData = await response.json();
@@ -46,7 +45,7 @@ const Search = () => {
       setIsLoading(false); // Stop loading after fetching
       setRefreshing(false); // Stop refreshing
     }
-  }
+  };
 
   useEffect(() => {
     fetchJobs(); // Call the function
@@ -69,7 +68,7 @@ const Search = () => {
     setIsVisible(false);
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch(`https://fixerbackend.vercel.app/job/delete/${selectedJobId}`, {
+      const response = await fetch(`http://192.168.244.210:8010/job/delete/${selectedJobId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`, // Include token in headers
@@ -200,7 +199,6 @@ const Search = () => {
       </ScrollView>
     </SafeAreaView>
   );
-})
-    };
+};
 
 export default Search;

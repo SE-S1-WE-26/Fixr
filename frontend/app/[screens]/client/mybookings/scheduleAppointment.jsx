@@ -84,7 +84,7 @@ const ScheduleAppointment = () => {
     // Function to fetch weather forecast data for a given latitude and longitude
     const fetchWeatherForecast = async (latitude, longitude) => {
         try {
-            const response = await axios.get(`https://fixerbackend.vercel.app/v1/forecast`, {
+            const response = await axios.get(`https://api.open-meteo.com/v1/forecast`, {
                 params: {
                     latitude: latitude,
                     longitude: longitude,
