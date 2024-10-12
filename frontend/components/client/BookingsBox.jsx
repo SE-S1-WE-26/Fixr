@@ -21,6 +21,18 @@ const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobSta
         });
     };
 
+    const displayJobStatus = (status) => {
+        if(status === 'pending') {
+            return <Text className="mt-1 text-base left-1 text-slate-500">Pending</Text>;
+        }else if(status === 'ongoing') {
+            return <Text className="mt-1 text-base left-1 text-orange">Ongoing</Text>;
+        }else if(status === 'completed') {
+            return <Text className="mt-1 text-base left-1 text-green-900">Completed</Text>;
+        }else if(status === 'cancelled') {
+            return <Text className="mt-1 text-base left-1 text-red-800">Cancelled</Text>;
+        }
+    }
+
     const fetchWorker = async () => {
         console.log("worker id", workerId);
         try {
@@ -67,7 +79,10 @@ const BookingsBox = ({ type, title, workerId, date, time, amount, qrcode, jobSta
                 </View>
             </View>
             <View className="flex-row justify-between items-center px-4">
+                <View>
                 <Text className="mt-1 text-base left-1">Handyman: {worker?.userId?.name}</Text>
+                {displayJobStatus(jobStatus)}
+                </View>
                 <TouchableOpacity onPress={handleNavigation}>
                     <ScanIcon icon={icons.scanner} />
                 </TouchableOpacity>
