@@ -21,7 +21,7 @@ const Home = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       console.log("Token:", token);
-      const response = await fetch('https://fixerbackend.vercel.app/client/mydata', {
+      const response = await fetch('http://192.168.1.3:8010/client/mydata', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ const Home = () => {
 
   const fetchCurentEom = async () => {
     try {
-      const response = await axios.get('https://fixerbackend.vercel.app/eom/current');
+      const response = await axios.get('http://192.168.1.3:8010/eom/current');
       setEom(response.data[0]);
     } catch (err) {
       console.error('Error fetching EOM:', err);
@@ -68,7 +68,7 @@ const Home = () => {
         <HomeHeader />
         <EOMCard eom={eom} />
         <Heading name='Top Workers' link='/' />
-        <NearbyJobs />
+        {/* <NearbyJobs /> */}
         <TopWorkerList favorites={myData ? myData.favorites : []} />
         <Heading name="Popular Categories" link="/" />
         <PopualrCategoriesList />

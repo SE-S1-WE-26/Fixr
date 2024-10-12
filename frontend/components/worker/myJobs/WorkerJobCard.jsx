@@ -4,6 +4,8 @@ import { useRouter } from "expo-router";
 import ScanIcon from "../../client/home/ScanIcon";
 import { icons } from "../../../constants";
 import FormatDateTime from "../../../utils/FormatDateTime";
+import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
+import axios from "axios";
 
 const WorkerJobCard = ({ job }) => {
   const router = useRouter();
@@ -11,9 +13,39 @@ const WorkerJobCard = ({ job }) => {
   const [jobName, setJobName] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
+  const [workerData, setWorkerData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
+  const fetchMyData = async () => {
+    setIsLoading(true);
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch('http://192.168.1.3:8010/worker/mydata', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-  // Use useEffect to set qrcode when job changes
+      if (!response.ok) {
+        throw new Error('Failed to fetch worker data');
+      }
+
+      const data = await response.json();
+      setWorkerData(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMyData();
+  }, []);
+
+  // This effect runs whenever job or workerData changes
   useEffect(() => {
     if (job) {
       setQrcode(job._id);
@@ -22,6 +54,31 @@ const WorkerJobCard = ({ job }) => {
       setTime(job.scheduledTime);
     }
   }, [job]);
+
+  const handleNavigationToJobDetails = () => {
+    console.log("Navigating to Job Details");
+    
+    // Only navigate if workerData is available
+    if (workerData) {
+      const jobCost = calcJobCost(workerData, job.estDuration);
+      router.push({
+        pathname: "/pages/worker/home/scheduledjobdetails",
+        params: { jobId: job._id, jobCost: jobCost },
+      });
+      console.log("Job ID to navigate:", job._id);
+    } else {
+      console.log("Worker data is not yet available.");
+    }
+  };
+
+  const calcJobCost = (workerData, jobDuration) => {
+    if (workerData?.hourlyRate) {
+      const jobCost = (workerData.hourlyRate * jobDuration).toFixed(2);
+      console.log("Job Cost:", jobCost);
+      return jobCost;
+    }
+    return "N/A"; // or some default value to indicate unavailability
+  };
 
   const handleNavigation = () => {
     router.push({
@@ -45,14 +102,13 @@ const WorkerJobCard = ({ job }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.detailsButton}>
-          <Text style={styles.buttonText}>View Details</Text>
+        <TouchableOpacity style={styles.detailsButton} onPress={handleNavigationToJobDetails} disabled={isLoading}>
+          <Text style={styles.buttonText}>{isLoading ? "Loading..." : "View Details"}</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {

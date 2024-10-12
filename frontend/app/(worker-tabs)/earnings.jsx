@@ -54,7 +54,7 @@ const Earnings = () => {
       <ScrollView className="mt-4">
         {jobs.map((item) => (
           <EarningsCard
-            key={item.id} // Add a unique key for each item
+            key={item._id} // Add a unique key for each item
             data={item}
           />
         ))}
