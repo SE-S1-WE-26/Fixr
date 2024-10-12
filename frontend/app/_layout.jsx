@@ -2,8 +2,6 @@ import { StyleSheet, Text, View } from "react-native";
 import { Slot, SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect, useState } from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import WorkerProvider from "../components/common/mapView/WorkerProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,10 +26,6 @@ const RootLayout = () => {
   if (!fontsLoaded && !error) return null;
 
   return (
-
-    <GestureHandlerRootView>
-    <WorkerProvider>
-
     <>
       <Stack>
         // Common
@@ -41,6 +35,7 @@ const RootLayout = () => {
         // Worker
         <Stack.Screen name="(worker-tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="jobdetails" options={{ headerShown: true }} />
+        <Stack.Screen name="scheduledjobdetails" options={{ headerShown: true }} />
         <Stack.Screen name="eom" options={{ headerShown: true }} />
 
         // Client
@@ -51,8 +46,6 @@ const RootLayout = () => {
         <Stack.Screen name="StartJob" options={{ headerShown: false }} />
       </Stack>
     </>
-    </WorkerProvider>
-    </GestureHandlerRootView>
   );
 };
 

@@ -36,7 +36,7 @@ export default function Scanner() {
   
     try {
       const response = await axios.put(
-        `https://fixerbackend.vercel.appjob/status/start/${id}`
+        `http://192.168.1.3:8010/job/status/start/${id}`
       );
       console.log("Job status updated:", response.data);
     } catch (error) {
@@ -49,7 +49,7 @@ export default function Scanner() {
 
     try {
       const response = await axios.put(
-        `https://fixerbackend.vercel.app/job/status/end/${id}`
+        `http://192.168.1.3:8010/job/status/end/${id}`
       );
       console.log("Job status updated:", response.data);
     } catch (error) {

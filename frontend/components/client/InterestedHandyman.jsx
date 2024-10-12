@@ -19,7 +19,7 @@ const InterestedHandyman = ({ handyman, isFavourite, jobTitle, rate, rating, vie
         try {
             console.log("Initial fav value: ", favourite);
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch('https://fixerbackend.vercel.app/client/favorite', {
+            const response = await fetch('http://192.168.8.103:8010/client/favorite', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

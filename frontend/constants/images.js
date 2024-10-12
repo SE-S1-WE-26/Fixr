@@ -8,6 +8,10 @@ import empty from "../assets/images/empty.png";
 import gold from "../assets/images/gold.png";
 import silver from "../assets/images/silver.png";
 import bronze from "../assets/images/bronze.png";
+import facebook from "../assets/images/facebook.png";
+import instagram from "../assets/images/instagram.png";
+import whatsapp from "../assets/images/whatsapp.png";
+import messenger from "../assets/images/messenger.png";
 
 //Worker Images
 import trophy from '../assets/images/worker/trophy.png';
@@ -49,5 +53,9 @@ export default {
     empty,
     gold,
     silver,
-    bronze 
+    bronze ,
+    facebook,
+    instagram,
+    whatsapp,
+    messenger
 };

@@ -6,10 +6,10 @@ const CategoryCard = ({ data }) => {
   return (
     <TouchableOpacity
       key={data.title}
-      style={styles.card}
+      className="flex max-w-[100px] items-center border-2 border-platinum justify-center px-5 py-3 shadow bg-powder rounded-lg"
     >
-      <View style={styles.iconContainer}>
-        <Image source={data.icon} style={styles.icon} />
+      <View className='bg-white p-4 rounded-full border border-1 border-platinum'>
+      <Image source={data.icon} className="w-12 h-12" />
       </View>
       <Text style={styles.title} numberOfLines={1}>
         {data.title}

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, Alert , ActivityIndicator, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, Image, Alert } from "react-native";
 import { React, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "../../components/common/CustomButton";
@@ -7,7 +7,8 @@ import axios from "axios";
 import { images } from "../../constants";
 import FormField from "../../components/common/FormField";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
-
+import TestLogin from "./TestLogin";
+import { ActivityIndicator } from "react-native";
 
 const SignIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -20,18 +21,18 @@ const SignIn = () => {
     setErrorMessage(""); // Reset error message
 
     try {
-        const response = await axios.post('https://fixerbackend.vercel.app/auth/signin', {
-            username: form.email, // Use form.email for username
-            password: form.password
-        });
-  
-        console.log('Sign in response:', response.data);
-      
-        if (response.data.token) {
-            await AsyncStorage.setItem('token', response.data.token);
-            console.log('Token saved:', response.data.token);
-            router.push(response.data.redirectUrl); // Default to /home if redirectUrl is not defined
-        }
+      const response = await axios.post("http://192.168.1.3:8010/user/signin", {
+        username: form.email, // Use form.email for username
+        password: form.password,
+      });
+
+      console.log("Sign in response:", response.data);
+
+      if (response.data.token) {
+        await AsyncStorage.setItem("token", response.data.token);
+        console.log("Token saved:", response.data.token);
+        router.push(response.data.redirectUrl); // Default to /home if redirectUrl is not defined
+      }
     } catch (error) {
       //console.error('Error signing in:', error.response ? error.response.data : error.message);
       setErrorMessage(
@@ -63,7 +64,7 @@ const SignIn = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://fixerbackend.vercel.app/user");
+        const response = await axios.get("http://192.168.1.3:8010/user");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -81,7 +82,7 @@ const SignIn = () => {
 
     try {
       const response = await axios.post(
-        "https://fixerbackend.vercel.app/auth/signin",
+        "http://192.168.1.3:8010/auth/signin",
         {
           username: user.username, // Use the username from the selected user
           password: user.password, // Assuming you have a test password for each user (use cautiously)
@@ -115,7 +116,6 @@ const SignIn = () => {
 
   return (
     <SafeAreaView className="h-full">
-      
       <ScrollView>
         <View className="w-full justify-center h-full px-10 my-2">
           <Image
@@ -170,30 +170,7 @@ const SignIn = () => {
               Sign Up
             </Link>
           </View>
-
-          <ScrollView>
-            <View>
-              <Text
-                style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}
-              >
-                Test Login as User:
-              </Text>
-              <View className="flex flex-col gap-2">
-                {users.map((user) => (
-                  <TouchableOpacity
-                    className="bg-blue-500 py-2 px-4 rounded-md"
-                    key={user._id}
-                    onPress={() => handleTestLogin(user)}
-                    disabled={isLoading}
-                  >
-                    <Text style={{ color: "white", fontWeight: "bold" }}>
-                      {user.name || user.username}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
-          </ScrollView>
+          <TestLogin />
         </View>
       </ScrollView>
     </SafeAreaView>

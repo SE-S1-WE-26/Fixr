@@ -4,15 +4,16 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
     "web": "expo start --web"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.3",
     "@firebase/auth": "^1.7.9",
     "@google/generative-ai": "^0.21.0",
-    "@gorhom/bottom-sheet": "4",
+    "@gorhom/bottom-sheet": "^4",
+    "@mapbox/search-js-react": "^1.0.0-beta.22",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/blur": "^4.4.1",
     "@react-native-picker/picker": "2.7.5",

@@ -18,7 +18,7 @@ const MyJobPosts = () => {
     const fetchJobs = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        const response = await fetch('https://fixerbackend.vercel.app/job/client/', {
+        const response = await fetch('http://192.168.1.3:8010/job/client/', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const MyJobPosts = () => {
     setIsVisible(false);
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch(`https://fixerbackend.vercel.app/job/delete/${selectedJobId}`, {
+      const response = await fetch(`http://192.168.1.3:8010/job/delete/${selectedJobId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`, // Include token in headers

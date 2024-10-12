@@ -129,7 +129,7 @@ const AddJob = () => {
 
     try {
       const response = await axios.post(
-        "https://fixerbackend.vercel.app/job/create",
+        "http://192.168.1.3:8010/job/create",
         jobData
       );
 
