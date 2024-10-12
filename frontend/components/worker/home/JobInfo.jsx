@@ -1,6 +1,5 @@
-import { View, Text, FlatList, ActivityIndicator, Image, TouchableOpacity } from "react-native";
+import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
 import React, { useState } from "react";
-import { icons } from "../../../constants";
 
 const ImageItem = ({ uri }) => {
   const [loading, setLoading] = useState(true);
@@ -34,7 +33,7 @@ const ImageItem = ({ uri }) => {
   );
 };
 
-const JobInfo = ({ job, loading, jobCost, onShowTools, AiVisible}) => {
+const JobInfo = ({ job, loading, jobCost }) => {
   if (loading) {
     return (
       <View className="flex w-full mb-32 justify-center items-center">
@@ -62,7 +61,7 @@ const JobInfo = ({ job, loading, jobCost, onShowTools, AiVisible}) => {
             <Text className="text-base font-medium">Location</Text>
             <Text className="text-lg font-bold">{job.city}</Text>
           </View>
-          <View className="items-end">
+          <View className='items-end'>
             <Text className="text-base font-medium">Est. Job Time</Text>
             <Text className="text-2xl font-bold text-orange">
               {job.estDuration} Hours
@@ -71,43 +70,18 @@ const JobInfo = ({ job, loading, jobCost, onShowTools, AiVisible}) => {
         </View>
         <Text className="my-6">{job.description}</Text>
         <View>
-          {job.images && job.images.length > 0 ? (
-            <FlatList
-              horizontal
-              data={job.images}
-              renderItem={({ item }) => <ImageItem uri={item} />}
-              keyExtractor={(item, index) => index.toString()}
-              showsHorizontalScrollIndicator={false}
-            />
-          ) : (
-            <View
-              style={{
-                height: 150, // Same height as the image item
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#f0f0f0", // Light grey background
-                borderWidth: 1,
-                borderColor: "#d1d1d1", // Border color
-                borderRadius: 12, // Rounded corners
-                marginHorizontal: 8, // Margin to match the FlatList items
-              }}
-            >
-              <Text style={{ color: "#888888" }}>No images available</Text>
-            </View>
-          )}
+          <FlatList
+            horizontal
+            data={job.images}
+            renderItem={({ item }) => <ImageItem uri={item} />}
+            keyExtractor={(item, index) => index.toString()}
+            showsHorizontalScrollIndicator={false}
+          />
         </View>
         <View className="mt-8">
           <Text className="text-base font-medium">Est. Job Cost</Text>
           <Text className="text-4xl font-bold text-orange">LKR {jobCost}</Text>
         </View>
-        {AiVisible && (
-          <TouchableOpacity className='absolute bottom-3 right-3 p-2 rounded-full bg-white border-2 border-platinum' onPress={onShowTools}>
-        <Image
-        source={icons.ai}
-        style={{ height: 18, width: 18 }}
-      />
-        </TouchableOpacity>
-        )}
       </View>
     </>
   );

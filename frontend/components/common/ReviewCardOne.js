@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, Alert, StyleSheet ,ScrollView} from "react-native";
-import workerImage from "../../assets/icons/worker/worker.png";
+import workerImage from "../../assets/images/worker/worker.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LottieView from "lottie-react-native"; // Import Lottie
 
@@ -65,7 +65,7 @@ const ReviewCardOne = ({ workerData }) => {
 
     } catch (error) {
       console.error(error);
-      Alert.alert("Error", "Failed to delete review");
+      //Alert.alert("Error", "Failed to delete review");
     } finally {
       setIsDeletingReview(false);
     }

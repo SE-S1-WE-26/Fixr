@@ -20,12 +20,12 @@ const Profile = () => {
         <ProfileCard />
         <Heading name="Summary" link="/" />
         {/* Pass the ref to the Summary */}
-        {/* <Summary rating={bottonSheetRef} /> */}
+        <Summary rating={bottonSheetRef} />
       </ScrollView>
 
     </SafeAreaView>
       <>
-        {/* <ReviewCard rating={bottonSheetRef} /> */}
+        <ReviewCard rating={bottonSheetRef} />
       </>
     </>
   );

@@ -64,9 +64,11 @@ const MyBookings = () => {
   if (isLoading) {
     return (
       <SafeAreaView className="h-full bg-white">
-        <View className="flex-1 justify-center items-center">
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
+        <ScrollView>
+          <View className="w-full h-full flex justify-center items-center">
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }

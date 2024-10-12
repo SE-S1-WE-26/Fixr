@@ -70,11 +70,9 @@ const JobDetails = () => {
           'Content-Type': 'application/json',
         },
       });
-      const data = await response.json();
-      console.log("Applied for job:", data);
     }
     catch(err){
-      console.error("Error applying for job:", err.message);
+
     }
   }
 
@@ -96,7 +94,7 @@ const JobDetails = () => {
           ),
         }}
       />
-      {loadingJob ? (
+      {isLoading ? (
         <View className="flex h-full w-full justify-center items-cente">
           <ActivityIndicator size="large" color="orange" />
         </View>
@@ -110,7 +108,7 @@ const JobDetails = () => {
               <Text>No client details available</Text>
             </View>
           )}
-          <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5" onPress={handleApplyJob}>
+          <TouchableOpacity className="bg-orange p-4 rounded-lg items-center mt-2 mx-5">
             <Text className="text-white font-semibold">Apply For The Job</Text>
           </TouchableOpacity>
         </View>

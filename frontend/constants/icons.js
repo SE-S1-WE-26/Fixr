@@ -17,8 +17,6 @@ import like from '../assets/icons/common/like.png';
 import redlike from '../assets/icons/common/redlike.png';
 import edit from '../assets/icons/common/edit.png';
 import success from '../assets/icons/common/success.png';
-import ai from '../assets/icons/common/ai.png';
-
 
 //Worker Icons
 import jobs from "../assets/icons/worker/job.png";
@@ -87,5 +85,4 @@ export default {
   redlike,
   edit,
   success,
-  ai
 };

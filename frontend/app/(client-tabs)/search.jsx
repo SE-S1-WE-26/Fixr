@@ -46,7 +46,7 @@ const Search = () => {
       setIsLoading(false); // Stop loading after fetching
       setRefreshing(false); // Stop refreshing
     }
-  }});
+  }
 
   useEffect(() => {
     fetchJobs(); // Call the function
