@@ -82,7 +82,10 @@ const MyBookings = () => {
             source={images.myBookings}
             className="mx-auto"
           />
-          
+          <CustomButton
+            title={"My Job Posts"}
+            handlePress={() => router.push('../screens/client/mybookings/myJobPosts')}
+          />
           {renderBookingsList()}
         </View>
       </ScrollView>
